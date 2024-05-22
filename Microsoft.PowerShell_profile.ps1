@@ -145,7 +145,7 @@ set-Alias cpl 'D:\apps\Control Panel.lnk'
 set-Alias winutil 'D:\apps\WinUtil.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
-set-Alias chatgpt 'D:\apps\ChatGPT.lnk'
+set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias github 'D:\apps\GitHub.lnk'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 
