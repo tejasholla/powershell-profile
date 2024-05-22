@@ -157,3 +157,37 @@ try {
 catch {
     Write-Error "Failed to install zoxide. Error: $_"
 }
+
+# ChatGPT Install
+try {
+    # Fetch the latest release information from GitHub API
+    $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/lencx/ChatGPT/releases/latest" -Headers @{ "User-Agent" = "PowerShell" }
+
+    # Extract the URL for the .msi asset
+    $asset = $releaseInfo.assets | Where-Object { $_.name -like "*.msi" } | Select-Object -First 1
+    $url = $asset.browser_download_url
+
+    # Define the path where the file will be downloaded
+    $output = "$env:TEMP\ChatGPT.msi"
+
+    # Prompt the user for confirmation
+    $response = Read-Host "Do you want to install ChatGPT? (y/n)"
+
+    if ($response -eq 'y') {
+        # Download the file
+        Invoke-WebRequest -Uri $url -OutFile $output
+
+        # Run the installer
+        Start-Process $output -Wait
+
+        # Optionally, remove the installer after installation
+        Remove-Item $output
+        Write-Host "ChatGPT installed successfully."
+    }
+    else {
+        Write-Host "Installation canceled by user."
+    }
+}
+catch {
+    Write-Error "Failed to install ChatGPT. Error: $_"
+}
