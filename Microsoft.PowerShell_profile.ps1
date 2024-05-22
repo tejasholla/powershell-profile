@@ -56,13 +56,6 @@ Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
         System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
     }
 }
-    
-Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
-    param($commandName, $wordToComplete, $cursorPosition)
-    dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
-        [System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
-    }
-}
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -79,6 +72,14 @@ Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory
 
 # CompletionPredictor Configuration
 Import-Module -Name CompletionPredictor
+# Configure CompletionPredictor settings
+Set-CompletionPredictorOption -HistoryCount 1000 -PredictionCount 5 -ShowToolTips $true
+# Enable CompletionPredictor for specific commands
+Enable-CompletionPredictor -CommandName 'git', 'docker', 'kubectl'
+# Disable CompletionPredictor for specific commands
+Disable-CompletionPredictor -CommandName 'ls', 'cd'
+# Set the default prediction style to inline
+Set-CompletionPredictorOption -PredictionViewStyle InlineView
 
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
@@ -173,7 +174,7 @@ Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 set-Alias touch Private:Set-FreshFile
-Set-Alias setup 'irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex'
+
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
@@ -182,6 +183,10 @@ function notes { notepad++ "$Env:USERPROFILE\Documents\Notes.txt" }
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
     Start-Process $path
+}
+
+function setup {
+    irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
 }
 
 function chattyfun {
