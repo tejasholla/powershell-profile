@@ -141,7 +141,7 @@
             "always_enabled": true
           },
           "style": "plain",
-          "template": "\uf432 ",
+          "template": "\u276f ",
           "type": "status"
         }
       ],
