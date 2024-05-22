@@ -172,7 +172,8 @@ set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
-
+set-Alias touch Private:Set-FreshFile
+Set-Alias setup 'irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex'
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
