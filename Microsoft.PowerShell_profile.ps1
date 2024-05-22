@@ -43,9 +43,9 @@ Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 
 Set-PSReadLineKeyHandler -Key Alt+e `
-	-BriefDescription CWD `
+	-BriefDescription "CWD" `
 	-LongDescription "Open the current working directory in the Windows Explorer" `
-	-ScriptBlock { &explorer . }
+	-ScriptBlock { Start-Process explorer -ArgumentList '.' }
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
