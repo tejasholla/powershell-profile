@@ -72,14 +72,6 @@ Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory
 
 # CompletionPredictor Configuration
 Import-Module -Name CompletionPredictor
-# Configure CompletionPredictor settings
-Set-CompletionPredictorOption -HistoryCount 1000 -PredictionCount 5 -ShowToolTips $true
-# Enable CompletionPredictor for specific commands
-Enable-CompletionPredictor -CommandName 'git', 'docker', 'kubectl'
-# Disable CompletionPredictor for specific commands
-Disable-CompletionPredictor -CommandName 'ls', 'cd'
-# Set the default prediction style to inline
-Set-CompletionPredictorOption -PredictionViewStyle InlineView
 
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
