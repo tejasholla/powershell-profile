@@ -626,10 +626,12 @@ try {
 }
 
 function pcdata {
-    # Assuming both scripts are in the same directory
-    $scriptPath = ".\hw.ps1"
-    Invoke-Expression (Get-Content $scriptPath -Raw)
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
+
 function Theme-Check {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
