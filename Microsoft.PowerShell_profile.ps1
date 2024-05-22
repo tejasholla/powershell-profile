@@ -42,6 +42,11 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineOption -PredictionSource History
 Set-PSReadLineOption -PredictionViewStyle ListView
 
+Set-PSReadLineKeyHandler -Key Alt+e `
+	-BriefDescription CWD `
+	-LongDescription "Open the current working directory in the Windows Explorer" `
+	-ScriptBlock { &explorer.exe . }
+    
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
     dotnet complete --position $cursorPosition $commandAst.ToString() |
