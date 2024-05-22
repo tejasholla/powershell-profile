@@ -625,6 +625,11 @@ try {
 }
 }
 
+function pcdata {
+    # Assuming both scripts are in the same directory
+    $scriptPath = ".\hw.ps1"
+    Invoke-Expression (Get-Content $scriptPath -Raw)
+}
 function Theme-Check {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
