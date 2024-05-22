@@ -63,7 +63,7 @@ Set-PSReadLineKeyHandler -Key Alt+e `
             [System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
         }
     }
-    
+
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
     dotnet complete --position $cursorPosition $commandAst.ToString() |
@@ -168,7 +168,7 @@ set-Alias winutil 'D:\apps\WinUtil.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
-set-Alias github 'D:\apps\GitHub.lnk'
+set-Alias github 'start https://github.com/dashboard'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 
 # Function definitions
