@@ -168,7 +168,6 @@ set-Alias winutil 'D:\apps\WinUtil.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
-set-Alias github 'start https://github.com/dashboard'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 
 # Function definitions
@@ -351,6 +350,8 @@ function profilefun {
 	Start-Process $path
 }
 set-alias profile profilefun
+
+function github{start https://github.com/dashboard}
 
 function photosfun{start https://photos.google.com/}
 set-alias photos photosfun
