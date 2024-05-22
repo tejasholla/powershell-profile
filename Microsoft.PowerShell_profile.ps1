@@ -77,6 +77,9 @@ Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
 Import-Module PSFzf
 Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+f' -PSReadlineChordReverseHistory 'Ctrl+r'
 
+# CompletionPredictor Configuration
+Import-Module -Name CompletionPredictor
+
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
@@ -242,6 +245,27 @@ function EnvironmentHealthReport {
     }
 }
 
+#Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
+function Private:Set-FreshFile {
+    [CmdletBinding()]
+    [Alias("touch")]
+    param (
+      [Parameter(Mandatory = $true)]
+      [string]$File
+    )
+  
+    # Check if the file exists
+    if (Test-Path $File) {
+      # If the file exists, update its timestamp
+        (Get-Item $File).LastWriteTime = Get-Date
+    }
+    else {
+      # If the file doesn't exist, create it with an empty content
+      "" | Out-File $File -Encoding ASCII
+    }
+  }
+ 
+#N etworkSpeed check
 function NetworkSpeed {
     try {
         $output = speedtest-cli --simple

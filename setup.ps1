@@ -158,6 +158,15 @@ catch {
     Write-Error "Failed to install zoxide. Error: $_"
 }
 
+# CompletionPredictor Install
+try {
+    Install-Module -Name CompletionPredictor -Scope CurrentUser -Force -SkipPublisherCheck
+    Write-Host "CompletionPredictor installed successfully."
+}
+catch {
+    Write-Error "Failed to install CompletionPredictor. Error: $_"
+}
+
 # ChatGPT Install
 try {
     # Fetch the latest release information from GitHub API
