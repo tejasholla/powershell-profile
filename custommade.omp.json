@@ -6,7 +6,7 @@
       "segments": [
         {
           "background": "#282C34",
-          "foreground": "#000000",
+          "foreground": "#ffffff",
           "leading_diamond": " \ue0b6",
           "properties": {
             "style": "folder"

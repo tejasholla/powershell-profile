@@ -812,10 +812,8 @@ function Theme-Check {
     } else {
         $themeCommand | Out-File -FilePath $profilePath
     }
-
     Invoke-Expression $themeCommand
 }
-
 # Final Line to set prompt
 Theme-Check
 
