@@ -37,6 +37,7 @@ function Get-RAMType {
 $system = Get-CimInstance CIM_ComputerSystem
 $os = Get-CimInstance CIM_OperatingSystem
 Write-Host "System Health Report" -ForegroundColor Cyan -BackgroundColor DarkGray
+Write-Host " "
 Write-Host "System:" -ForegroundColor Yellow
 "- Name: " + $system.Name
 "- Manufacturer: " + $system.Manufacturer
