@@ -36,29 +36,27 @@ function Get-RAMType {
 #system
 $system = Get-CimInstance CIM_ComputerSystem
 $os = Get-CimInstance CIM_OperatingSystem
-Write-Host "System Health Report" -ForegroundColor Cyan -BackgroundColor DarkGray
+Write-Host "System Health Report" -ForegroundColor Cyan -BackgroundColor Cyan
 Write-Host "System:" -ForegroundColor Yellow
 Write-Host "- Name: " -NoNewline
-Write-Host $system.Name -ForegroundColor DarkCyan
+Write-Host $system.Name -ForegroundColor Cyan
 Write-Host "- Manufacturer: " -NoNewline
-Write-Host $system.Manufacturer -ForegroundColor DarkCyan
+Write-Host $system.Manufacturer -ForegroundColor Cyan
 Write-Host "- Model: " -NoNewline
-Write-Host $system.Model -ForegroundColor DarkCyan
+Write-Host $system.Model -ForegroundColor Cyan
 Write-Host "- OS: "-NoNewline
-Write-Host "$($os.caption), Service Pack: $($os.ServicePackMajorVersion), Version: $($osInfo.Version)" -ForegroundColor DarkCyan
+Write-Host "$($os.caption), Service Pack: $($os.ServicePackMajorVersion), Version: $($osInfo.Version)" -ForegroundColor Cyan
 
 #motherboard
 $board = Get-CimInstance -ClassName Win32_BaseBoard
 Write-Host "Motherboard: " -NoNewline -ForegroundColor Yellow
-Write-Host $board.Manufacturer $board.Product -ForegroundColor DarkCyan
+Write-Host $board.Manufacturer $board.Product -ForegroundColor Cyan
 
 #cpu
 $cpus = Get-CimInstance CIM_Processor
-Write-Host "CPU: " -ForegroundColor Yellow
+Write-Host "CPU: " -NoNewline -ForegroundColor Yellow
 foreach ($cpu in $cpus) {
-	Write-Host "- " -NoNewline
-	Write-Host $cpu.Name -ForegroundColor DarkCyan -NoNewline
-	" (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))"
+	Write-Host $cpu.Name -NoNewline " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))" -ForegroundColor Cyan
 }
 
 #ram
