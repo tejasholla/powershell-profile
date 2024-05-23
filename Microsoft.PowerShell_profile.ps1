@@ -358,7 +358,7 @@ function shorturl {
     Specifies the URL to be shortened.
 
     .EXAMPLE
-    Get-ShortenedURL -Shortener isgd -Link "http://www.google.com"
+    shorturl -Shortener isgd -Link "http://www.google.com"
 
     .NOTES
     v0.0.1
