@@ -37,7 +37,7 @@ function Get-RAMType {
 $system = Get-CimInstance CIM_ComputerSystem
 $os = Get-CimInstance CIM_OperatingSystem
 Write-Host "System Health Report" -ForegroundColor Cyan -BackgroundColor DarkGray
-Write-Host "System:" -ForegroundColor Green
+Write-Host "System:" -ForegroundColor Yellow
 "- Name: " + $system.Name
 "- Manufacturer: " + $system.Manufacturer
 Write-Host "- Model: " -NoNewline
@@ -46,12 +46,12 @@ Write-Host $system.Model -ForegroundColor DarkCyan
 
 #motherboard
 $board = Get-CimInstance -ClassName Win32_BaseBoard
-Write-Host "Motherboard: " -NoNewline
+Write-Host "Motherboard: " -NoNewline -ForegroundColor Yellow
 Write-Host $board.Manufacturer $board.Product -ForegroundColor DarkCyan
 
 #cpu
 $cpus = Get-CimInstance CIM_Processor
-Write-Host "CPU: "
+Write-Host "CPU: " -ForegroundColor Yellow
 foreach ($cpu in $cpus) {
 	Write-Host "- " -NoNewline
 	Write-Host $cpu.Name -ForegroundColor DarkCyan -NoNewline
@@ -60,7 +60,7 @@ foreach ($cpu in $cpus) {
 
 #ram
 $rams = Get-CimInstance -ClassName Win32_PhysicalMemory
-"RAM: "
+Write-Host "RAM: " -ForegroundColor Yellow
 "- Capacity: {0:N2} GiB" -f (($rams.Capacity | Measure-Object -Sum).Sum / 1GB)
 "- Total Physical Memory: {0:N2} GiB" -f ($system.TotalPhysicalMemory / 1GB)
 "- Memory modelus: "
@@ -70,7 +70,7 @@ foreach ($ram in $rams) {
 
 #gpu
 $gpus = Get-CimInstance -ClassName Win32_VideoController
-"GPU:"
+Write-Host "GPU:" -ForegroundColor Yellow
 foreach ($gpu in $gpus) {
 	Write-Host "- " -NoNewline
 	Write-Host $gpu.Caption -ForegroundColor DarkCyan
@@ -78,7 +78,7 @@ foreach ($gpu in $gpus) {
 
 #storage
 $disks = Get-Disk
-"Storage:"
+Write-Host "Storage:" -ForegroundColor Yellow
 foreach ($disk in $disks) {
 	Write-Host "- " -NoNewline
 	Write-Host $disk.FriendlyName -ForegroundColor DarkCyan -NoNewline
@@ -105,10 +105,10 @@ $firewallStatus = Get-NetFirewallProfile | ForEach-Object {
         Enabled = $_.Enabled
     }
 }
-Write-Host "Firewall: "
+Write-Host "Firewall: " -ForegroundColor Yellow
 $firewallStatus | Format-Table -Property Profile, Enabled -AutoSize
 
 # Antivirus status
 $antivirusStatus = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Select-Object displayName, productState
-Write-Host "Antivirus: "
+Write-Host "Antivirus: " -ForegroundColor Yellow
 $antivirusStatus | Format-Table -Property displayName, productState -AutoSize 
