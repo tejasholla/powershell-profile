@@ -328,7 +328,7 @@ function New-Directory {
 
 function usb {
     # Prompt the user for confirmation
-    $response = Read-Host "For disable[1],enable[2],get usb data[3]? "
+    $response = Read-Host "For disable[1],enable[2]? "
     if ($response -eq 1) {
         # Disable USB
         Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 4
@@ -338,10 +338,6 @@ function usb {
         # Enable USB
         Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 3
         Write-Host "Enabled USB devices" -ForegroundColor DarkGray
-    }
-    elseif ($response -eq 3) {
-        # Get USB data
-        Get-WmiObject -Class Win32_USBControllerDevice
     }
     else {
         Write-Host "Invalid option" -ForegroundColor Red
