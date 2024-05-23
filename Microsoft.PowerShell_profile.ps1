@@ -172,7 +172,6 @@ set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkcd New-Directory
 set-Alias root Set-Home
-set-Alias sign Get-Signature
 
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -250,13 +249,6 @@ function EnvironmentHealthReport {
     }
 }
 
-function Get-Signature {
-    # Get my signature
-    "{0} {1} - Email: {2} - GitHub: https://github.com/{3}" -f (
-        $MyEnv.FirstName, $MyEnv.LastName, $MyEnv.Email, $MyEnv.GitHub
-    )
-}
-
 # Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
 function Set-FreshFile {
     [CmdletBinding()]
@@ -332,6 +324,35 @@ function New-Directory {
     catch {
       Write-Warning "Failed to create directory '$name'. Error: $_"
     }
+}
+
+function usb {
+    # Prompt the user for confirmation
+    $response = Read-Host "For disable[1],enable[2],get usb data[3]? "
+    if ($response -eq 1) {
+        # Disable USB
+        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 4
+        Write-Host "Disabled USB devices" -ForegroundColor DarkGray
+    }
+    elseif ($response -eq 2) {
+        # Enable USB
+        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 3
+        Write-Host "Enabled USB devices" -ForegroundColor DarkGray
+    }
+    elseif ($response -eq 3) {
+        # Get USB data
+        Get-WmiObject -Class Win32_USBControllerDevice
+    }
+    else {
+        Write-Host "Invalid option" -ForegroundColor Red
+    }
+}
+
+function shorturl {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Get-ShortenedURL.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 function terminal_settings_fun {
@@ -425,6 +446,13 @@ function photosfun{start https://photos.google.com/}
 set-alias photos photosfun
 
 function imagecompress{start https://www.iloveimg.com/compress-image}
+
+function search {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Search-Web.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
 
 function googleSearch{start www.google.com/search?q=$args}
 set-alias gs googleSearch
