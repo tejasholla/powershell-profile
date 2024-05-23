@@ -9,9 +9,7 @@
 
 A stylish and functional PowerShell profile that looks and feels almost as good as a Linux terminal.
 
-<p align="center">
-![Terminal_screen](Images/terminal1.png)
-</p>
+![Terminal](Images/terminal1.PNG)
 
 ## 📦 One Line Install (Elevated PowerShell Recommended)
 
