@@ -166,6 +166,8 @@ Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 set-Alias touch Private:Set-FreshFile
+set-Alias ff Private:Find-Files
+set-Alias unzip Private:Expand-File
 
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -243,7 +245,7 @@ function EnvironmentHealthReport {
     }
 }
 
-#Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
+# Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
 function Private:Set-FreshFile {
     [CmdletBinding()]
     [Alias("touch")]
@@ -263,7 +265,22 @@ function Private:Set-FreshFile {
     }
   }
  
-#N etworkSpeed check
+# Find-Files
+function Private:Find-Files {
+    [CmdletBinding()]
+    [Alias("ff")]
+    param (
+      [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+      [string]$Name
+    )
+    
+    # Search for files matching the specified name pattern
+    Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
+      Write-Output $_.FullName
+    }
+}
+
+# NetworkSpeed check
 function NetworkSpeed {
     try {
         $output = speedtest-cli --simple
@@ -502,11 +519,36 @@ function find-file($name) {
         }
 }
 
-function unzip ($file) {
-        Write-Output("Extracting", $file, "to", $pwd)
-	$fullFile = Get-ChildItem -Path $pwd -Filter .\cove.zip | ForEach-Object{$_.FullName}
-        Expand-Archive -Path $fullFile -DestinationPath $pwd
-}
+function Private:Expand-File {
+    [CmdletBinding()]
+    [Alias("unzip")]
+    param (
+      [Parameter(Mandatory = $true, Position = 0)]
+      [string]$File
+    )
+  
+    BEGIN {
+      Write-Host "Starting file extraction process..." -ForegroundColor Cyan
+    }
+  
+    PROCESS {
+      try {
+        Write-Host "Extracting file '$File' to '$PWD'..." -ForegroundColor Cyan
+        $FullFilePath = Get-Item -Path $File -ErrorAction Stop | Select-Object -ExpandProperty FullName
+        Expand-Archive -Path $FullFilePath -DestinationPath $PWD -Force -ErrorAction Stop
+        Write-Host "File extraction completed successfully." -ForegroundColor Green
+      }
+      catch {
+        Write-Error "Failed to extract file '$File'. Error: $_"
+      }
+    }
+  
+    END {
+      if (-not $Error) {
+        Write-Host "File extraction process completed." -ForegroundColor Cyan
+      }
+    }
+  }
 
 function grep($regex, $dir) {
         if ( $dir ) {
@@ -514,10 +556,6 @@ function grep($regex, $dir) {
                 return
         }
         $input | select-string $regex
-}
-
-function touch($file) {
-        "" | Out-File $file -Encoding ASCII
 }
 
 function df { get-volume }
