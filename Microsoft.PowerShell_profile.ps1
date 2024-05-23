@@ -358,7 +358,7 @@ function usb {
 }
 
 function shorturl {
-        <#
+    <#
     .SYNOPSIS
     Shortens a URL using various free URL shortening services.
 
@@ -374,15 +374,15 @@ function shorturl {
     shorturl -Shortener isgd -Link "http://www.google.com"
 
     .NOTES
-    v0.0.1
+    v0.0.2
     #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [ValidateSet("isgd", "snipurl", "tinyurl", "chilp", "clickme", "sooogd")]
         [string]$Shortener,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [string]$Link
     )
     BEGIN {
@@ -391,6 +391,13 @@ function shorturl {
         $ValidUrl = $true
     }
     PROCESS {
+        if (-not $Shortener) {
+            $Shortener = Read-Host "Please enter the URL shortening service (isgd, snipurl, tinyurl, chilp, clickme, sooogd)"
+        }
+        if (-not $Link) {
+            $Link = Read-Host "Please enter the URL to be shortened"
+        }
+        
         if (-not ([System.Uri]::TryCreate($Link, [System.UriKind]::Absolute, [ref]$null))) {
             Write-Error -Message "Invalid URL format!"
             $ValidUrl = $false
