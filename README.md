@@ -1,5 +1,5 @@
 <h1 align="center">
-My Minimal Terminal Setup
+Minimal Terminal Setup
 </h1>
 
 <h4 align="center">
@@ -14,7 +14,7 @@ A stylish and functional PowerShell profile that looks and feels almost as good 
 Execute the following command in an elevated PowerShell window to install the PowerShell profile:
 
 > [!WARNING]  
-> Powershell Run As Administrator.
+> Run Powershell As Administrator.
 
 ```powershell
 irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
