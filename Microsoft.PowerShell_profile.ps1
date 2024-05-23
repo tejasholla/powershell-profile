@@ -132,33 +132,18 @@ function Update-PowerShell {
 }
 Update-PowerShell
 
-function Update-Theme {
-    $profilePath = $PROFILE.CurrentUserAllHosts
-    $themeConfig = 'oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression'
-    
-    if (Test-Path -Path $profilePath -PathType Leaf) {
-        $profileContent = Get-Content -Path $profilePath
-        $existingTheme = $profileContent | Select-String -Pattern "oh-my-posh init pwsh --config"
-
-        if ($existingTheme) {
-            # Theme config already present, no need to update
-            Write-Output "Theme configuration already present."
-        } else {
-            # Append the new theme configuration to the profile
-            Add-Content -Path $profilePath -Value "`n$themeConfig"
-            Write-Output "Theme configuration added."
+function Theme-Check {
+    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+        if ($existingTheme -ne $null) {
+            Invoke-Expression $existingTheme
+            return
         }
     } else {
-        # Create the profile file and add the theme configuration
-        New-Item -Path $profilePath -ItemType File -Force -Value $themeConfig
-        Write-Output "Profile file created and theme configuration added."
+        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
-    
-    # Apply the new or updated theme
-    Invoke-Expression (& oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json)
 }
-
-Update-Theme
+Theme-Check
 
 # Admin Check and Prompt Customization
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
