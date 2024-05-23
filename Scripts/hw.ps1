@@ -57,7 +57,7 @@ $cpus = Get-CimInstance CIM_Processor
 Write-Host "CPU: " -NoNewline -ForegroundColor Yellow
 foreach ($cpu in $cpus) {
 	Write-Host $cpu.Name -NoNewline -ForegroundColor Cyan
-	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))" -ForegroundColor Cyan
+	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))"
 }
 
 #ram
@@ -67,7 +67,7 @@ Write-Host "RAM: " -ForegroundColor Yellow
 "- Total Physical Memory: {0:N2} GiB" -f ($system.TotalPhysicalMemory / 1GB)
 "- Memory modelus: "
 foreach ($ram in $rams) {
-	"  - $((Get-RAMType -Type $ram.SMBIOSMemoryType)) [$($ram.BankLabel)/$($ram.DeviceLocator)] ({0:N2} GiB)" -f ($ram.Capacity / 1GB)
+	Write-Host "  - $((Get-RAMType -Type $ram.SMBIOSMemoryType)) [$($ram.BankLabel)/$($ram.DeviceLocator)] ({0:N2} GiB)" -f ($ram.Capacity / 1GB) -ForegroundColor Cyan
 }
 
 #gpu
