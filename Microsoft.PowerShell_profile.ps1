@@ -797,7 +797,15 @@ function pcdata {
     Invoke-Expression $scriptContent
 }
 
-oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+    $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+    if ($existingTheme -ne $null) {
+        Invoke-Expression $existingTheme
+        return
+    }
+} else {
+    oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+}
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
