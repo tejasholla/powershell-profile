@@ -798,22 +798,22 @@ function pcdata {
 }
 
 function Theme-Check {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($existingTheme -ne $null) {
-            # Clear the existing theme setup to ensure the new one is applied
-            $PROFILEContent = Get-Content -Path $PROFILE.CurrentUserAllHosts -Raw
-            $PROFILEContent = $PROFILEContent -replace "$existingTheme", ""
-            Set-Content -Path $PROFILE.CurrentUserAllHosts -Value $PROFILEContent
+    $profilePath = $PROFILE.CurrentUserAllHosts
+    $themeConfig = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
+    $themeCommand = "oh-my-posh init pwsh --config $themeConfig | Invoke-Expression"
 
-            # Apply the new theme
-            oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
-        } else {
-            oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+    if (Test-Path -Path $profilePath -PathType Leaf) {
+        $profileContent = Get-Content -Path $profilePath -Raw
+        if ($profileContent -match "oh-my-posh init pwsh --config") {
+            $profileContent = $profileContent -replace "oh-my-posh init pwsh --config.*\| Invoke-Expression", ""
         }
+        $profileContent += "`n$themeCommand"
+        Set-Content -Path $profilePath -Value $profileContent
     } else {
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+        $themeCommand | Out-File -FilePath $profilePath
     }
+
+    Invoke-Expression $themeCommand
 }
 
 # Final Line to set prompt
