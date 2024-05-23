@@ -165,9 +165,10 @@ set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
 set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
-set-Alias touch Private:Set-FreshFile
-set-Alias ff Private:Find-Files
-set-Alias unzip Private:Expand-File
+set-Alias touch Set-FreshFile
+set-Alias ff Find-Files
+set-Alias unzip Expand-File
+set-Alias mkcd New-Directory
 
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -246,7 +247,7 @@ function EnvironmentHealthReport {
 }
 
 # Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
-function Private:Set-FreshFile {
+function Set-FreshFile {
     [CmdletBinding()]
     [Alias("touch")]
     param (
@@ -266,7 +267,7 @@ function Private:Set-FreshFile {
   }
  
 # Find-Files
-function Private:Find-Files {
+function Find-Files {
     [CmdletBinding()]
     [Alias("ff")]
     param (
@@ -302,6 +303,23 @@ function NetworkSpeed {
         }
     } catch {
         Write-Host "Failed to perform speed test. Error: $_" -ForegroundColor Red
+    }
+}
+
+function New-Directory {
+    [CmdletBinding()]
+    [Alias("mkcd")]
+    param (
+      [Parameter(Position = 0, Mandatory = $true)]
+      [string]$name
+    )
+  
+    try {
+      $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
+      Set-Location -Path $newDir.FullName
+    }
+    catch {
+      Write-Warning "Failed to create directory '$name'. Error: $_"
     }
 }
 
@@ -519,7 +537,7 @@ function find-file($name) {
         }
 }
 
-function Private:Expand-File {
+function Expand-File {
     [CmdletBinding()]
     [Alias("unzip")]
     param (
