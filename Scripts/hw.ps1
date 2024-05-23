@@ -67,7 +67,7 @@ Write-Host "RAM: " -ForegroundColor Yellow
 "- Total Physical Memory: {0:N2} GiB" -f ($system.TotalPhysicalMemory / 1GB)
 "- Memory modelus: "
 foreach ($ram in $rams) {
-	Write-Host "  - $((Get-RAMType -Type $ram.SMBIOSMemoryType)) [$($ram.BankLabel)/$($ram.DeviceLocator)] ({0:N2} GiB)" -f ($ram.Capacity / 1GB) -ForegroundColor Cyan
+	"  - $((Get-RAMType -Type $ram.SMBIOSMemoryType)) [$($ram.BankLabel)/$($ram.DeviceLocator)] ({0:N2} GiB)" -f ($ram.Capacity / 1GB)
 }
 
 #gpu
@@ -75,7 +75,7 @@ $gpus = Get-CimInstance -ClassName Win32_VideoController
 Write-Host "GPU:" -ForegroundColor Yellow
 foreach ($gpu in $gpus) {
 	Write-Host "- " -NoNewline
-	Write-Host $gpu.Caption -ForegroundColor DarkCyan
+	Write-Host $gpu.Caption -ForegroundColor Cyan
 }
 
 #storage
@@ -83,7 +83,7 @@ $disks = Get-Disk
 Write-Host "Storage:" -ForegroundColor Yellow
 foreach ($disk in $disks) {
 	Write-Host "- " -NoNewline
-	Write-Host $disk.FriendlyName -ForegroundColor DarkCyan -NoNewline
+	Write-Host $disk.FriendlyName -ForegroundColor Cyan -NoNewline
 	" ({0:N2} GiB)" -f ($disk.Size / 1GB) 
 }
 
