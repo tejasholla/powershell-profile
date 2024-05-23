@@ -5,7 +5,7 @@
       "type": "rprompt",
       "segments": [
         {
-          "background": "#ffffff",
+          "background": "{{accent_color}}",
           "foreground": "#000000",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -18,7 +18,7 @@
         },
         {
           "background": "#29315A",
-          "foreground": "#43CCEA",
+          "foreground": "{{accent_color}}",
           "foreground_templates": [
             "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}",
             "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#ff4500{{ end }}",

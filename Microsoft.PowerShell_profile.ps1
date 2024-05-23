@@ -174,6 +174,16 @@ set-Alias mkcd New-Directory
 set-Alias root Set-Home
 
 # Function definitions
+function Get-WindowsAccentColor {
+    $accentColor = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\DWM" -Name "AccentColor"
+    $accentColorHex = '{0:X}' -f $accentColor
+    $accentColorHex = $accentColorHex.PadLeft(8, '0')
+    return "#$($accentColorHex.Substring(2, 6))"
+}
+
+$accentColor = Get-WindowsAccentColor
+Write-Output $accentColor
+
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
 function notes { notepad++ "$Env:USERPROFILE\Documents\Notes.txt" }
