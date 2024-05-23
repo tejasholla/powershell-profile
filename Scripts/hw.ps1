@@ -41,7 +41,7 @@ $os = Get-CimInstance CIM_OperatingSystem
 "- Manufacturer: " + $system.Manufacturer
 Write-Host "- Model: " -NoNewline
 Write-Host $system.Model -ForegroundColor DarkCyan
-"- OS: $($os.caption), Service Pack: $($os.ServicePackMajorVersion)"
+"- OS: $($os.caption), Service Pack: $($os.ServicePackMajorVersion), Version: $($osInfo.Version)"
 
 #motherboard
 $board = Get-CimInstance -ClassName Win32_BaseBoard
@@ -96,3 +96,18 @@ foreach ($vol in $volumes) {
 	"    - Capacity: {0:N2} GiB" -f ($vol.Size / 1GB)
 	"    - Free Space: {0:P2} ({1:N2} GiB)" -f ($vol.SizeRemaining / $vol.Size), ($vol.SizeRemaining / 1GB)
 }
+
+# Firewall status for all profiles (Domain, Private, Public)
+$firewallStatus = Get-NetFirewallProfile | ForEach-Object {
+    [PSCustomObject]@{
+        Profile = $_.Name
+        Enabled = $_.Enabled
+    }
+}
+Write-Host "Firewall: "
+$firewallStatus | Format-Table -Property Profile, Enabled -AutoSize
+
+# Antivirus status
+$antivirusStatus = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Select-Object displayName, productState
+Write-Host "Antivirus: "
+$antivirusStatus | Format-Table -Property displayName, productState -AutoSize 
