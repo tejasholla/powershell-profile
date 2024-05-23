@@ -56,7 +56,8 @@ Write-Host $board.Manufacturer $board.Product -ForegroundColor Cyan
 $cpus = Get-CimInstance CIM_Processor
 Write-Host "CPU: " -NoNewline -ForegroundColor Yellow
 foreach ($cpu in $cpus) {
-	Write-Host $cpu.Name -NoNewline " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))" -ForegroundColor Cyan
+	Write-Host $cpu.Name -NoNewline -ForegroundColor Cyan
+	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))" -ForegroundColor Cyan
 }
 
 #ram
