@@ -5,7 +5,7 @@
       "type": "rprompt",
       "segments": [
         {
-          "background": "#ffffff",
+          "background": "#282C34",
           "foreground": "#000000",
           "leading_diamond": " \ue0b6",
           "properties": {
