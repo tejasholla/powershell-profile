@@ -1,5 +1,5 @@
 <h1 align="center">
-Minimal Terminal Setup
+⚡️Minimal Terminal Setup
 </h1>
 
 <h4 align="center">
@@ -9,7 +9,11 @@ Minimal Terminal Setup
 
 A stylish and functional PowerShell profile that looks and feels almost as good as a Linux terminal.
 
-## ⚡ One Line Install (Elevated PowerShell Recommended)
+<p align="center">
+![Terminal screen](./Images/terminal1.png)
+</p>
+
+## 📦 One Line Install (Elevated PowerShell Recommended)
 
 Execute the following command in an elevated PowerShell window to install the PowerShell profile:
 
