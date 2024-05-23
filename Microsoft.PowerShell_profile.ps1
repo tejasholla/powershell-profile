@@ -797,25 +797,7 @@ function pcdata {
     Invoke-Expression $scriptContent
 }
 
-function Theme-Check {
-    $profilePath = $PROFILE.CurrentUserAllHosts
-    $themeConfig = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
-    $themeCommand = "oh-my-posh init pwsh --config $themeConfig | Invoke-Expression"
-
-    if (Test-Path -Path $profilePath -PathType Leaf) {
-        $profileContent = Get-Content -Path $profilePath -Raw
-        if ($profileContent -match "oh-my-posh init pwsh --config") {
-            $profileContent = $profileContent -replace "oh-my-posh init pwsh --config.*\| Invoke-Expression", ""
-        }
-        $profileContent += "`n$themeCommand"
-        Set-Content -Path $profilePath -Value $profileContent
-    } else {
-        $themeCommand | Out-File -FilePath $profilePath
-    }
-    Invoke-Expression $themeCommand
-}
-# Final Line to set prompt
-Theme-Check
+oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
