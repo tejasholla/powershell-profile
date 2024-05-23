@@ -133,15 +133,23 @@ function Update-PowerShell {
 Update-PowerShell
 
 function Update-Theme {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+    $profilePath = $PROFILE.CurrentUserAllHosts
+    $themeConfig = "oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
+    if (Test-Path -Path $profilePath -PathType Leaf) {
+        $existingTheme = Select-String -Raw -Path $profilePath -Pattern "oh-my-posh init pwsh --config"
+        # Remove the existing theme configuration if found
         if ($existingTheme -ne $null) {
-            Invoke-Expression $existingTheme
-            return
+            $content = Get-Content -Path $profilePath
+            $newContent = $content -replace "oh-my-posh init pwsh --config.*", $themeConfig
+            $newContent | Set-Content -Path $profilePath
+        } else {
+            Add-Content -Path $profilePath -Value $themeConfig
         }
     } else {
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+        New-Item -Path $profilePath -ItemType File -Force -Value $themeConfig
     }
+    # Apply the new or updated theme
+    Invoke-Expression (& oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json)
 }
 Update-Theme
 
