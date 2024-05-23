@@ -811,6 +811,7 @@ function Theme-Check {
 
 ## Final Line to set prompt
 Theme-Check
+Write-Error "Theme check"
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
