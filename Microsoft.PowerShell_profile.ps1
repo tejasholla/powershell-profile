@@ -801,15 +801,22 @@ function Theme-Check {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
         if ($existingTheme -ne $null) {
-            Invoke-Expression $existingTheme
-            return
+            # Clear the existing theme setup to ensure the new one is applied
+            $PROFILEContent = Get-Content -Path $PROFILE.CurrentUserAllHosts -Raw
+            $PROFILEContent = $PROFILEContent -replace "$existingTheme", ""
+            Set-Content -Path $PROFILE.CurrentUserAllHosts -Value $PROFILEContent
+
+            # Apply the new theme
+            oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+        } else {
+            oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
         }
     } else {
         oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
 }
 
-## Final Line to set prompt
+# Final Line to set prompt
 Theme-Check
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
