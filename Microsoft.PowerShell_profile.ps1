@@ -172,6 +172,7 @@ set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkcd New-Directory
 set-Alias root Set-Home
+set-Alias sign Get-Signature
 
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
