@@ -4,7 +4,7 @@ My Minimal Terminal Setup
 
 <h4 align="center">
 <img src="https://img.shields.io/badge/Powershell-v7.4.2-blue?style=for-the-badge&logo=powershell&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41" />
-<img src="https://img.shields.io/badge/windows_terminal-v1.17.11461.0-blue?style=for-the-badge&logo=powershell&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41" />
+<img src="https://img.shields.io/badge/windows_terminal-v1.20.11271.0-blue?style=for-the-badge&logo=powershell&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41" />
 </h4>
 
 A stylish and functional PowerShell profile that looks and feels almost as good as a Linux terminal.
