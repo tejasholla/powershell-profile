@@ -132,7 +132,7 @@ function Update-PowerShell {
 }
 Update-PowerShell
 
-function Update-Theme {
+function Theme-change {
     $profilePath = $PROFILE.CurrentUserAllHosts
 
     if (Test-Path -Path $profilePath -PathType Leaf) {
@@ -148,7 +148,7 @@ function Update-Theme {
         oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
 }
-Update-Theme
+Theme-change
 
 
 # Admin Check and Prompt Customization
