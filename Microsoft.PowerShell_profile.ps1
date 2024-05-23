@@ -25,6 +25,8 @@ Set-PSReadLineOption -Colors @{
     Parameter = 'Green'
     String = 'DarkCyan'
     Operator = 'Magenta'
+    ContinuationPrompt = '#56B6C2'
+    Error = '#E06C75'
     Variable = 'Yellow'
     Number = 'Red'
     Type = 'Cyan'
@@ -169,6 +171,7 @@ set-Alias touch Set-FreshFile
 set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkcd New-Directory
+set-Alias root Set-Home
 
 # Function definitions
 function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -536,6 +539,16 @@ function find-file($name) {
                 Write-Output "${place_path}\${_}"
         }
 }
+
+function Set-Home {
+    [CmdletBinding()]
+    [Alias("root")]
+    param (
+      # This function does not accept any parameters
+    )
+  
+    Set-Location -Path $HOME
+  }
 
 function Expand-File {
     [CmdletBinding()]
