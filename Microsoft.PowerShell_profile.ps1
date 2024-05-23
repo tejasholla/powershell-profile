@@ -13,6 +13,7 @@ if (-not (Get-Module -ListAvailable -Name Terminal-Icons)) {
     Install-Module -Name Terminal-Icons -Scope CurrentUser -Force -SkipPublisherCheck
 }
 Import-Module -Name Terminal-Icons
+
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
@@ -195,38 +196,6 @@ function binop {
 }
 
 function edge { Start-Process "msedge" }
-
-function EnvironmentHealthReport {
-    # Check if running as Administrator
-    if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
-        Write-Host "This script should be run as an Administrator for complete functionality." -ForegroundColor Yellow
-    }
-    else {
-        # Operating system information
-        $osInfo = Get-CimInstance -ClassName Win32_OperatingSystem
-        # Disk health status
-        $diskHealth = Get-CimInstance -ClassName Win32_DiskDrive | Select-Object Model, Status
-        # Firewall status for all profiles (Domain, Private, Public)
-        $firewallStatus = Get-NetFirewallProfile | ForEach-Object {
-            [PSCustomObject]@{
-                Profile = $_.Name
-                Enabled = $_.Enabled
-            }
-        }
-        # Antivirus status
-        $antivirusStatus = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntivirusProduct | Select-Object displayName, productState
-
-        # Display Results
-        Write-Host "System Health Report" -ForegroundColor Cyan -BackgroundColor DarkGray
-        Write-Host "OS Information: $($osInfo.Caption), Version: $($osInfo.Version)" -ForegroundColor Green
-        Write-Host "Disk Status:" -ForegroundColor Magenta
-        $diskHealth | Format-Table -Property Model, Status -AutoSize
-        Write-Host "Firewall Status:" -ForegroundColor Yellow
-        $firewallStatus | Format-Table -Property Profile, Enabled -AutoSize
-        Write-Host "Antivirus Status:" -ForegroundColor Blue
-        $antivirusStatus | Format-Table -Property displayName, productState -AutoSize
-    }
-}
 
 # Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
 function Set-FreshFile {
