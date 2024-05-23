@@ -3,8 +3,7 @@ My Minimal Terminal Setup
 </h1>
 
 <h4 align="center">
-<img src="[https://img.shields.io/badge/Powershell-v5.1.22621.1778-blue?style=for-the-badge&logo=powershell&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41](https://img.shields.io/badge/Powershell?style=for-the-badge&logo=Powershell&logoColor=black&logoSize=6&label=Powershell&labelColor=Blaock&color=white&link=https%3A%2F%2Fgithub.com%2FPowerShell%2FPowerShell
-)" />
+<img src="https://img.shields.io/badge/Powershell-blue?style=for-the-badge&logo=powershell&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41" />
 <img src="https://img.shields.io/badge/windows_terminal-v1.17.11461.0-blue?style=for-the-badge&logo=powershell&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41" />
 </h4>
 
