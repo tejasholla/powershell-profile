@@ -132,6 +132,19 @@ function Update-PowerShell {
 }
 Update-PowerShell
 
+function Update-Theme {
+    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+        if ($existingTheme -ne $null) {
+            Invoke-Expression $existingTheme
+            return
+        }
+    } else {
+        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+    }
+}
+Update-Theme
+
 # Admin Check and Prompt Customization
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 function prompt {
@@ -803,20 +816,6 @@ function pcdata {
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
     Invoke-Expression $scriptContent
 }
-
-function Theme-Check {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($existingTheme -ne $null) {
-            Invoke-Expression $existingTheme
-            return
-        }
-    } else {
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
-    }
-}
-## Final Line to set prompt
-Theme-Check
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     Invoke-Expression (& { (zoxide init powershell | Out-String) })
