@@ -41,7 +41,7 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin -BellStyle Visual
 Set-PSReadLineOption -PredictionViewStyle ListView
 
 Set-PSReadLineKeyHandler -Key Alt+e `
@@ -247,6 +247,13 @@ function EnvironmentHealthReport {
         Write-Host "Antivirus Status:" -ForegroundColor Blue
         $antivirusStatus | Format-Table -Property displayName, productState -AutoSize
     }
+}
+
+function Get-Signature {
+    # Get my signature
+    "{0} {1} - Email: {2} - GitHub: https://github.com/{3}" -f (
+        $MyEnv.FirstName, $MyEnv.LastName, $MyEnv.Email, $MyEnv.GitHub
+    )
 }
 
 # Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
