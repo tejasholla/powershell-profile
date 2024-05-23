@@ -49,16 +49,6 @@ Set-PSReadLineKeyHandler -Key Alt+e `
 	-LongDescription "Open the current working directory in the Windows Explorer" `
 	-ScriptBlock { Start-Process explorer -ArgumentList '.' }
 
-Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
-    param($wordToComplete, $commandAst, $cursorPosition)
-    [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
-    $Local:word = $wordToComplete.Replace('"', '""')
-    $Local:ast = $commandAst.ToString().Replace('"', '""')
-    winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
-        System.Management.Automation.CompletionResult]::new($_, $_, "ParameterValue", $_)
-    }
-}
-
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
     dotnet complete --position $cursorPosition $commandAst.ToString() |
@@ -174,9 +164,9 @@ set-Alias mkcd New-Directory
 set-Alias root Set-Home
 
 # Function definitions
-function notepad++ { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
+function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
-function notes { notepad++ "$Env:USERPROFILE\Documents\Notes.txt" }
+function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
 
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
@@ -187,14 +177,12 @@ function setup {
     irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
 }
 
-function chattyfun {
+function chatty {
     start http://localhost:8080/
     
     # Open WSL in a new Windows Terminal tab
     Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')
 }
-# Set alias for the function
-Set-Alias chatty chattyfun
 
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
@@ -209,13 +197,6 @@ function binop {
 }
 
 function edge { Start-Process "msedge" }
-
-function SystemResourceUsage {
-    $cpuLoad = Get-Counter '\Processor(_Total)\% Processor Time' | Select-Object -ExpandProperty countersamples | Select-Object -ExpandProperty cookedvalue
-    $memUsage = Get-WmiObject Win32_OperatingSystem | Select-Object @{Name="MemoryUsage";Expression={"{0:N2}" -f ((($_.TotalVisibleMemorySize - $_.FreePhysicalMemory)*100)/ $_.TotalVisibleMemorySize)}}
-    Write-Output "CPU Load: $cpuLoad%"
-    Write-Output "Memory Usage: $($memUsage.MemoryUsage)%"
-}
 
 function EnvironmentHealthReport {
     # Check if running as Administrator
@@ -344,25 +325,8 @@ function usb {
     }
 }
 
+# Shortens a URL using various free URL shortening services.
 function shorturl {
-    <#
-    .SYNOPSIS
-    Shortens a URL using various free URL shortening services.
-
-    .DESCRIPTION
-    This function shortens a URL by utilizing different free URL shortening services without requiring an API key, supports services like is.gd, snipurl, tinyurl, chilp, clickme, and sooogd.
-
-    .PARAMETER Shortener
-    The URL shortening service to use.
-    .PARAMETER Link
-    Specifies the URL to be shortened.
-
-    .EXAMPLE
-    shorturl -Shortener isgd -Link "http://www.google.com"
-
-    .NOTES
-    v0.0.2
-    #>
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -476,19 +440,6 @@ function ytplayer {
     }
 }
 
-function uninstall{
-	$app = Get-WmiObject -Class Win32_Product | Where-Object{$_.Name -eq "$args"}
-	$app.Uninstall()
-}
-
-function hideinimagefun{copy /b $image+$file $saveimage}
-set-alias hideinimage hideinimagefun
-
-function encrypt {
-    param($path)
-    cipher /E /A /I:$path
-}
-
 function wifinetwork{netsh wlan show profile}
 
 function wifinetworkfun{netsh wlan show profile $args key=clear | findstr “Key Content”}
@@ -501,15 +452,6 @@ set-alias weather weatherfun
 
 function qrfun{curl qrenco.de/$args}
 set-alias qr qrfun
-
-function webFun{start $args}
-set-alias web webFun
-
-function hideFun{attrib +h +s +r $args}
-set-alias hide hideFun
-
-function unhideFun{attrib -h -s -r $args}
-set-alias unhide unhideFun
 
 function profilefun {
 	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
@@ -538,9 +480,6 @@ set-alias youtube youtubeopen
 
 function wikiSearch{start https://www.wikiwand.com/en/$args}
 set-alias wiki wikiSearch
-
-function tokeifun{tokei $args}
-set-alias linedata tokeifun
 
 function pathdatafun{nu -c "ls $args"}
 set-alias lscheck pathdatafun
@@ -594,8 +533,6 @@ function gcl { git clone "$args" }
 
 function gp { git push }
 
-function g { z Github }
-
 function gcom {
     git add .
     git commit -m "$args"
@@ -638,13 +575,6 @@ function Get-HWVersion($computer, $name) {
 function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload-profile { & $profile }
-
-function find-file($name) {
-        Get-ChildItem -recurse -filter "*${name}*" -ErrorAction SilentlyContinue | ForEach-Object {
-                $place_path = $_.directory
-                Write-Output "${place_path}\${_}"
-        }
-}
 
 function Set-Home {
     [CmdletBinding()]
