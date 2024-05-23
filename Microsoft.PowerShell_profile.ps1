@@ -133,17 +133,23 @@ function Update-PowerShell {
 Update-PowerShell
 
 function Update-Theme {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($existingTheme -ne $null) {
-            Invoke-Expression $existingTheme
-            return
+    $profilePath = $PROFILE.CurrentUserAllHosts
+
+    if (Test-Path -Path $profilePath -PathType Leaf) {
+        $existingTheme = Select-String -Path $profilePath -Pattern "oh-my-posh init pwsh --config" -SimpleMatch
+        
+        if ($existingTheme) {
+            $themeCommand = $existingTheme.Line
+            Invoke-Expression $themeCommand
+        } else {
+            oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
         }
     } else {
         oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
 }
-Update-Theme 
+Update-Theme
+
 
 # Admin Check and Prompt Customization
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
