@@ -141,11 +141,9 @@ function admin {
 
 # Set aliases for quick access
 Set-Alias -Name vim -Value nvim
-Set-Alias -Name su -Value admin
 Set-Alias -Name sudo -Value admin
 Set-Alias li ls
 Set-Alias g git
-Set-Alias grep findstr
 Set-Alias ip ipconfig
 Set-Alias tig 'C:\Program Files\Git\usr\bin\tig.exe'
 Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
@@ -582,7 +580,6 @@ function Set-Home {
     param (
       # This function does not accept any parameters
     )
-  
     Set-Location -Path $HOME
   }
 
