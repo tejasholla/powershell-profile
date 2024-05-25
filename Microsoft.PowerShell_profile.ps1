@@ -1,4 +1,4 @@
-# set PowerShell to UTF-8
+# Set PowerShell to use UTF-8 encoding for both input and output
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
 ### PowerShell Profile Refactor
@@ -407,15 +407,39 @@ function ytplayer {
     }
 }
 
+function cred {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/save-credentials.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
+function password {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-passwords.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
+# network related functions
 function wifinetwork{netsh wlan show profile}
 
 function wifinetworkfun{netsh wlan show profile $args key=clear | findstr “Key Content”}
 set-alias thiswifi wifinetworkfun
 
+function networkdetails{netsh wlan show interfaces}
+
 function expo{explorer .}
 
 function weatherfun{curl wttr.in/$args}
 set-alias weather weatherfun
+
+function map {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/open-bing-maps.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
 
 function qrfun{curl qrenco.de/$args}
 set-alias qr qrfun
@@ -696,6 +720,13 @@ try {
 function pcdata {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
+function firewall {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-firewall.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
     Invoke-Expression $scriptContent
 }
