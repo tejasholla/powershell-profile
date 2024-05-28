@@ -154,7 +154,6 @@ set-Alias cpl 'D:\apps\Control Panel.lnk'
 set-Alias winutil 'D:\apps\WinUtil.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
-set-Alias chatgpt 'C:\Program Files\ChatGPT\ChatGPT.exe'
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 set-Alias touch Set-FreshFile
 set-Alias ff Find-Files
@@ -428,6 +427,8 @@ function profilefun {
 	Start-Process $path
 }
 set-alias profile profilefun
+
+function chatgpt{start https://chatgpt.com/}
 
 function github{start https://github.com/dashboard}
 
