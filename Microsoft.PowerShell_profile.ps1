@@ -428,9 +428,13 @@ function profilefun {
 }
 set-alias profile profilefun
 
+function telegram{start https://web.telegram.org/a/}
+
 function chatgpt{start https://chatgpt.com/}
 
 function github{start https://github.com/dashboard}
+
+function gitrepo{start https://github.com/tejasholla?tab=repositories}
 
 function photosfun{start https://photos.google.com/}
 set-alias photos photosfun
