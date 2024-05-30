@@ -33,6 +33,23 @@ function Get-RAMType {
 	}
 }
 
+function GetCPUTemperature {
+	$temp = 99999.9 # unsupported
+	if ($IsLinux) {
+		if (Test-Path "/sys/class/thermal/thermal_zone0/temp" -pathType leaf) {
+			[int]$IntTemp = Get-Content "/sys/class/thermal/thermal_zone0/temp"
+			$temp = [math]::round($IntTemp / 1000.0, 1)
+		}
+	} else {
+		$objects = Get-WmiObject -Query "SELECT * FROM Win32_PerfFormattedData_Counters_ThermalZoneInformation" -Namespace "root/CIMV2"
+		foreach ($object in $objects) {
+			$highPrec = $object.HighPrecisionTemperature
+			$temp = [math]::round($highPrec / 100.0, 1)
+		}
+	}
+	return $temp
+}
+
 #system
 $system = Get-CimInstance CIM_ComputerSystem
 $os = Get-CimInstance CIM_OperatingSystem
@@ -55,9 +72,23 @@ Write-Host $board.Manufacturer $board.Product -ForegroundColor Cyan
 #cpu
 $cpus = Get-CimInstance CIM_Processor
 Write-Host "CPU: " -NoNewline -ForegroundColor Yellow
+$details = Get-WmiObject -Class Win32_Processor
+$socket = "$($details.SocketDesignation) socket, "
+$celsius = GetCPUTemperature
+if ($celsius -eq 99999.9) {
+	$temp = "no temp"
+} elseif ($celsius -gt 50) {
+	$temp = "$($celsius)°C"
+	$status = "⚠️"
+} elseif ($celsius -lt 0) {
+	$temp = "$($celsius)°C"
+	$status = "⚠️"
+} else {
+	$temp = "$($celsius)°C"
+} 
 foreach ($cpu in $cpus) {
 	Write-Host $cpu.Name -NoNewline -ForegroundColor Cyan
-	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))"
+	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors)$($socket)$temp)"
 }
 
 #ram
