@@ -761,10 +761,8 @@ function qr {
             "&format=" + $FileFormat), $NewFile)
 
         "✔️ saved new QR code image file to: $NewFile"
-        exit 0 # success
     } catch {
         "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
-        exit 1
     }
 }
 
