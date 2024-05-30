@@ -1,4 +1,4 @@
-function qr {
+function qrimage {
     param(
         [string]$Text = "",
         [string]$ImageSize = ""
