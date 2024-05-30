@@ -710,17 +710,14 @@ function windef {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
     
     try {
-        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
         
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
-            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
             $scriptContent = $scriptContent.Substring(1)
         }
         
         Invoke-Expression $scriptContent
-        Write-Host "Script content loaded and executed successfully." -ForegroundColor Green
     } catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
@@ -738,12 +735,10 @@ function weather {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"
     
     try {
-        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
         
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
-            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
             $scriptContent = $scriptContent.Substring(1)
         }
 
@@ -751,7 +746,6 @@ function weather {
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
 
-        Write-Host "Executing the script from the temporary file: $tempScriptPath" -ForegroundColor Cyan
         . $tempScriptPath
         
         # Cleanup the temporary file
@@ -804,12 +798,10 @@ function checkpass {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"
     
     try {
-        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
         
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
-            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
             $scriptContent = $scriptContent.Substring(1)
         }
 
@@ -817,7 +809,6 @@ function checkpass {
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
 
-        Write-Host "Executing the script from the temporary file: $tempScriptPath" -ForegroundColor Cyan
         . $tempScriptPath
         
         # Cleanup the temporary file
@@ -832,12 +823,10 @@ function iplocate {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/locate-ipaddress.ps1"
     
     try {
-        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
         
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
-            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
             $scriptContent = $scriptContent.Substring(1)
         }
 
@@ -845,7 +834,6 @@ function iplocate {
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
 
-        Write-Host "Executing the script from the temporary file: $tempScriptPath" -ForegroundColor Cyan
         . $tempScriptPath
         
         # Cleanup the temporary file
