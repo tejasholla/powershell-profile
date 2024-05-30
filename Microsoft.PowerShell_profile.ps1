@@ -724,16 +724,25 @@ function wea3 {
     # Path to the script on GitHub
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"
     
-    # Fetch the script content
     try {
+        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
         
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
+            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
             $scriptContent = $scriptContent.Substring(1)
         }
+
+        # Save script content to a temporary file
+        $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
+        Set-Content -Path $tempScriptPath -Value $scriptContent
+
+        Write-Host "Executing the script from the temporary file: $tempScriptPath" -ForegroundColor Cyan
+        . $tempScriptPath
         
-        Invoke-Expression $scriptContent
+        # Cleanup the temporary file
+        Remove-Item -Path $tempScriptPath -Force
     } catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
