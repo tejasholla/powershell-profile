@@ -1,18 +1,4 @@
-﻿<#
-.SYNOPSIS
-	Checks the CPU status
-.DESCRIPTION
-	This PowerShell script queries the CPU status (name, type, speed, temperature, etc) and prints it.
-.EXAMPLE
-	PS> ./check-cpu.ps1
-	✅ Intel(R) Core(TM) i9-10900X CPU @ 3.70GHz (AMD64, 20 cores, CPU0, 3696MHz, CPU0 socket, 31.3°C)
-.LINK
-	https://github.com/fleschutz/PowerShell
-.NOTES
-	Author: Markus Fleschutz | License: CC0
-#>
-
-function GetCPUArchitecture {
+﻿function GetCPUArchitecture {
 	if ("$env:PROCESSOR_ARCHITECTURE" -ne "") { return "$env:PROCESSOR_ARCHITECTURE" }
 	if ($IsLinux) {
 		$Name = $PSVersionTable.OS
