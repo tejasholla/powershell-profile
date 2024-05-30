@@ -417,7 +417,6 @@ function networkdetails{netsh wlan show interfaces}
 function expo{explorer .}
 
 function weatherfun{curl wttr.in/$args}
-set-alias weather weatherfun
 
 function profilefun {
 	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
@@ -709,8 +708,22 @@ function pcdata {
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    
+    try {
+        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
+        
+        # Remove BOM if present
+        if ($scriptContent[0] -eq 0xFEFF) {
+            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
+            $scriptContent = $scriptContent.Substring(1)
+        }
+        
+        Invoke-Expression $scriptContent
+        Write-Host "Script content loaded and executed successfully." -ForegroundColor Green
+    } catch {
+        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
+    }
 }
 
 function qr {
@@ -720,7 +733,7 @@ function qr {
     Invoke-Expression $scriptContent
 }
 
-function wea3 {
+function weather {
     # Path to the script on GitHub
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"
     
