@@ -167,36 +167,27 @@ catch {
     Write-Error "Failed to install CompletionPredictor. Error: $_"
 }
 
-# ChatGPT Install
 try {
-    # Fetch the latest release information from GitHub API
-    $releaseInfo = Invoke-RestMethod -Uri "https://api.github.com/repos/lencx/ChatGPT/releases/latest" -Headers @{ "User-Agent" = "PowerShell" }
+	$StopWatch = [system.diagnostics.stopwatch]::startNew()
 
-    # Extract the URL for the .msi asset
-    $asset = $releaseInfo.assets | Where-Object { $_.name -like "*.msi" } | Select-Object -First 1
-    $url = $asset.browser_download_url
+	if ($false) {
 
-    # Define the path where the file will be downloaded
-    $output = "$env:TEMP\ChatGPT.msi"
+		& wsl --install
 
-    # Prompt the user for confirmation
-    $response = Read-Host "Do you want to install ChatGPT? (y/n)"
+	} else {
+		"👉 Step 1/3: Enable WSL..."
+		& dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 
-    if ($response -eq 'y') {
-        # Download the file
-        Invoke-WebRequest -Uri $url -OutFile $output
+		"👉 Step 2/3: Enable virtual machine platform..."
+		& dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 
-        # Run the installer
-        Start-Process $output -Wait
+		"👉 Step 3/3: Enable WSL version 2..."
+		& wsl --set-default-version 2
+	}
 
-        # Optionally, remove the installer after installation
-        Remove-Item $output
-        Write-Host "ChatGPT installed successfully."
-    }
-    else {
-        Write-Host "Installation canceled by user."
-    }
-}
-catch {
-    Write-Error "Failed to install ChatGPT. Error: $_"
+	[int]$Elapsed = $StopWatch.Elapsed.TotalSeconds
+	"✔️ installed Windows Subsystem for Linux (WSL) in $Elapsed sec"
+	"  NOTE: reboot now, then visit the Microsoft Store and install a Linux distribution (e.g. Ubuntu, openSUSE, SUSE Linux, Kali Linux, Debian, Fedora, Pengwin, or Alpine)"
+} catch {
+	"⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
 }
