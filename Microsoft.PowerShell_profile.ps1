@@ -741,17 +741,17 @@ function wea3 {
 }
 
 function timezone {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-timezone.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
-}
+    try {
+        if ($PSVersionTable.PSVersion.Platform -eq "Unix") {
+            $TimeZone = timedatectl | grep "Time zone"
+        } else {
+            $TimeZone = [System.TimeZoneInfo]::Local
+        }
 
-function checkcpu {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-cpu.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+        Write-Output "Current Time Zone: $TimeZone"
+    } catch {
+        Write-Output "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+    }
 }
 
 function Theme-Check {

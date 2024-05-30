@@ -88,7 +88,8 @@ if ($celsius -eq 99999.9) {
 } 
 foreach ($cpu in $cpus) {
 	Write-Host $cpu.Name -NoNewline -ForegroundColor Cyan
-	Write-Host " $($socket)$temp"
+	Write-Host ", $($socket)" -NoNewline -ForegroundColor Cyan
+	Write-Host $temp -NoNewline -ForegroundColor Green
 	Write-Host " (cores $($cpu.NumberOfCores)/$($cpu.NumberOfLogicalProcessors))"
 }
 
