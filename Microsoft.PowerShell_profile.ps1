@@ -712,19 +712,6 @@ function windef {
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
     Invoke-Expression $scriptContent
 }
-function wea2 {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/weather-report.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
-}
-
-function smart {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/query-smart-data.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
-}
 
 function qr {
     # Assuming the script is accessible via the URL

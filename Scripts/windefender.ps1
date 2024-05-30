@@ -1,19 +1,4 @@
-﻿<#
-.SYNOPSIS
-	Configure Windows defender 
-.DESCRIPTION
-	This script can enable / disable and show Windows defender real time monitoring!
-.EXAMPLE
-	PS> ./windefender.ps1
-.LINK
-	https://github.com/pakoti/Awesome_Sysadmin
-.NOTES
-	Author: Dark Master | License: CC0-1,0
-#>
-
-
-
-$defender = Get-MpPreference
+﻿$defender = Get-MpPreference
 
 $userInput = Read-Host "Enter an option: 
 [1] Disable real time monitoring 
