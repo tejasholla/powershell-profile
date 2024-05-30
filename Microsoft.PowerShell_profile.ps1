@@ -742,15 +742,12 @@ function wea3 {
 
 function timezone {
     try {
-        if ($PSVersionTable.PSVersion.Platform -eq "Unix") {
-            $TimeZone = timedatectl | grep "Time zone"
-        } else {
-            $TimeZone = [System.TimeZoneInfo]::Local
-        }
-
-        Write-Output "Current Time Zone: $TimeZone"
+        [system.threading.thread]::currentThread.currentCulture = [system.globalization.cultureInfo]"en-US"
+        Get-Timezone 
+        exit 0 # success
     } catch {
-        Write-Output "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
+        "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
+        exit 1
     }
 }
 
