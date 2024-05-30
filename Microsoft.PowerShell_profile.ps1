@@ -761,6 +761,98 @@ function weather {
     }
 }
 
+function pingt {
+    param(
+        [Parameter(ValueFromPipeline=$true)]
+        $comp = $env:COMPUTERNAME,
+        $n = 4,
+        [switch]$t
+    )
+    if (!$comp) {Throw 'No host provided'}
+
+    function callping {
+        sleep 1
+        Write-Host $(Get-Date -f 'yyyy/MM/dd HH:mm:ss ') -NoNewline
+        ping1 $comp -showhost | Microsoft.PowerShell.Core\Out-Default
+    }
+
+    if ($t) {
+        while (1) {
+            callping
+        }
+    } else {
+        for ($i = 0; $i -lt $n; $i++) {
+            callping
+        }
+    }
+}
+
+filter ping1 {
+    param (
+        [Parameter(ValueFromPipeline=$true)]
+        [string[]]$comps = $env:COMPUTERNAME,
+        [int]$n = 1,
+        [switch]$showhost
+    )
+
+    begin {
+        $ping = New-Object System.Net.NetworkInformation.Ping
+    }
+
+    process {
+        if (!$comps) {Throw 'No host provided'}
+        foreach ($comp in $comps) {
+            for ($i = 0; $i -lt $n; $i++) {
+                try{ $result = $ping.send($comp) }catch{}
+                switch ($result.status) {
+                    'Success' { $success = $true }
+                    default { $success = $false }
+                }
+            }
+            
+            if ($showhost) {
+                switch ($success) {
+                    $true { "True  $(try{ $result.address.tostring() }catch{ $comp })" }
+                    $false { "False $comp" }
+                }
+            } else {
+                switch ($success) {
+                    $true { $true }
+                    $false { $false }
+                }
+            }
+        }
+    }
+}
+
+function checkpass {
+    # Path to the script on GitHub
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"
+    
+    try {
+        Write-Host "Fetching script content from: $scriptPath" -ForegroundColor Cyan
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
+        
+        # Remove BOM if present
+        if ($scriptContent[0] -eq 0xFEFF) {
+            Write-Host "Removing BOM from the script content" -ForegroundColor Cyan
+            $scriptContent = $scriptContent.Substring(1)
+        }
+
+        # Save script content to a temporary file
+        $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
+        Set-Content -Path $tempScriptPath -Value $scriptContent
+
+        Write-Host "Executing the script from the temporary file: $tempScriptPath" -ForegroundColor Cyan
+        . $tempScriptPath
+        
+        # Cleanup the temporary file
+        Remove-Item -Path $tempScriptPath -Force
+    } catch {
+        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
 function timezone {
     try {
         [system.threading.thread]::currentThread.currentCulture = [system.globalization.cultureInfo]"en-US"
