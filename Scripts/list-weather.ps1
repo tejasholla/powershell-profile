@@ -1,6 +1,4 @@
-﻿param([string]$location = "") # empty means determine automatically
-
-function GetDescription([string]$text) { 
+﻿function GetDescription([string]$text) { 
 	switch ($text) {
 	"Blizzard"			{ return "❄️ blizzard ⚠️" }
 	"Blowing snow"			{ return "❄️ blowing snow ⚠️" }
@@ -69,7 +67,7 @@ function GetWindDir([string]$text) {
 	default { return "$text" }
 	}
 }
-
+param([string]$location = "") # empty means determine automatically
 try {
 	Write-Progress "Loading weather data from http://wttr.in ..."
 	$weather = (Invoke-WebRequest -URI http://wttr.in/${location}?format=j1 -userAgent "curl" -useBasicParsing).Content | ConvertFrom-Json

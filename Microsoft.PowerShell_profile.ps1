@@ -734,16 +734,10 @@ function qr {
 }
 
 function wea3 {
-    # Path to the script on GitHub
+    # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"
-    
-    # Fetch the script content
-    try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        Invoke-Expression $scriptContent
-    } catch {
-        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
-    }
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 function timezone {
