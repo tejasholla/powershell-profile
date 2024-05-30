@@ -107,8 +107,6 @@ try {
 		}
 		"$(($hour.toString()).PadLeft(2))h  $tempC°   $precip  $humidity%   $($windDir)$windSpeed    $UV   $clouds%   $visib   $desc"
 	}
-	exit 0 # success
 } catch {
 	"⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
-	exit 1
 }
