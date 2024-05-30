@@ -362,11 +362,10 @@ function shorturl {
     }
 }
 
-function terminal_settings_fun {
+function keybind {
 	$path = Join-Path $env:USERPROFILE 'Pictures\Screenshots\Terminal_keys'
  	Start-Process $path
  }
-set-alias keybind terminal_settings_fun
 
 function online {
 	param($computername)
@@ -409,8 +408,7 @@ function ytplayer {
 # network related functions
 function wifinetwork{netsh wlan show profile}
 
-function wifinetworkfun{netsh wlan show profile $args key=clear | findstr “Key Content”}
-set-alias thiswifi wifinetworkfun
+function thiswifi{netsh wlan show profile $args key=clear | findstr “Key Content”}
 
 function networkdetails{netsh wlan show interfaces}
 
@@ -418,11 +416,10 @@ function expo{explorer .}
 
 function weatherfun{curl wttr.in/$args}
 
-function profilefun {
+function profile {
 	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
 	Start-Process $path
 }
-set-alias profile profilefun
 
 function telegram{start https://web.telegram.org/a/}
 
@@ -432,34 +429,25 @@ function github{start https://github.com/tejasholla}
 
 function gitrepo{start https://github.com/tejasholla?tab=repositories}
 
-function photosfun{start https://photos.google.com/}
-set-alias photos photosfun
+function photos{start https://photos.google.com/}
 
 function imagecompress{start https://www.iloveimg.com/compress-image}
 
-function googleSearch{start www.google.com/search?q=$args}
-set-alias gs googleSearch
+function gs{start www.google.com/search?q=$args}
 
-function googleopen{start www.google.com}
-set-alias google googleopen
+function google{start www.google.com}
 
-function youtubeSearch{start www.youtube.com/search?q=$args}
-set-alias ys youtubeSearch
+function ys{start www.youtube.com/search?q=$args}
 
-function youtubeopen{start www.youtube.com}
-set-alias youtube youtubeopen
+function youtube{start www.youtube.com}
 
-function wikiSearch{start https://www.wikiwand.com/en/$args}
-set-alias wiki wikiSearch
+function wiki{start https://www.wikiwand.com/en/$args}
 
-function pathdatafun{nu -c "ls $args"}
-set-alias lscheck pathdatafun
+function lscheck{nu -c "ls $args"}
 
-function lsfun{nu -c "ls"}
-set-alias lsnu lsfun
+function lsnu{nu -c "ls"}
 
-function lscommandfun{nu -c "$args"}
-set-alias lscommand lscommandfun
+function lscommand{nu -c "$args"}
 
 function ipall { ipconfig /all }
 
