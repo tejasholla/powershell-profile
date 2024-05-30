@@ -1,22 +1,4 @@
-﻿<#
-.SYNOPSIS
-	Lists the weather report
-.DESCRIPTION
-	This PowerShell script queries the 48h weather report from wttr.in and lists it in a nice table.
-.PARAMETER location
-	Specifies the location to use (determined automatically by default)
-.EXAMPLE
-	PS> ./list-weather.ps1
-	TODAY  🌡°C  ☂️mm  💧  💨km/h  ☀️UV  ☁️   👁km   at Munich (Bayern, Germany)
-	 0h   11°   0.0   88%   ↖ 7    1    8%    10   🌙 clear
-	...
-.LINK
-	https://github.com/fleschutz/PowerShell
-.NOTES
-	Author: Markus Fleschutz | License: CC0
-#>
-
-param([string]$location = "") # empty means determine automatically
+﻿param([string]$location = "") # empty means determine automatically
 
 function GetDescription([string]$text) { 
 	switch ($text) {

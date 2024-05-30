@@ -744,10 +744,8 @@ function timezone {
     try {
         [system.threading.thread]::currentThread.currentCulture = [system.globalization.cultureInfo]"en-US"
         Get-Timezone 
-        exit 0 # success
     } catch {
         "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
-        exit 1
     }
 }
 
