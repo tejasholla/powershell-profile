@@ -599,6 +599,11 @@ function pkill($name) {
 
 function pgrep($name) { Get-Process $name }
 
+function binclean {
+    Write-Host "Emptying the Recycle Bin..."
+    (New-Object -ComObject Shell.Application).NameSpace(0xA).Items() | ForEach { Remove-Item $_.Path -Force -Recurse -ErrorAction SilentlyContinue }
+}
+
 function ConvertTo-PrefixLength {
     param (
         [string]$SubnetMask
