@@ -169,6 +169,7 @@ scoop install vcredist2010
 scoop install ffmpeg
 scoop install youtube-dl
 scoop install yt-dlp
+scoop install mplayer
 
 # sudo
 scoop install gsudo
