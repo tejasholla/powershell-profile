@@ -599,59 +599,6 @@ function pkill($name) {
 
 function pgrep($name) { Get-Process $name }
 
-function cleaner {
-    # Function to clean temporary files
-    function Clean-TempFiles {
-        Write-Host "Cleaning temporary files..."
-        try {
-            Get-ChildItem -Path $env:TEMP -Recurse | ForEach-Object {
-                try {
-                    Remove-Item $_.FullName -Force -Recurse -ErrorAction Stop
-                } catch {
-                    Write-Host "Skipping file in use: $($_.FullName)" -ForegroundColor Yellow
-                }
-            }
-        } catch {
-            Write-Host "Failed to clean temporary files: $_" -ForegroundColor Red
-        }
-    }
-
-    # Function to clean the Recycle Bin
-    function Clean-RecycleBin {
-        Write-Host "Emptying the Recycle Bin..."
-        try {
-            $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
-            $recycleBin.Items() | ForEach-Object {
-                try {
-                    Remove-Item $_.Path -Force -Recurse -ErrorAction Stop
-                } catch {
-                    Write-Host "Failed to remove: $_.Path" -ForegroundColor Red
-                }
-            }
-        } catch {
-            Write-Host "Failed to empty the Recycle Bin: $_" -ForegroundColor Red
-        }
-    }
-
-    # Function to perform disk cleanup
-    function Perform-DiskCleanup {
-        Write-Host "Performing disk cleanup..."
-        try {
-            $cleanmgr = Start-Process cleanmgr -ArgumentList "/sagerun:1" -PassThru
-            $cleanmgr.WaitForExit()
-        } catch {
-            Write-Host "Failed to perform disk cleanup: $_" -ForegroundColor Red
-        }
-    }   
-
-    # Running all clean-up tasks
-    Clean-TempFiles
-    Clean-RecycleBin
-    Perform-DiskCleanup
-
-    Write-Host "System cleanup complete."
-}
-
 function ConvertTo-PrefixLength {
     param (
         [string]$SubnetMask
