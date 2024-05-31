@@ -151,7 +151,6 @@ Set-Alias less 'C:\Program Files\Git\usr\bin\less.exe'
 set-Alias anydesk 'C:\Program Files (x86)\AnyDesk\AnyDesk.exe'
 set-Alias task 'C:\WINDOWS\system32\Taskmgr.exe'
 set-Alias cpl 'D:\apps\Control Panel.lnk'
-set-Alias winutil 'D:\apps\WinUtil.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
 set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
@@ -169,6 +168,10 @@ function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
     Start-Process $path
+}
+
+function winutil {
+	iwr -useb https://christitus.com/win | iex
 }
 
 function setup {
