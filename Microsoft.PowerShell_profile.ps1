@@ -604,7 +604,13 @@ function cleaner {
     function Clean-TempFiles {
         Write-Host "Cleaning temporary files..."
         try {
-            Get-ChildItem -Path $env:TEMP -Recurse | Remove-Item -Force -Recurse -ErrorAction Stop
+            Get-ChildItem -Path $env:TEMP -Recurse | ForEach-Object {
+                try {
+                    Remove-Item $_.FullName -Force -Recurse -ErrorAction Stop
+                } catch {
+                    Write-Host "Skipping file in use: $($_.FullName)" -ForegroundColor Yellow
+                }
+            }
         } catch {
             Write-Host "Failed to clean temporary files: $_" -ForegroundColor Red
         }
