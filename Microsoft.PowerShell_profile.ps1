@@ -618,7 +618,6 @@ function binclean {
 
             try {
                 Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
-                Write-Host "Deleted ($currentItem/$totalItems): $itemPath"
             } catch {
                 Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
             }
