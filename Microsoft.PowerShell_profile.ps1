@@ -210,7 +210,7 @@ function browser {
 function debloat { powershell "irm christitus.com/win | iex" }
 
 function setup {
-    powershell "irm https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1 | iex"
+    powershell -Command "irm https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1 | iex"
 }
 
 function chatty {
