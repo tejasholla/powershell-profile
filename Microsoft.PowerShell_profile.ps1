@@ -600,8 +600,34 @@ function pkill($name) {
 function pgrep($name) { Get-Process $name }
 
 function binclean {
-    Write-Host "Emptying the Recycle Bin..."
-    (New-Object -ComObject Shell.Application).NameSpace(0xA).Items() | ForEach { Remove-Item $_.Path -Force -Recurse -ErrorAction SilentlyContinue }
+    try {
+        $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
+        $items = $recycleBin.Items()
+
+        if ($items.Count -eq 0) {
+            Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
+            return
+        }
+
+        $totalItems = $items.Count
+        $currentItem = 0
+
+        $items | ForEach-Object {
+            $currentItem++
+            $itemPath = $_.Path
+
+            try {
+                Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
+                Write-Host "Deleted ($currentItem/$totalItems): $itemPath"
+            } catch {
+                Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
+            }
+        }
+    } catch {
+        Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
+    }
+
+    Write-Host "Recycle Bin cleanup complete."
 }
 
 function ConvertTo-PrefixLength {
