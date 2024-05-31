@@ -173,6 +173,14 @@ scoop install yt-dlp
 # sudo
 scoop install gsudo
 
+# Pester Install
+try {
+    Install-Module -Name Pester -Force -SkipPublisherCheck
+}
+catch {
+    Write-Error "Failed to install Pester module. Error: $_"
+}
+
 # Terminal Icons Install
 try {
     Install-Module -Name Terminal-Icons -Repository PSGallery -Force
