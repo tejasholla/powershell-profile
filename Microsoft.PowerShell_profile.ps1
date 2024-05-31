@@ -191,7 +191,6 @@ set-Alias task 'C:\WINDOWS\system32\Taskmgr.exe'
 set-Alias cpl 'D:\apps\Control Panel.lnk'
 set-Alias nucommand 'D:\apps\nu_commands.txt'
 Set-Alias nuopen nu
-set-Alias cr 'D:\apps\Crunchyroll - Watch Popular Anime.lnk'
 set-Alias touch Set-FreshFile
 set-Alias ff Find-Files
 set-Alias unzip Expand-File
