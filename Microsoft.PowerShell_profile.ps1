@@ -3,6 +3,8 @@
 
 ### PowerShell Profile Refactor
 ### Version 1.03 - Refactored
+cls
+fastfetch -l "Windows 11"
 
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
@@ -68,6 +70,45 @@ Import-Module -Name CompletionPredictor
 
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
+
+# Check for Fastfetch Updates
+function Update-FastFetch {
+    if (-not $global:canConnectToGitHub) {
+        return
+    }
+
+    try {
+        $updateNeeded = $false
+        $currentVersion = Get-Command fastfetch | Select-Object -ExpandProperty Version
+        $gitHubApiUrl = "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest"
+
+        if ($env:pwsh_github_api) {
+            $headers = @{
+                "Authorization" = "token $env:pwsh_github_api"
+            }
+            $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl -Headers $headers
+        } else {
+            $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
+        }
+
+        $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
+        if ($currentVersion -lt $latestVersion) {
+            $updateNeeded = $true
+        }
+
+        if ($updateNeeded) {
+            scoop update fastfetch
+        }
+    } catch {
+        Write-Error "Failed to update FastFetch. Error: $_"
+    }
+}
+
+Update-FastFetch
+
+# Display Fastfetch
+cls
+fastfetch -l "Windows 11"
 
 # Check for Profile Updates
 function Update-Profile {
@@ -140,9 +181,12 @@ function admin {
     }
 }
 
+# sudo
+Import-Module "gsudoModule"
+
 # Set aliases for quick access
 Set-Alias -Name vim -Value nvim
-Set-Alias -Name sudo -Value admin
+Set-Alias -Name su -Value admin
 Set-Alias li ls
 Set-Alias g git
 Set-Alias ip ipconfig
@@ -169,10 +213,7 @@ function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
     Start-Process $path
 }
-
-function winutil {
-	iwr -useb https://christitus.com/win | iex
-}
+function debloat { powershell "irm christitus.com/win | iex" }
 
 function setup {
     irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
@@ -441,6 +482,9 @@ function gs{start www.google.com/search?q=$args}
 function google{start www.google.com}
 
 function ys{start www.youtube.com/search?q=$args}
+
+# GUI is bloat
+function yt { yt-dlp $args -o - | mplayer -cache 64000 -vo caca - }
 
 function youtube{start www.youtube.com}
 
@@ -848,7 +892,7 @@ function timezone {
 function Get-Theme {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($null -ne $existingTheme) {
+        if ($null -ne $existingTheme) { # $null
             Invoke-Expression $existingTheme
             return
         }
