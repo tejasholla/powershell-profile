@@ -206,10 +206,11 @@ function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
     Start-Process $path
 }
+
 function debloat { powershell "irm christitus.com/win | iex" }
 
 function setup {
-    irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
+    powershell "irm https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1 | iex"
 }
 
 function chatty {
