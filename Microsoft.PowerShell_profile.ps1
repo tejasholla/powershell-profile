@@ -207,10 +207,10 @@ function browser {
     Start-Process $path
 }
 
-function debloat { powershell "irm christitus.com/win | iex" }
+function debloat { irm "christitus.com/win" | iex }
 
 function setup {
-    pwsh -Command "irm https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1 | iex"
+    irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
 }
 
 function chatty {
