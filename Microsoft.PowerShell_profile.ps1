@@ -182,7 +182,7 @@ function admin {
 }
 
 # sudo
-Import-Module "gsudo"
+Import-Module "gsudoModule"
 
 # Set aliases for quick access
 Set-Alias -Name vim -Value nvim
