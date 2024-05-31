@@ -21,6 +21,38 @@ if (-not (Test-InternetConnection)) {
     break
 }
 
+# Check if Windows Terminal is installed
+function Check-InstallWindowsTerminal {
+    if (!(Get-Command -Name "wt" -ErrorAction SilentlyContinue)) {
+        Write-Host "Windows Terminal not found. Installing Windows Terminal..."
+        try {
+            winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements
+        } catch {
+            Write-Error "Failed to install Windows Terminal. Error: $_"
+            break
+        }
+    } else {
+        Write-Host "Windows Terminal is already installed."
+    }
+}
+Check-InstallWindowsTerminal
+
+# Check if PowerShell 7 is installed
+function Check-InstallPowerShell7 {
+    if (-not (Get-Command -Name "pwsh" -ErrorAction SilentlyContinue)) {
+        Write-Host "PowerShell 7 not found. Installing PowerShell 7..."
+        try {
+            winget install --id Microsoft.Powershell --e --accept-source-agreements --accept-package-agreements
+        } catch {
+            Write-Error "Failed to install PowerShell 7. Error: $_"
+            break
+        }
+    } else {
+        Write-Host "PowerShell 7 is already installed."
+    }
+}
+Check-InstallPowerShell7
+
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
     try {

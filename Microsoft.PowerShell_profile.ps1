@@ -534,6 +534,13 @@ function Get-HWVersion($computer, $name) {
            Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
 }
 
+function tail {
+    param($Path, $n = 10)
+    Get-Content $Path -Tail $n
+    param($Path, $n = 10, [switch]$f = $false)
+    Get-Content $Path -Tail $n -Wait:$f
+  }
+
 function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload-profile { & $profile }
