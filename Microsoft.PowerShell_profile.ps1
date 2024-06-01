@@ -196,11 +196,34 @@ set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkcd New-Directory
 set-Alias root Set-Home
-Set-Alias -Name vi -Value nvim
-Set-Alias -Name vim -Value nvim
+Set-Alias -Name vi -Value Launch-Nvim -Description "Launch neovim"
+Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
+Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
 
 # Function definitions
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
+
+function Launch-Nvim {
+    $mycmd = "nvim"
+    $cmd = where.exe $mycmd
+
+    if (Get-Command "wt" -ErrorAction SilentlyContinue) {
+        $command = "wt"
+        # Construct the arguments for wt to open a new tab with PowerShell and run nvim in WSL
+        $cargs = "-p `Windows PowerShell` -d . -- wsl nvim $args"
+    } else {
+        $command = "powershell"
+        $cargs = "-Command wsl nvim $args"
+    }
+
+    Write-Host "command: [$command] cargs: [$cargs]"
+    $parameters = $cargs -join ' '
+    if ($parameters) {
+        Start-Process -FilePath $command -ArgumentList $parameters
+    } else {
+        Start-Process -FilePath $command
+    }
+}
 
 function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
 
