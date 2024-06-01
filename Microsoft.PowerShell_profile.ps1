@@ -349,17 +349,6 @@ function windef {
     }
 }
 
-# AI run functions -----------------------------------------------------------------------------------------------------------------
-
-function chatgpt{start https://chatgpt.com/}
-
-function chatty {
-    start http://localhost:8080/
-    
-    # Open WSL in a new Windows Terminal tab
-    Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')
-}
-
 # Enhanced Listing -----------------------------------------------------------------------------------------------------------------
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 
@@ -890,6 +879,18 @@ function reset-wsl {
     wsl --shutdown
     Write-Host "WSL shutdown..."
     cd
+}
+
+function wsl {Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')}
+
+# AI run functions -----------------------------------------------------------------------------------------------------------------
+function chatgpt{start https://chatgpt.com/}
+
+function chatty {
+    start http://localhost:8080/
+    
+    # Open WSL in a new Windows Terminal tab
+    wsl
 }
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
