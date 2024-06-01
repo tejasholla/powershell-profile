@@ -215,7 +215,7 @@ function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microso
 
 function reload-profile { & $profile }
 
-# file / app related ----------------------------------------------------------------------------------------------------------------
+# app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
 # Editor Configuration
@@ -262,10 +262,6 @@ function browser {
     Start-Process $path
 }
 
-function debloat { irm "christitus.com/win" | iex }
-
-function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
-
 function chatty {
     start http://localhost:8080/
     
@@ -286,147 +282,6 @@ function binop {
 }
 
 function edge { Start-Process "msedge" }
-
-# Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
-function Set-FreshFile {
-    [CmdletBinding()]
-    [Alias("touch")]
-    param (
-      [Parameter(Mandatory = $true)]
-      [string]$File
-    )
-  
-    # Check if the file exists
-    if (Test-Path $File) {
-      # If the file exists, update its timestamp
-        (Get-Item $File).LastWriteTime = Get-Date
-    }
-    else {
-      # If the file doesn't exist, create it with an empty content
-      "" | Out-File $File -Encoding ASCII
-    }
-  }
- 
-# Find-Files
-function Find-Files {
-    [CmdletBinding()]
-    [Alias("ff")]
-    param (
-      [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-      [string]$Name
-    )
-    
-    # Search for files matching the specified name pattern
-    Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
-      Write-Output $_.FullName
-    }
-}
-
-function New-Directory {
-    [CmdletBinding()]
-    [Alias("mkcd")]
-    param (
-      [Parameter(Position = 0, Mandatory = $true)]
-      [string]$name
-    )
-  
-    try {
-      $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
-      Set-Location -Path $newDir.FullName
-    }
-    catch {
-      Write-Warning "Failed to create directory '$name'. Error: $_"
-    }
-}
-
-function usb {
-    # Prompt the user for confirmation
-    $response = Read-Host "For disable[1],enable[2]? "
-    if ($response -eq 1) {
-        # Disable USB
-        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 4
-        Write-Host "Disabled USB devices" -ForegroundColor DarkGray
-    }
-    elseif ($response -eq 2) {
-        # Enable USB
-        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 3
-        Write-Host "Enabled USB devices" -ForegroundColor DarkGray
-    }
-    else {
-        Write-Host "Invalid option" -ForegroundColor Red
-    }
-}
-
-# Shortens a URL using various free URL shortening services.
-function shorturl {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $false)]
-        [ValidateSet("isgd", "snipurl", "tinyurl", "chilp", "clickme", "sooogd")]
-        [string]$Shortener,
-
-        [Parameter(Mandatory = $false)]
-        [string]$Link
-    )
-    BEGIN {
-        $BaseURL = ""
-        $WebClient = New-Object Net.WebClient
-        $ValidUrl = $true
-    }
-    PROCESS {
-        if (-not $Shortener) {
-            $Shortener = Read-Host "Please enter the URL shortening service (isgd, snipurl, tinyurl, chilp, clickme, sooogd)"
-        }
-        if (-not $Link) {
-            $Link = Read-Host "Please enter the URL to be shortened"
-        }
-        
-        if (-not ([System.Uri]::TryCreate($Link, [System.UriKind]::Absolute, [ref]$null))) {
-            Write-Error -Message "Invalid URL format!"
-            $ValidUrl = $false
-            return
-        }
-        switch ($Shortener) {
-            "isgd" {
-                $BaseURL = "https://is.gd/create.php?format=simple&url=$Link"
-            }
-            "snipurl" {
-                $BaseURL = "http://snipurl.com/site/snip?r=simple&link=$Link"
-            }
-            "tinyurl" {
-                $BaseURL = "http://tinyurl.com/api-create.php?url=$Link"
-            }
-            "chilp" {
-                $BaseURL = "https://chilp.it/api.php?url=$Link"
-            }
-            "clickme" {
-                $BaseURL = "http://cliccami.info/api/resturl/?url=$Link"
-            }
-            "sooogd" {
-                $BaseURL = "https://soo.gd/api.php?api=&short=$Link"
-            }
-            default {
-                Write-Error -Message "Invalid URL shortener specified. Supported options are 'snipurl', 'tinyurl', 'isgd', 'chilp', 'clickme', or 'sooogd'!"
-                return
-            }
-        }
-        if ($ValidUrl) {
-            $Response = $WebClient.DownloadString("$BaseURL")
-            $ShortenedUrl = $Response.Trim()
-            [PSCustomObject]@{
-                OriginalURL      = $Link
-                ShortenedURL     = $ShortenedUrl
-                Shortener        = $Shortener
-                CreationDateTime = Get-Date
-            }
-        }
-    }
-    END {
-        if ($WebClient) {
-            $WebClient.Dispose()
-        }
-    }
-}
 
 function keybind {
 	$path = Join-Path $env:USERPROFILE 'Pictures\Screenshots\Terminal_keys'
@@ -473,8 +328,6 @@ function ytplayer {
 
 function expo{explorer .}
 
-function weatherfun{curl wttr.in/$args}
-
 function telegram{start https://web.telegram.org/a/}
 
 function chatgpt{start https://chatgpt.com/}
@@ -507,7 +360,54 @@ function run {
     }
 }
 
-function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
+function binclean {
+    try {
+        $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
+        $items = $recycleBin.Items()
+
+        if ($items.Count -eq 0) {
+            Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
+            return
+        }
+
+        $totalItems = $items.Count
+        $currentItem = 0
+
+        $items | ForEach-Object {
+            $currentItem++
+            $itemPath = $_.Path
+
+            try {
+                Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
+            } catch {
+                Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
+            }
+        }
+    } catch {
+        Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
+    }
+
+    Write-Host "Recycle Bin cleanup complete."
+}
+
+# windows defender
+function windef {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
+    
+    try {
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
+        
+        # Remove BOM if present
+        if ($scriptContent[0] -eq 0xFEFF) {
+            $scriptContent = $scriptContent.Substring(1)
+        }
+        
+        Invoke-Expression $scriptContent
+    } catch {
+        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
 
 # Enhanced Listing -----------------------------------------------------------------------------------------------------------------
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
@@ -716,6 +616,7 @@ function cpy { Set-Clipboard $args[0] }
 
 function pst { Get-Clipboard }
 
+# file related --------------------------------------------------------------------------------------------------------------------
 function Set-Home {
     [CmdletBinding()]
     [Alias("root")]
@@ -780,61 +681,62 @@ function pkill($name) {
 
 function pgrep($name) { Get-Process $name }
 
-function binclean {
-    try {
-        $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
-        $items = $recycleBin.Items()
-
-        if ($items.Count -eq 0) {
-            Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
-            return
-        }
-
-        $totalItems = $items.Count
-        $currentItem = 0
-
-        $items | ForEach-Object {
-            $currentItem++
-            $itemPath = $_.Path
-
-            try {
-                Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
-            } catch {
-                Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
-            }
-        }
-    } catch {
-        Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
+# Specifies the name of the file to create or update. If the file already exists, its timestamp will be updated.
+function Set-FreshFile {
+    [CmdletBinding()]
+    [Alias("touch")]
+    param (
+      [Parameter(Mandatory = $true)]
+      [string]$File
+    )
+  
+    # Check if the file exists
+    if (Test-Path $File) {
+      # If the file exists, update its timestamp
+        (Get-Item $File).LastWriteTime = Get-Date
     }
-
-    Write-Host "Recycle Bin cleanup complete."
-}
-
-# call ps1 scripts
-function windef {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
+    else {
+      # If the file doesn't exist, create it with an empty content
+      "" | Out-File $File -Encoding ASCII
+    }
+  }
+ 
+# Find-Files
+function Find-Files {
+    [CmdletBinding()]
+    [Alias("ff")]
+    param (
+      [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+      [string]$Name
+    )
     
-    try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
-        # Remove BOM if present
-        if ($scriptContent[0] -eq 0xFEFF) {
-            $scriptContent = $scriptContent.Substring(1)
-        }
-        
-        Invoke-Expression $scriptContent
-    } catch {
-        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
+    # Search for files matching the specified name pattern
+    Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
+      Write-Output $_.FullName
     }
 }
 
-function qr {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+function New-Directory {
+    [CmdletBinding()]
+    [Alias("mkcd")]
+    param (
+      [Parameter(Position = 0, Mandatory = $true)]
+      [string]$name
+    )
+  
+    try {
+      $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
+      Set-Location -Path $newDir.FullName
+    }
+    catch {
+      Write-Warning "Failed to create directory '$name'. Error: $_"
+    }
 }
+
+function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
+
+# weather function ---------------------------------------------------------------------------------------------------------------------
+function weatherfun{curl wttr.in/$args}
 
 function weather {
     # Path to the script on GitHub
@@ -861,6 +763,7 @@ function weather {
     }
 }
 
+# other functions --------------------------------------------------------------------------------------------------------------------------
 function checkpass {
     # Path to the script on GitHub
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"
@@ -895,6 +798,107 @@ function timezone {
     }
 }
 
+function qr {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
+function usb {
+    # Prompt the user for confirmation
+    $response = Read-Host "For disable[1],enable[2]? "
+    if ($response -eq 1) {
+        # Disable USB
+        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 4
+        Write-Host "Disabled USB devices" -ForegroundColor DarkGray
+    }
+    elseif ($response -eq 2) {
+        # Enable USB
+        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 3
+        Write-Host "Enabled USB devices" -ForegroundColor DarkGray
+    }
+    else {
+        Write-Host "Invalid option" -ForegroundColor Red
+    }
+}
+
+function debloat { irm "christitus.com/win" | iex }
+
+function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
+
+# Shortens a URL using various free URL shortening services.
+function shorturl {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [ValidateSet("isgd", "snipurl", "tinyurl", "chilp", "clickme", "sooogd")]
+        [string]$Shortener,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Link
+    )
+    BEGIN {
+        $BaseURL = ""
+        $WebClient = New-Object Net.WebClient
+        $ValidUrl = $true
+    }
+    PROCESS {
+        if (-not $Shortener) {
+            $Shortener = Read-Host "Please enter the URL shortening service (isgd, snipurl, tinyurl, chilp, clickme, sooogd)"
+        }
+        if (-not $Link) {
+            $Link = Read-Host "Please enter the URL to be shortened"
+        }
+        
+        if (-not ([System.Uri]::TryCreate($Link, [System.UriKind]::Absolute, [ref]$null))) {
+            Write-Error -Message "Invalid URL format!"
+            $ValidUrl = $false
+            return
+        }
+        switch ($Shortener) {
+            "isgd" {
+                $BaseURL = "https://is.gd/create.php?format=simple&url=$Link"
+            }
+            "snipurl" {
+                $BaseURL = "http://snipurl.com/site/snip?r=simple&link=$Link"
+            }
+            "tinyurl" {
+                $BaseURL = "http://tinyurl.com/api-create.php?url=$Link"
+            }
+            "chilp" {
+                $BaseURL = "https://chilp.it/api.php?url=$Link"
+            }
+            "clickme" {
+                $BaseURL = "http://cliccami.info/api/resturl/?url=$Link"
+            }
+            "sooogd" {
+                $BaseURL = "https://soo.gd/api.php?api=&short=$Link"
+            }
+            default {
+                Write-Error -Message "Invalid URL shortener specified. Supported options are 'snipurl', 'tinyurl', 'isgd', 'chilp', 'clickme', or 'sooogd'!"
+                return
+            }
+        }
+        if ($ValidUrl) {
+            $Response = $WebClient.DownloadString("$BaseURL")
+            $ShortenedUrl = $Response.Trim()
+            [PSCustomObject]@{
+                OriginalURL      = $Link
+                ShortenedURL     = $ShortenedUrl
+                Shortener        = $Shortener
+                CreationDateTime = Get-Date
+            }
+        }
+    }
+    END {
+        if ($WebClient) {
+            $WebClient.Dispose()
+        }
+    }
+}
+
+# Utility functions ----------------------------------------------------------------------------------------------------------------------------------
 function Get-Theme {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
