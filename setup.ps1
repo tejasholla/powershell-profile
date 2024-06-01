@@ -221,7 +221,7 @@ catch {
 scoop install fd
 scoop install lazygit
 
-git clone --depth=1 https://github.com/jdhao/nvim-config.git .
+# git clone --depth=1 https://github.com/jdhao/nvim-config.git .
 
 # Pester Install
 try {
