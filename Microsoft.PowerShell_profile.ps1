@@ -881,7 +881,7 @@ function reset-wsl {
     cd
 }
 
-function wsl {Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')}
+function linux {Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')}
 
 # AI run functions -----------------------------------------------------------------------------------------------------------------
 function chatgpt{start https://chatgpt.com/}
@@ -890,7 +890,7 @@ function chatty {
     start http://localhost:8080/
     
     # Open WSL in a new Windows Terminal tab
-    wsl
+    linux
 }
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
