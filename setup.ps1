@@ -187,8 +187,6 @@ catch {
 }
 
 # nvim_setup_windows
-# Set policy to avoid errors
-Set-ExecutionPolicy RemoteSigned -scope CurrentUser
 
 # Install scoop
 Invoke-WebRequest -UseBasicParsing get.scoop.sh | Invoke-Expression
