@@ -255,6 +255,7 @@ function browser {
 function debloat { irm "christitus.com/win" | iex }
 
 function setup {
+    sudo
     irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
 }
 
