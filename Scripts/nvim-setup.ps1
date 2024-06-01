@@ -88,4 +88,5 @@ catch {
     Write-Error "Failed to clone LazyVim starter or remove .git folder. Error: $_"
 }
 
+# C:\Users\username\AppData\Local\nvim
 # git clone --depth=1 https://github.com/jdhao/nvim-config.git .
