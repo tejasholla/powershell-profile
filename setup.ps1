@@ -53,6 +53,14 @@ function Check-InstallPowerShell7 {
 }
 Check-InstallPowerShell7
 
+# install/upgrade WINGET package installer (pwshell)
+try {
+    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+}
+catch {
+    Write-Error "Failed to install/upgrade WINGET package. Error: $_"
+}
+
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
     try {
@@ -167,12 +175,25 @@ Copy-Item -Path ~\scoop\apps\fastfetch\current\presets\paleofetch.jsonc -Destina
 scoop bucket add extras
 scoop install vcredist2010
 scoop install ffmpeg
-scoop install youtube-dl
-scoop install yt-dlp
-scoop install mplayer
 
 # sudo
 scoop install gsudo
+
+# install/upgrade notepad++ (winget)
+try {
+    winget install notepad++.notepad++
+}
+catch {
+    Write-Error "Failed to install/upgrade notepad++. Error: $_"
+}
+
+# install/upgrade neovim (winget)
+try {
+    winget install neovim.neovim
+}
+catch {
+    Write-Error "Failed to install/upgrade neovim. Error: $_"
+}
 
 # Pester Install
 try {

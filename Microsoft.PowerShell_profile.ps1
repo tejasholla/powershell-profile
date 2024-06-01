@@ -477,9 +477,6 @@ function google{start www.google.com}
 
 function ys{start www.youtube.com/search?q=$args}
 
-# GUI is bloat
-function yt { yt-dlp $args -o - | mplayer -cache 64000 -vo caca - }
-
 function youtube{start www.youtube.com}
 
 function wiki{start https://www.wikiwand.com/en/$args}
