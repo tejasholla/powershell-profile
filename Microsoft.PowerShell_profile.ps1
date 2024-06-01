@@ -228,27 +228,18 @@ $EDITOR = if (Test-CommandExists nvim) { 'nvim' }
 Set-Alias -Name vim -Value $EDITOR
 
 function Launch-Nvim {
-	# nvim executable can be in different locations
-	# and we want to run it possibly in windows terminal
-	#	$command = "`"c:\program files\Neovim\bin\nvim.exe`""
-	#	$command = "`"c:\Users\mguardigli\AppData\Local\Programs\Neovim\bin\nvim.exe`""
-	#$mycmd = "`"nvim`"" (this quoting suddenly stopped working)on 12 oct 2023)
 	$mycmd = "nvim"
 	$cmd = where.exe $mycmd
-	# if available, run in windows terminal (wt), else cmd
-	# this horror code appears needed to avoid launching a not wt window
 	if ( Get-Command "wt" -ErrorAction SilentlyContinue ) {
 		$command = "wt"
 		$cargs = "$cmd $args"
 	} else {
 		$command = "cmd"
 		$cargs = "/c $cmd $args"
-		# cmd /c c:\nvimpath\nvim.exe $args
 	}
 	Write-Host "command: [$command] cargs: [$cargs]"
 	$parameters = $cargs -join ' '
 	if ($parameters) {
-		# BEWARE using -NoNewWindow option causes terminal to malfunction
 		Start-Process -FilePath $command -ArgumentList $parameters
 	} else {
 		Start-Process -FilePath $command
