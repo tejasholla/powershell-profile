@@ -686,6 +686,31 @@ try {
 }
 }
 
+function iplocate {
+    # Path to the script on GitHub
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/locate-ipaddress.ps1"
+    
+    try {
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
+        
+        # Remove BOM if present
+        if ($scriptContent[0] -eq 0xFEFF) {
+            $scriptContent = $scriptContent.Substring(1)
+        }
+
+        # Save script content to a temporary file
+        $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
+        Set-Content -Path $tempScriptPath -Value $scriptContent
+
+        . $tempScriptPath
+        
+        # Cleanup the temporary file
+        Remove-Item -Path $tempScriptPath -Force
+    } catch {
+        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
+    }
+}
+
 # Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
 function cpy { Set-Clipboard $args[0] }
 
@@ -839,31 +864,6 @@ function weather {
 function checkpass {
     # Path to the script on GitHub
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"
-    
-    try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
-        # Remove BOM if present
-        if ($scriptContent[0] -eq 0xFEFF) {
-            $scriptContent = $scriptContent.Substring(1)
-        }
-
-        # Save script content to a temporary file
-        $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
-        Set-Content -Path $tempScriptPath -Value $scriptContent
-
-        . $tempScriptPath
-        
-        # Cleanup the temporary file
-        Remove-Item -Path $tempScriptPath -Force
-    } catch {
-        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
-    }
-}
-
-function iplocate {
-    # Path to the script on GitHub
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/locate-ipaddress.ps1"
     
     try {
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
