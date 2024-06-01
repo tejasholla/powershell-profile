@@ -533,7 +533,11 @@ function run {
     )
 
     $target = $args[0]
-    Start-Process $target
+    if (Test-Path $target) {
+        Start-Process $target -ErrorAction SilentlyContinue
+    } else {
+        Start-Process "https://$target"
+    }
 }
 
 function lscheck{nu -c "ls $args"}
