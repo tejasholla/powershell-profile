@@ -526,6 +526,7 @@ function youtube{start www.youtube.com}
 
 function wiki{start https://www.wikiwand.com/en/$args}
 
+function run {start $args}
 function lscheck{nu -c "ls $args"}
 
 function lsnu{nu -c "ls"}
