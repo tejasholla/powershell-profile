@@ -214,6 +214,18 @@ scoop install universal-ctags
 # Install 7zip
 scoop install 7zip
 
+# required
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+
+# optional but recommended
+Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
+
+Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+
+git clone https://github.com/nvim-lua/kickstart.nvim.git $env:USERPROFILE\AppData\Local\nvim\
+
 # Pester Install
 try {
     Install-Module -Name Pester -Force -SkipPublisherCheck
