@@ -172,7 +172,6 @@ del ~\.config\fastfetch\config.jsonc
 Copy-Item -Path ~\scoop\apps\fastfetch\current\presets\paleofetch.jsonc -Destination ~/.config/fastfetch/config.jsonc
 
 # GUI is bloat
-scoop bucket add extras
 scoop install vcredist2010
 scoop install ffmpeg
 
@@ -187,11 +186,12 @@ catch {
     Write-Error "Failed to install/upgrade notepad++. Error: $_"
 }
 
+# nvim_setup_windows
 try {
-    winget install neovim.neovim
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/nvim_setup_windows.ps1" | iex
 }
 catch {
-    Write-Error "Failed to install/upgrade neovim. Error: $_"
+    Write-Error "Failed to nvim_setup_windows. Error: $_"
 }
 
 # Required: Backup the existing Neovim configuration
@@ -218,9 +218,10 @@ catch {
     Write-Error "Failed to clone LazyVim starter or remove .git folder. Error: $_"
 }
 
-scoop install ripgrep
 scoop install fd
 scoop install lazygit
+
+git clone --depth=1 https://github.com/jdhao/nvim-config.git .
 
 # Pester Install
 try {
