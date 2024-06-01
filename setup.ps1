@@ -195,6 +195,22 @@ function Install-OrUpgrade-Neovim {
         [string]$localAppDataNvimDataPath = "$env:LOCALAPPDATA\nvim-data"
     )
 
+    function Get-UniqueBackupPath {
+        param (
+            [string]$path
+        )
+
+        $counter = 1
+        $backupPath = "$path.bak"
+        
+        while (Test-Path $backupPath) {
+            $backupPath = "$path.bak$counter"
+            $counter++
+        }
+        
+        return $backupPath
+    }
+
     try {
         winget install $wingetPackageName -e
         Write-Output "Neovim installation/upgrade succeeded."
@@ -207,8 +223,9 @@ function Install-OrUpgrade-Neovim {
     # Required: Backup the existing Neovim configuration
     try {
         if (Test-Path $localAppDataNvimPath) {
-            Move-Item $localAppDataNvimPath "$localAppDataNvimPath.bak" -Force
-            Write-Output "Existing Neovim configuration backed up."
+            $nvimBackupPath = Get-UniqueBackupPath -path $localAppDataNvimPath
+            Move-Item $localAppDataNvimPath $nvimBackupPath -Force
+            Write-Output "Existing Neovim configuration backed up to $nvimBackupPath."
         }
     }
     catch {
@@ -219,8 +236,9 @@ function Install-OrUpgrade-Neovim {
     # Optional but recommended: Backup the existing Neovim data and clone LazyVim starter
     try {
         if (Test-Path $localAppDataNvimDataPath) {
-            Move-Item $localAppDataNvimDataPath "$localAppDataNvimDataPath.bak" -Force
-            Write-Output "Existing Neovim data backed up."
+            $nvimDataBackupPath = Get-UniqueBackupPath -path $localAppDataNvimDataPath
+            Move-Item $localAppDataNvimDataPath $nvimDataBackupPath -Force
+            Write-Output "Existing Neovim data backed up to $nvimDataBackupPath."
         }
     }
     catch {
@@ -239,6 +257,7 @@ function Install-OrUpgrade-Neovim {
 
 # Run the function
 Install-OrUpgrade-Neovim
+
 
 # Pester Install
 try {
