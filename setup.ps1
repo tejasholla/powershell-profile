@@ -218,6 +218,10 @@ catch {
     Write-Error "Failed to clone LazyVim starter or remove .git folder. Error: $_"
 }
 
+scoop install ripgrep
+scoop install fd
+scoop install lazygit
+
 # Pester Install
 try {
     Install-Module -Name Pester -Force -SkipPublisherCheck

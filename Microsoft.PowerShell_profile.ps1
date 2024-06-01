@@ -196,40 +196,11 @@ set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkcd New-Directory
 set-Alias root Set-Home
-Set-Alias -Name vi -Value Launch-Nvim -Description "Launch neovim"
-Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
-Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
+Set-Alias -Name vi -Value nvim
+Set-Alias -Name vim -Value nvim
 
 # Function definitions
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
-
-function Launch-Nvim {
-	# nvim executable can be in different locations
-	# and we want to run it possibly in windows terminal
-	#	$command = "`"c:\program files\Neovim\bin\nvim.exe`""
-	#	$command = "`"c:\Users\mguardigli\AppData\Local\Programs\Neovim\bin\nvim.exe`""
-	#$mycmd = "`"nvim`"" (this quoting suddenly stopped working)on 12 oct 2023)
-	$mycmd = "nvim"
-	$cmd = where.exe $mycmd
-	# if available, run in windows terminal (wt), else cmd
-	# this horror code appears needed to avoid launching a not wt window
-	if ( Get-Command "wt" -ErrorAction SilentlyContinue ) {
-		$command = "wt"
-		$cargs = "$cmd $args"
-	} else {
-		$command = "cmd"
-		$cargs = "/c $cmd $args"
-		# cmd /c c:\nvimpath\nvim.exe $args
-	}
-	Write-Host "command: [$command] cargs: [$cargs]"
-	$parameters = $cargs -join ' '
-	if ($parameters) {
-		# BEWARE using -NoNewWindow option causes terminal to malfunction
-		Start-Process -FilePath $command -ArgumentList $parameters
-	} else {
-		Start-Process -FilePath $command
-	}
-}
 
 function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
 
