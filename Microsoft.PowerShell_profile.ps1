@@ -553,10 +553,6 @@ function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
 
 function ipflush { ipconfig /flushdns }
 
-function shutdown { shutdown /s }
-
-function restart { shutdown /r }
-
 function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
 
 # Enhanced Listing
@@ -597,12 +593,12 @@ function sysinfo { Get-ComputerInfo }
 # Networking Utilities
 function flushdns { Clear-DnsClientCache }
 
+Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
+
 # Clipboard Utilities
 function cpy { Set-Clipboard $args[0] }
 
 function pst { Get-Clipboard }
-
-Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
 
 function Get-HWVersion($computer, $name) {
 
@@ -768,44 +764,6 @@ try {
 } catch {
     Write-Error "Failed to change IP Address. Error: $_"
 }
-}
-
-filter ping1 {
-    param (
-        [Parameter(ValueFromPipeline=$true)]
-        [string[]]$comps = $env:COMPUTERNAME,
-        [int]$n = 1,
-        [switch]$showhost
-    )
-
-    begin {
-        $ping = New-Object System.Net.NetworkInformation.Ping
-    }
-
-    process {
-        if (!$comps) {Throw 'No host provided'}
-        foreach ($comp in $comps) {
-            for ($i = 0; $i -lt $n; $i++) {
-                try{ $result = $ping.send($comp) }catch{}
-                switch ($result.status) {
-                    'Success' { $success = $true }
-                    default { $success = $false }
-                }
-            }
-            
-            if ($showhost) {
-                switch ($success) {
-                    $true { "True  $(try{ $result.address.tostring() }catch{ $comp })" }
-                    $false { "False $comp" }
-                }
-            } else {
-                switch ($success) {
-                    $true { $true }
-                    $false { $false }
-                }
-            }
-        }
-    }
 }
 
 # call ps1 scripts
