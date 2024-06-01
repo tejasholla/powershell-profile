@@ -178,8 +178,13 @@ function admin {
 # sudo
 Import-Module gsudoModule
 
+function Test-CommandExists {
+    param($command)
+    $exists = $null -ne (Get-Command $command -ErrorAction SilentlyContinue)
+    return $exists
+}
+
 # Set aliases for quick access
-# Set-Alias -Name vim -Value nvim
 Set-Alias -Name su -Value admin
 Set-Alias li ls
 Set-Alias g git
@@ -202,6 +207,15 @@ Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
 
 # Function definitions
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
+
+# Editor Configuration
+$EDITOR = if (Test-CommandExists nvim) { 'nvim' }
+          elseif (Test-CommandExists vim) { 'nvim' }
+          elseif (Test-CommandExists vi) { 'nvim' }
+          elseif (Test-CommandExists code) { 'code' }
+          elseif (Test-CommandExists notepad++) { 'npp' }
+          else { 'notepad' }
+Set-Alias -Name vim -Value $EDITOR
 
 function Launch-Nvim {
 	# nvim executable can be in different locations
@@ -231,7 +245,7 @@ function Launch-Nvim {
 	}
 }
 
-function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
+function notes { vim "$Env:USERPROFILE\Documents\Notes.txt" }
 
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
