@@ -210,19 +210,14 @@ function Launch-Nvim {
     if (Get-Command "wt" -ErrorAction SilentlyContinue) {
         $command = "wt"
         # Construct the arguments for wt to open a new tab with PowerShell and run nvim in WSL
-        $cargs = "-p `Windows PowerShell` -d . -- wsl nvim $args"
+        $cargs = "-p 'Windows PowerShell' -- wsl nvim"
     } else {
         $command = "powershell"
-        $cargs = "-Command wsl nvim $args"
+        $cargs = "-Command wsl nvim"
     }
 
     Write-Host "command: [$command] cargs: [$cargs]"
-    $parameters = $cargs -join ' '
-    if ($parameters) {
-        Start-Process -FilePath $command -ArgumentList $parameters
-    } else {
-        Start-Process -FilePath $command
-    }
+    Start-Process -FilePath $command -ArgumentList $cargs
 }
 
 function notes { npp "$Env:USERPROFILE\Documents\Notes.txt" }
