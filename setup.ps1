@@ -188,9 +188,6 @@ catch {
 
 # nvim_setup_windows
 
-# Install scoop
-Invoke-WebRequest -UseBasicParsing get.scoop.sh | Invoke-Expression
-
 # Install node
 scoop install nodejs
 
