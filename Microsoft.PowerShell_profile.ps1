@@ -526,7 +526,16 @@ function youtube{start www.youtube.com}
 
 function wiki{start https://www.wikiwand.com/en/$args}
 
-function run {start $args}
+function run {
+    param(
+        [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
+        [string[]]$args
+    )
+
+    $target = $args[0]
+    Start-Process $target
+}
+
 function lscheck{nu -c "ls $args"}
 
 function lsnu{nu -c "ls"}
