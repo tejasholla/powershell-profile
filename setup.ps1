@@ -187,13 +187,58 @@ catch {
     Write-Error "Failed to install/upgrade notepad++. Error: $_"
 }
 
-# install/upgrade neovim (winget)
-try {
-    winget install neovim.neovim
+function Install-OrUpgrade-Neovim {
+    param (
+        [string]$wingetPackageName = "neovim.neovim",
+        [string]$lazyVimRepoUrl = "https://github.com/LazyVim/starter",
+        [string]$localAppDataNvimPath = "$env:LOCALAPPDATA\nvim",
+        [string]$localAppDataNvimDataPath = "$env:LOCALAPPDATA\nvim-data"
+    )
+
+    try {
+        winget install $wingetPackageName -e
+        Write-Output "Neovim installation/upgrade succeeded."
+    }
+    catch {
+        Write-Error "Failed to install/upgrade neovim. Error: $_"
+        return
+    }
+
+    # Required: Backup the existing Neovim configuration
+    try {
+        if (Test-Path $localAppDataNvimPath) {
+            Move-Item $localAppDataNvimPath "$localAppDataNvimPath.bak" -Force
+            Write-Output "Existing Neovim configuration backed up."
+        }
+    }
+    catch {
+        Write-Error "Failed to backup the existing Neovim configuration. Error: $_"
+        return
+    }
+
+    # Optional but recommended: Backup the existing Neovim data and clone LazyVim starter
+    try {
+        if (Test-Path $localAppDataNvimDataPath) {
+            Move-Item $localAppDataNvimDataPath "$localAppDataNvimDataPath.bak" -Force
+            Write-Output "Existing Neovim data backed up."
+        }
+    }
+    catch {
+        Write-Error "Failed to backup the existing Neovim data. Error: $_"
+    }
+
+    try {
+        git clone $lazyVimRepoUrl $localAppDataNvimPath
+        Remove-Item "$localAppDataNvimPath\.git" -Recurse -Force
+        Write-Output "LazyVim starter cloned and .git folder removed."
+    }
+    catch {
+        Write-Error "Failed to clone LazyVim starter or remove .git folder. Error: $_"
+    }
 }
-catch {
-    Write-Error "Failed to install/upgrade neovim. Error: $_"
-}
+
+# Run the function
+Install-OrUpgrade-Neovim
 
 # Pester Install
 try {
