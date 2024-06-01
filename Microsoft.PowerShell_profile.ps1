@@ -184,7 +184,7 @@ function Test-CommandExists {
     return $exists
 }
 
-# Set aliases for quick access
+# Set aliases for quick access --------------------------------------------------------------------------------------------------
 Set-Alias -Name su -Value admin
 Set-Alias li ls
 Set-Alias g git
@@ -205,7 +205,17 @@ Set-Alias -Name vi -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
 
-# Function definitions
+# Function definitions ------------------------------------------------------------------------------------------------------------
+function profile {
+	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
+	Start-Process $path
+}
+
+function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
+
+function reload-profile { & $profile }
+
+# file / app related ----------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
 # Editor Configuration
@@ -309,31 +319,6 @@ function Find-Files {
     # Search for files matching the specified name pattern
     Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
       Write-Output $_.FullName
-    }
-}
-
-# NetworkSpeed check
-function NetworkSpeed {
-    try {
-        $output = speedtest-cli --simple
-        $lines = $output -split "\n"
-
-        foreach ($line in $lines) {
-            if ($line -like "*Ping*") {
-                Write-Host $line -ForegroundColor Cyan
-            }
-            elseif ($line -like "*Download*") {
-                Write-Host $line -ForegroundColor Green
-            }
-            elseif ($line -like "*Upload*") {
-                Write-Host $line -ForegroundColor Magenta
-            }
-            else {
-                Write-Host $line
-            }
-        }
-    } catch {
-        Write-Host "Failed to perform speed test. Error: $_" -ForegroundColor Red
     }
 }
 
@@ -486,21 +471,9 @@ function ytplayer {
     }
 }
 
-# network related functions
-function wifinetwork{netsh wlan show profile}
-
-function thiswifi{netsh wlan show profile $args key=clear | findstr “Key Content”}
-
-function networkdetails{netsh wlan show interfaces}
-
 function expo{explorer .}
 
 function weatherfun{curl wttr.in/$args}
-
-function profile {
-	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
-	Start-Process $path
-}
 
 function telegram{start https://web.telegram.org/a/}
 
@@ -534,41 +507,20 @@ function run {
     }
 }
 
+function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
+
+# Enhanced Listing -----------------------------------------------------------------------------------------------------------------
+function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
+
+function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
+
 function lscheck{nu -c "ls $args"}
 
 function lsnu{nu -c "ls"}
 
 function lscommand{nu -c "$args"}
 
-function ipall { ipconfig /all }
-
-function ipnew {
-        ipconfig /release
-	  ipconfig /renew
-}
-
-function powcheck { powercfg /energy }
-
-function batcheck { powercfg /batteryreport }
-
-function scanfile { sfc /scannow }
-
-function checkhealth { DISM /Online /Cleanup-Image /CheckHealth }
-
-function scanhealth { DISM /Online /Cleanup-Image /ScanHealth }
-
-function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
-
-function ipflush { ipconfig /flushdns }
-
-function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
-
-# Enhanced Listing
-function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
-
-function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
-
-# Git Shortcuts
+# Git Shortcuts -----------------------------------------------------------------------------------------------------------------
 function github{start https://github.com/tejasholla}
 
 function gitrepo{start https://github.com/tejasholla?tab=repositories}
@@ -599,32 +551,145 @@ function ss {git status --short}
 
 function nuke {git reset --hard; git clean -xdf}
 
-# Quick Access to System Information
+# Quick Access to System Information -----------------------------------------------------------------------------------------------------------------
 function sysinfo { Get-ComputerInfo }
 
-# Networking Utilities
+function pcdata {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
+function powcheck { powercfg /energy }
+
+function batcheck { powercfg /batteryreport }
+
+function scanfile { sfc /scannow }
+
+function checkhealth { DISM /Online /Cleanup-Image /CheckHealth }
+
+function scanhealth { DISM /Online /Cleanup-Image /ScanHealth }
+
+function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
+
+# Networking Utilities -----------------------------------------------------------------------------------------------------------------
 function flushdns { Clear-DnsClientCache }
 
 Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
 
-# Clipboard Utilities
-function cpy { Set-Clipboard $args[0] }
+function ipall { ipconfig /all }
 
-function pst { Get-Clipboard }
+function ipnew {
+        ipconfig /release
+	  ipconfig /renew
+}
+
+function ipflush { ipconfig /flushdns }
+
+function wifinetwork{netsh wlan show profile}
+
+function thiswifi{netsh wlan show profile $args key=clear | findstr “Key Content”}
+
+function networkdetails{netsh wlan show interfaces}
+
+# NetworkSpeed check
+function NetworkSpeed {
+    try {
+        $output = speedtest-cli --simple
+        $lines = $output -split "\n"
+
+        foreach ($line in $lines) {
+            if ($line -like "*Ping*") {
+                Write-Host $line -ForegroundColor Cyan
+            }
+            elseif ($line -like "*Download*") {
+                Write-Host $line -ForegroundColor Green
+            }
+            elseif ($line -like "*Upload*") {
+                Write-Host $line -ForegroundColor Magenta
+            }
+            else {
+                Write-Host $line
+            }
+        }
+    } catch {
+        Write-Host "Failed to perform speed test. Error: $_" -ForegroundColor Red
+    }
+}
 
 function Get-HWVersion($computer, $name) {
 
-     $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
-     if($pingresult.statuscode -ne 0) { return }
+    $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
+    if($pingresult.statuscode -ne 0) { return }
 
-     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
-           Sort DeviceName | 
-           Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
+    Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
+          Sort DeviceName | 
+          Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
 }
 
-function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
+function ConvertTo-PrefixLength {
+    param (
+        [string]$SubnetMask
+    )
+    $binaryMask = $SubnetMask -split "\." | ForEach-Object {
+        [convert]::ToString($_, 2).PadLeft(8, '0')
+    }
+    $binaryString = $binaryMask -join ''
+    $prefixLength = ($binaryString.ToCharArray() | Where-Object { $_ -eq '1' }).Count
+    return $prefixLength
+}
 
-function reload-profile { & $profile }
+function ipchangefun{
+# Display network adapters to the user
+Write-Host "Available Network Adapters and their Interface Indexes:"
+Get-NetAdapter | Format-Table Name, InterfaceIndex, Status
+
+# Prompt for Interface Index and validate
+$interfaceIndex = $null
+do {
+    $interfaceIndex = Read-Host "Enter the Interface Index from the list above"
+    if (-not $interfaceIndex -or $interfaceIndex -eq '') {
+        Write-Host "Interface Index cannot be empty, please enter a valid number."
+    }
+    if (-not (Get-NetAdapter | Where-Object InterfaceIndex -eq $interfaceIndex)) {
+        Write-Host "Invalid Interface Index entered. Please enter a number from the list above."
+        $interfaceIndex = $null
+    }
+} while (-not $interfaceIndex)
+
+$ipAddress = Read-Host "Enter the new IP Address"
+$subnetMask = Read-Host "Enter the Subnet Mask"
+
+# Check if subnet mask is empty and set default value
+if ([string]::IsNullOrWhiteSpace($subnetMask)) {
+    $subnetMask = "255.255.255.0"
+}
+
+# Convert the subnet mask to prefix length
+$prefixLength = ConvertTo-PrefixLength -SubnetMask $subnetMask
+
+# Remove the existing IP address
+try {
+    Get-NetIPAddress -InterfaceIndex $interfaceIndex | Remove-NetIPAddress -Confirm:$false
+    Write-Host "Existing IP Address(es) removed."
+} catch {
+    Write-Error "Failed to remove existing IP Address. Error: $_"
+}
+
+# Set the IP Address
+try {
+    New-NetIPAddress -InterfaceIndex $interfaceIndex -IPAddress $ipAddress -PrefixLength $prefixLength
+    Write-Host "IP Address has been changed successfully."
+} catch {
+    Write-Error "Failed to change IP Address. Error: $_"
+}
+}
+
+# Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
+function cpy { Set-Clipboard $args[0] }
+
+function pst { Get-Clipboard }
 
 function Set-Home {
     [CmdletBinding()]
@@ -720,72 +785,7 @@ function binclean {
     Write-Host "Recycle Bin cleanup complete."
 }
 
-function ConvertTo-PrefixLength {
-    param (
-        [string]$SubnetMask
-    )
-    $binaryMask = $SubnetMask -split "\." | ForEach-Object {
-        [convert]::ToString($_, 2).PadLeft(8, '0')
-    }
-    $binaryString = $binaryMask -join ''
-    $prefixLength = ($binaryString.ToCharArray() | Where-Object { $_ -eq '1' }).Count
-    return $prefixLength
-}
-
-function ipchangefun{
-# Display network adapters to the user
-Write-Host "Available Network Adapters and their Interface Indexes:"
-Get-NetAdapter | Format-Table Name, InterfaceIndex, Status
-
-# Prompt for Interface Index and validate
-$interfaceIndex = $null
-do {
-    $interfaceIndex = Read-Host "Enter the Interface Index from the list above"
-    if (-not $interfaceIndex -or $interfaceIndex -eq '') {
-        Write-Host "Interface Index cannot be empty, please enter a valid number."
-    }
-    if (-not (Get-NetAdapter | Where-Object InterfaceIndex -eq $interfaceIndex)) {
-        Write-Host "Invalid Interface Index entered. Please enter a number from the list above."
-        $interfaceIndex = $null
-    }
-} while (-not $interfaceIndex)
-
-$ipAddress = Read-Host "Enter the new IP Address"
-$subnetMask = Read-Host "Enter the Subnet Mask"
-
-# Check if subnet mask is empty and set default value
-if ([string]::IsNullOrWhiteSpace($subnetMask)) {
-    $subnetMask = "255.255.255.0"
-}
-
-# Convert the subnet mask to prefix length
-$prefixLength = ConvertTo-PrefixLength -SubnetMask $subnetMask
-
-# Remove the existing IP address
-try {
-    Get-NetIPAddress -InterfaceIndex $interfaceIndex | Remove-NetIPAddress -Confirm:$false
-    Write-Host "Existing IP Address(es) removed."
-} catch {
-    Write-Error "Failed to remove existing IP Address. Error: $_"
-}
-
-# Set the IP Address
-try {
-    New-NetIPAddress -InterfaceIndex $interfaceIndex -IPAddress $ipAddress -PrefixLength $prefixLength
-    Write-Host "IP Address has been changed successfully."
-} catch {
-    Write-Error "Failed to change IP Address. Error: $_"
-}
-}
-
 # call ps1 scripts
-function pcdata {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
-}
-
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
