@@ -186,6 +186,34 @@ catch {
     Write-Error "Failed to install/upgrade notepad++. Error: $_"
 }
 
+# Install neovim nightly
+scoop bucket add versions
+
+# install/upgrade neovim
+try {
+    scoop install neovim
+    scoop update neovim
+}
+catch {
+    Write-Error "Failed to install/upgrade neovim. Error: $_"
+}
+
+# Install ripgrep
+scoop install ripgrep
+
+# Install fd
+scoop install fd
+
+# Install lazygit
+scoop install lazygit
+
+# Install universal-ctags
+scoop bucket add extras
+scoop install universal-ctags
+
+# Install 7zip
+scoop install 7zip
+
 # Pester Install
 try {
     Install-Module -Name Pester -Force -SkipPublisherCheck
