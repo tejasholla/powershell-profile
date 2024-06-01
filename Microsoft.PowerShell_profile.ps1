@@ -254,9 +254,7 @@ function browser {
 
 function debloat { irm "christitus.com/win" | iex }
 
-function setup {
-    irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
-}
+function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
 
 function chatty {
     start http://localhost:8080/
@@ -508,10 +506,6 @@ function telegram{start https://web.telegram.org/a/}
 
 function chatgpt{start https://chatgpt.com/}
 
-function github{start https://github.com/tejasholla}
-
-function gitrepo{start https://github.com/tejasholla?tab=repositories}
-
 function photos{start https://photos.google.com/}
 
 function imagecompress{start https://www.iloveimg.com/compress-image}
@@ -575,7 +569,11 @@ function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
 
 # Git Shortcuts
-function gs { git status }
+function github{start https://github.com/tejasholla}
+
+function gitrepo{start https://github.com/tejasholla?tab=repositories}
+
+function gst { git status }
 
 function ga { git add . }
 
