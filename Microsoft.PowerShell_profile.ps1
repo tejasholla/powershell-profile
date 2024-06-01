@@ -253,13 +253,6 @@ function browser {
     Start-Process $path
 }
 
-function chatty {
-    start http://localhost:8080/
-    
-    # Open WSL in a new Windows Terminal tab
-    Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')
-}
-
 function edge { Start-Process "msedge" }
 
 function keybind {
@@ -309,8 +302,6 @@ function expo{explorer .}
 
 function telegram{start https://web.telegram.org/a/}
 
-function chatgpt{start https://chatgpt.com/}
-
 function photos{start https://photos.google.com/}
 
 function imagecompress{start https://www.iloveimg.com/compress-image}
@@ -356,6 +347,17 @@ function windef {
     } catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
+}
+
+# AI run functions -----------------------------------------------------------------------------------------------------------------
+
+function chatgpt{start https://chatgpt.com/}
+
+function chatty {
+    start http://localhost:8080/
+    
+    # Open WSL in a new Windows Terminal tab
+    Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')
 }
 
 # Enhanced Listing -----------------------------------------------------------------------------------------------------------------
