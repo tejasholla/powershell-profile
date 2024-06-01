@@ -269,18 +269,6 @@ function chatty {
     Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')
 }
 
-function reset-wsl {
-    cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
-    wsl --shutdown
-    Write-Host "WSL shutdown..."
-    cd
-}
-
-function binop {
-    $RecycleBin = (New-Object -ComObject Shell.Application).Namespace(0xA)
-    $RecycleBin.Self.InvokeVerb('open')
-}
-
 function edge { Start-Process "msedge" }
 
 function keybind {
@@ -358,36 +346,6 @@ function run {
     } else {
         Start-Process "https://$target"
     }
-}
-
-function binclean {
-    try {
-        $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
-        $items = $recycleBin.Items()
-
-        if ($items.Count -eq 0) {
-            Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
-            return
-        }
-
-        $totalItems = $items.Count
-        $currentItem = 0
-
-        $items | ForEach-Object {
-            $currentItem++
-            $itemPath = $_.Path
-
-            try {
-                Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
-            } catch {
-                Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
-            }
-        }
-    } catch {
-        Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
-    }
-
-    Write-Host "Recycle Bin cleanup complete."
 }
 
 # windows defender
@@ -735,6 +693,42 @@ function New-Directory {
 
 function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
 
+# Recycle bin functions -----------------------------------------------------------------------------------------------------------
+function binop {
+    $RecycleBin = (New-Object -ComObject Shell.Application).Namespace(0xA)
+    $RecycleBin.Self.InvokeVerb('open')
+}
+
+function binclean {
+    try {
+        $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
+        $items = $recycleBin.Items()
+
+        if ($items.Count -eq 0) {
+            Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
+            return
+        }
+
+        $totalItems = $items.Count
+        $currentItem = 0
+
+        $items | ForEach-Object {
+            $currentItem++
+            $itemPath = $_.Path
+
+            try {
+                Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
+            } catch {
+                Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
+            }
+        }
+    } catch {
+        Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
+    }
+
+    Write-Host "Recycle Bin cleanup complete."
+}
+
 # weather function ---------------------------------------------------------------------------------------------------------------------
 function weatherfun{curl wttr.in/$args}
 
@@ -896,6 +890,13 @@ function shorturl {
             $WebClient.Dispose()
         }
     }
+}
+
+function reset-wsl {
+    cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
+    wsl --shutdown
+    Write-Host "WSL shutdown..."
+    cd
 }
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
