@@ -317,7 +317,6 @@ function run {
         [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
         [string[]]$args
     )
-
     $target = $args[0]
     if (Test-Path $target) {
         Start-Process $target -ErrorAction SilentlyContinue
