@@ -248,22 +248,10 @@ function Launch-Nvim {
 
 function notes { vim "$Env:USERPROFILE\Documents\Notes.txt" }
 
-function browser {
-    $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
-    Start-Process $path
-}
-
-function edge { Start-Process "msedge" }
-
 function keybind {
 	$path = Join-Path $env:USERPROFILE 'Pictures\Screenshots\Terminal_keys'
  	Start-Process $path
  }
-
-function online {
-	param($computername)
-	return (test-connection $computername -count 1 -quiet)
-}
 
 function ytplayer {
     $path = 'D:\Git\ytDownloader'
@@ -306,6 +294,14 @@ function photos{start https://photos.google.com/}
 
 function imagecompress{start https://www.iloveimg.com/compress-image}
 
+# Browser related ----------------------------------------------------------------------------------------------------------------
+function browser {
+    $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
+    Start-Process $path
+}
+
+function edge { Start-Process "msedge" }
+
 function gs{start www.google.com/search?q=$args}
 
 function google{start www.google.com}
@@ -330,7 +326,7 @@ function run {
     }
 }
 
-# windows defender
+# windows defender ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
@@ -414,6 +410,11 @@ function scanhealth { DISM /Online /Cleanup-Image /ScanHealth }
 function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
 
 # Networking Utilities -----------------------------------------------------------------------------------------------------------------
+function online {
+	param($computername)
+	return (test-connection $computername -count 1 -quiet)
+}
+
 function flushdns { Clear-DnsClientCache }
 
 Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
