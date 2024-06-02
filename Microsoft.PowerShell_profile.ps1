@@ -286,7 +286,7 @@ function ytplayer {
     }
 }
 
-function expo{explorer .}
+function ex{explorer .}
 
 function telegram{start https://web.telegram.org/a/}
 
