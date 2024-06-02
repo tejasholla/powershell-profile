@@ -18,6 +18,7 @@ $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
 if (Test-Path($ChocolateyProfile)) {
     Import-Module "$ChocolateyProfile"
 }
+
 Import-Module -Name z
 
 # Enhanced PowerShell Experience
@@ -175,14 +176,8 @@ function admin {
     }
 }
 
-# sudo
+# sudo function
 Import-Module gsudoModule
-
-function Test-CommandExists {
-    param($command)
-    $exists = $null -ne (Get-Command $command -ErrorAction SilentlyContinue)
-    return $exists
-}
 
 # Set aliases for quick access --------------------------------------------------------------------------------------------------
 Set-Alias -Name su -Value admin
@@ -217,6 +212,12 @@ function reload-profile { & $profile }
 
 # app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
+
+function Test-CommandExists {
+    param($command)
+    $exists = $null -ne (Get-Command $command -ErrorAction SilentlyContinue)
+    return $exists
+}
 
 # Editor Configuration
 $EDITOR = if (Test-CommandExists nvim) { 'nvim' }
@@ -277,7 +278,6 @@ function ytplayer {
             return
         }
     }
-    
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
         & $python310Path $fullPath
@@ -691,7 +691,6 @@ function binclean {
             Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
             return
         }
-
         $totalItems = $items.Count
         $currentItem = 0
 
@@ -708,7 +707,6 @@ function binclean {
     } catch {
         Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
     }
-
     Write-Host "Recycle Bin cleanup complete."
 }
 
