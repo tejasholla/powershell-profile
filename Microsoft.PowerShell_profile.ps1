@@ -790,13 +790,22 @@ function debloat { irm "christitus.com/win" | iex }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
 
-# Shortens a URL using various free URL shortening services.
-function shorturl {
+# Shortens a URL using various free URL shortening services.function shorturl {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/short-url.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+
+    # Save the script content to a temporary file
+    $tempFile = [System.IO.Path]::GetTempFileName() + ".ps1"
+    Set-Content -Path $tempFile -Value $scriptContent
+
+    # Execute the temporary script file
+    & $tempFile
+
+    # Remove the temporary file
+    Remove-Item -Path $tempFile -Force
 }
+
 
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
