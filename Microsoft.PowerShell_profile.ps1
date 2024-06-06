@@ -109,55 +109,6 @@ Update-FastFetch
 cls
 fastfetch -l "Windows 11"
 
-function updateRepo {
-    param (
-        [string]$repoUrl,
-        [string]$localPath,
-        [string]$gitPath = 'C:\Program Files\Git\bin\git.exe'
-    )
-
-    # Check if the directory exists
-    if (-Not (Test-Path $localPath)) {
-        New-Item -ItemType Directory -Path $localPath -Force
-        Write-Host "Downloading repository from GitHub..."
-        if (Test-Path $gitPath) {
-            & $gitPath clone $repoUrl $localPath
-            Write-Host "Download complete."
-        } else {
-            Write-Host "Git is not installed. Please install Git or add it to your PATH."
-            return $false
-        }
-    } else {
-        Write-Host "Checking for updates..."
-        Set-Location -Path $localPath
-        & $gitPath fetch
-        $statusOutput = & $gitPath status -uno
-        if ($statusOutput -match "Your branch is behind") {
-            Write-Host "Updates found. Pulling changes..."
-            & $gitPath pull
-            Write-Host "Update complete."
-        } else {
-            Write-Host "No updates found."
-        }
-        Set-Location -Path $pwd
-    }
-    return $true
-}
-
-# Check for Profile Updates
-function updatePowerShellProfile {
-    $path = 'D:\Git\powershell-profile'
-    $gitRepo = 'https://github.com/tejasholla/powershell-profile.git'
-
-    # Update or download the repository
-    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
-
-    if (-Not $updateSuccess) {
-        return
-    }
-}
-updatePowerShellProfile
-
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping profile update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
@@ -302,18 +253,39 @@ function keybind {
  	Start-Process $path
  }
 
-function ytdownload {
+ function ytdownload {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
     $fullPath = Join-Path $path $file
+    $python310Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python310\python.exe'
     $python312Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python312\python.exe'
     $gitRepo = 'https://github.com/tejasholla/ytDownloader.git'
+    $gitPath = 'C:\Program Files\Git\bin\git.exe'
 
-    # Update or download the repository
-    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
-
-    if (-Not $updateSuccess) {
-        return
+    # Check if the directory exists
+    if (-Not (Test-Path $path)) {
+        New-Item -ItemType Directory -Path $path -Force
+        Write-Host "Downloading ytDownloader from GitHub..."
+        if (Test-Path $gitPath) {
+            & $gitPath clone $gitRepo $path
+            Write-Host "Download complete."
+        } else {
+            Write-Host "Git is not installed. Please install Git or add it to your PATH."
+            return
+        }
+    } else {
+        Write-Host "Checking for updates..."
+        Set-Location -Path $path
+        & $gitPath fetch
+        $statusOutput = & $gitPath status -uno
+        if ($statusOutput -match "Your branch is behind") {
+            Write-Host "Updates found. Pulling changes..."
+            & $gitPath pull
+            Write-Host "Update complete."
+        } else {
+            Write-Host "No updates found."
+        }
+        Set-Location -Path $pwd
     }
 
     # Execute the Python script if it exists
