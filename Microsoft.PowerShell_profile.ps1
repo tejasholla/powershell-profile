@@ -293,7 +293,7 @@ function ytdownload {
                     $pythonExecuted = $true
                     break
                 } catch {
-                    Write-Host "Failed to execute Python script with path $pythonPath: $_"
+                    Write-Host "Failed to execute Python script with path $_"
                 }
             }
         }
