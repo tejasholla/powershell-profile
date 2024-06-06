@@ -748,7 +748,7 @@ function usb {
 
 function debloat {
     # Command to open a new Windows Terminal tab and run the debloat script
-    wt -w 0 nt -p "Windows PowerShell" -d . -c "irm 'https://christitus.com/win' | iex"
+    wt -w 0 nt -p "Windows PowerShell" -d . -c "& { irm 'https://christitus.com/win' | iex }"
 }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
