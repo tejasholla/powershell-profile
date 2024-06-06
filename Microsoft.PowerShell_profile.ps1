@@ -281,25 +281,7 @@ function ytdownload {
     }
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
-        $pythonPaths = @($python310Path, $python312Path)
-        $pythonExecuted = $false
-        foreach ($pythonPath in $pythonPaths) {
-            if (Test-Path $pythonPath) {
-                Write-Host "Using Python executable"
-                & $pythonPath --version
-                & $pythonPath -m pip list
-                try {
-                    & $pythonPath $fullPath
-                    $pythonExecuted = $true
-                    break
-                } catch {
-                    Write-Host "Failed to execute Python script with path $_"
-                }
-            }
-        }
-        if (-not $pythonExecuted) {
-            Write-Host "Failed to execute Python script with all available Python paths."
-        }
+        & $python312Path $fullPath
     } else {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
