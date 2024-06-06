@@ -253,7 +253,16 @@ function keybind {
  	Start-Process $path
  }
 
- function ytdownload {
+function ex{explorer .}
+
+function telegram{start https://web.telegram.org/a/}
+
+function photos{start https://photos.google.com/}
+
+function imagecompress{start https://www.iloveimg.com/compress-image}
+
+# Download functions -------------------------------------------------------------------------------------------------------------
+function ytdownload {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
     $fullPath = Join-Path $path $file
@@ -295,14 +304,6 @@ function keybind {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
 }
-
-function ex{explorer .}
-
-function telegram{start https://web.telegram.org/a/}
-
-function photos{start https://photos.google.com/}
-
-function imagecompress{start https://www.iloveimg.com/compress-image}
 
 # Browser related ----------------------------------------------------------------------------------------------------------------
 function browser {
