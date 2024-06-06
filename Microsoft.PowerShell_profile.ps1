@@ -792,28 +792,19 @@ function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/s
 
 # Shortens a URL using various free URL shortening services.
 function shorturl {
-    # Path to the script on GitHub
+    # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/short-url.ps1"
-    
-    try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
-        # Remove BOM if present
-        if ($scriptContent[0] -eq 0xFEFF) {
-            $scriptContent = $scriptContent.Substring(1)
-        }
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
 
-        # Save script content to a temporary file
-        $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
-        Set-Content -Path $tempScriptPath -Value $scriptContent
+    # Save the script content to a temporary file
+    $tempFile = [System.IO.Path]::GetTempFileName() + ".ps1"
+    Set-Content -Path $tempFile -Value $scriptContent
 
-        . $tempScriptPath
-        
-        # Cleanup the temporary file
-        Remove-Item -Path $tempScriptPath -Force
-    } catch {
-        Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
-    }
+    # Execute the temporary script file
+    . $tempFile
+
+    # Remove the temporary file
+    Remove-Item -Path $tempFile -Force
 }
 
 function reset-wsl {
