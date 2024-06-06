@@ -285,7 +285,7 @@ function ytdownload {
         $pythonExecuted = $false
         foreach ($pythonPath in $pythonPaths) {
             if (Test-Path $pythonPath) {
-                Write-Host "Using Python executable: $pythonPath"
+                Write-Host "Using Python executable"
                 & $pythonPath --version
                 & $pythonPath -m pip list
                 try {
