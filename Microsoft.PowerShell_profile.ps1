@@ -746,10 +746,7 @@ function usb {
     Invoke-Expression $scriptContent
 }
 
-function debloat {
-    # Command to open a new Windows Terminal tab and run the debloat script
-    wt -w 0 nt -p "Windows PowerShell" -d . -c 'powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "& { Invoke-RestMethod \"https://christitus.com/win\" | Invoke-Expression }"'
-}
+function debloat {irm https://christitus.com/win | iex}
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
 
