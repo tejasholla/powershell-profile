@@ -109,7 +109,55 @@ Update-FastFetch
 cls
 fastfetch -l "Windows 11"
 
+function updateRepo {
+    param (
+        [string]$repoUrl,
+        [string]$localPath,
+        [string]$gitPath = 'C:\Program Files\Git\bin\git.exe'
+    )
+
+    # Check if the directory exists
+    if (-Not (Test-Path $localPath)) {
+        New-Item -ItemType Directory -Path $localPath -Force
+        Write-Host "Downloading repository from GitHub..."
+        if (Test-Path $gitPath) {
+            & $gitPath clone $repoUrl $localPath
+            Write-Host "Download complete."
+        } else {
+            Write-Host "Git is not installed. Please install Git or add it to your PATH."
+            return $false
+        }
+    } else {
+        Write-Host "Checking for updates..."
+        Set-Location -Path $localPath
+        & $gitPath fetch
+        $statusOutput = & $gitPath status -uno
+        if ($statusOutput -match "Your branch is behind") {
+            Write-Host "Updates found. Pulling changes..."
+            & $gitPath pull
+            Write-Host "Update complete."
+        } else {
+            Write-Host "No updates found."
+        }
+        Set-Location -Path $pwd
+    }
+    return $true
+}
+
 # Check for Profile Updates
+function updatePowerShellProfile {
+    $path = 'D:\Git\powershell-profile'
+    $gitRepo = 'https://github.com/tejasholla/powershell-profile.git'
+
+    # Update or download the repository
+    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
+
+    if (-Not $updateSuccess) {
+        return
+    }
+    cd
+}
+
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping profile update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
@@ -124,6 +172,7 @@ function Update-Profile {
         if ($newhash.Hash -ne $oldhash.Hash) {
             Copy-Item -Path "$env:temp/Microsoft.PowerShell_profile.ps1" -Destination $PROFILE -Force
             Write-Host "Profile has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
+            updatePowerShellProfile
         }
     } catch {
         Write-Error "Unable to check for `$profile updates"
@@ -254,42 +303,6 @@ function keybind {
  	Start-Process $path
  }
 
- function updateRepo {
-    param (
-        [string]$repoUrl,
-        [string]$localPath,
-        [string]$gitPath = 'C:\Program Files\Git\bin\git.exe'
-    )
-
-    # Check if the directory exists
-    if (-Not (Test-Path $localPath)) {
-        New-Item -ItemType Directory -Path $localPath -Force
-        Write-Host "Downloading repository from GitHub..."
-        if (Test-Path $gitPath) {
-            & $gitPath clone $repoUrl $localPath
-            Write-Host "Download complete."
-        } else {
-            Write-Host "Git is not installed. Please install Git or add it to your PATH."
-            return $false
-        }
-    } else {
-        Write-Host "Checking for updates..."
-        Set-Location -Path $localPath
-        & $gitPath fetch
-        $statusOutput = & $gitPath status -uno
-        if ($statusOutput -match "Your branch is behind") {
-            Write-Host "Updates found. Pulling changes..."
-            & $gitPath pull
-            Write-Host "Update complete."
-        } else {
-            Write-Host "No updates found."
-        }
-        Set-Location -Path $pwd
-    }
-
-    return $true
-}
-
 function ytdownload {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
@@ -311,22 +324,6 @@ function ytdownload {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
 }
-
-function updatePowerShellProfile {
-    $path = 'D:\Git\powershell-profile'
-    $gitRepo = 'https://github.com/tejasholla/powershell-profile.git'
-
-    # Update or download the repository
-    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
-
-    if (-Not $updateSuccess) {
-        return
-    }
-
-    Write-Host "PowerShell profile has been updated."
-    cd
-}
-updatePowerShellProfile
 
 function ex{explorer .}
 
@@ -508,18 +505,6 @@ function Get-HWVersion($computer, $name) {
     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
           Sort DeviceName | 
           Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
-}
-
-function ConvertTo-PrefixLength {
-    param (
-        [string]$SubnetMask
-    )
-    $binaryMask = $SubnetMask -split "\." | ForEach-Object {
-        [convert]::ToString($_, 2).PadLeft(8, '0')
-    }
-    $binaryString = $binaryMask -join ''
-    $prefixLength = ($binaryString.ToCharArray() | Where-Object { $_ -eq '1' }).Count
-    return $prefixLength
 }
 
 function ipchange {
