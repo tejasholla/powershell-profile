@@ -155,7 +155,6 @@ function updatePowerShellProfile {
     if (-Not $updateSuccess) {
         return
     }
-    cd
 }
 updatePowerShellProfile
 
