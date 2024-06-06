@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
-    [ValidateSet("isgd", "snipurl", "tinyurl", "chilp", "clickme", "sooogd")]
+    [ValidateSet("isgd", "tinyurl")]
     [string]$Shortener,
 
     [Parameter(Mandatory = $false)]
@@ -16,7 +16,7 @@ BEGIN {
 
 PROCESS {
     if (-not $Shortener) {
-        $Shortener = Read-Host "Please enter the URL shortening service (isgd, snipurl, tinyurl, chilp, clickme, sooogd)"
+        $Shortener = Read-Host "Please enter the URL shortening service (isgd or tinyurl)"
     }
     if (-not $Link) {
         $Link = Read-Host "Please enter the URL to be shortened"
@@ -30,13 +30,9 @@ PROCESS {
 
     switch ($Shortener) {
         "isgd" { $BaseURL = "https://is.gd/create.php?format=simple&url=$Link" }
-        "snipurl" { $BaseURL = "https://snipurl.com/submit.php?link=$Link" }
         "tinyurl" { $BaseURL = "http://tinyurl.com/api-create.php?url=$Link" }
-        "chilp" { $BaseURL = "https://chilp.it/api.php?url=$Link" }
-        "clickme" { $BaseURL = "http://cliccami.info/api/resturl/?url=$Link" }
-        "sooogd" { $BaseURL = "https://soo.gd/api.php?api=&short=$Link" }
         default {
-            Write-Error -Message "Invalid URL shortener specified. Supported options are 'isgd', 'snipurl', 'tinyurl', 'chilp', 'clickme', or 'sooogd'!"
+            Write-Error -Message "Invalid URL shortener specified. Supported options are 'isgd','tinyurl'!"
             return
         }
     }
