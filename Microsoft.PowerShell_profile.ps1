@@ -285,12 +285,15 @@ function ytdownload {
         $pythonExecuted = $false
         foreach ($pythonPath in $pythonPaths) {
             if (Test-Path $pythonPath) {
+                Write-Host "Using Python executable: $pythonPath"
+                & $pythonPath --version
+                & $pythonPath -m pip list
                 try {
                     & $pythonPath $fullPath
                     $pythonExecuted = $true
                     break
                 } catch {
-                    Write-Host "Failed to execute Python script with path $_"
+                    Write-Host "Failed to execute Python script with path $pythonPath: $_"
                 }
             }
         }
