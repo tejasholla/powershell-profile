@@ -746,9 +746,8 @@ function usb {
     Invoke-Expression $scriptContent
 }
 
-# function debloat {irm https://christitus.com/win | iex}
 function debloat {
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
+    wt powershell -NoExit -Command "irm https://christitus.com/win | iex"
 }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
