@@ -279,13 +279,46 @@ function ytdownload {
             return
         }
     }
+
+    # Function to try running the Python script
+    function Try-Run-PythonScript {
+        param (
+            [string]$pythonPath
+        )
+
+        try {
+            Write-Host "Trying Python executable: $pythonPath"
+            & $pythonPath $fullPath
+            return $true
+        } catch {
+            Write-Host "Failed to execute Python script with path $pythonPath: $_"
+            return $false
+        }
+    }
+
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
-        & $python312Path $fullPath
+        $executed = $false
+
+        # Try Python 3.10
+        if (Test-Path $python310Path) {
+            $executed = Try-Run-PythonScript -pythonPath $python310Path
+        }
+
+        # If Python 3.10 failed, try Python 3.12
+        if (-not $executed -and (Test-Path $python312Path)) {
+            $executed = Try-Run-PythonScript -pythonPath $python312Path
+        }
+
+        # If both failed, show an error message
+        if (-not $executed) {
+            Write-Host "Failed to execute Python script with all available Python paths."
+        }
     } else {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
 }
+
 
 function ex{explorer .}
 
