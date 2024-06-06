@@ -746,7 +746,10 @@ function usb {
     Invoke-Expression $scriptContent
 }
 
-function debloat { irm "christitus.com/win" | iex }
+function debloat {
+    # Command to open a new Windows Terminal tab and run the debloat script
+    wt -w 0 nt -p "Windows PowerShell" -d . "powershell -Command {irm 'https://christitus.com/win' | iex}"
+}
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
 
