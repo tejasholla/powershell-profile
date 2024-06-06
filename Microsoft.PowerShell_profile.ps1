@@ -780,21 +780,10 @@ function qr {
 }
 
 function usb {
-    # Prompt the user for confirmation
-    $response = Read-Host "For disable[1],enable[2]? "
-    if ($response -eq 1) {
-        # Disable USB
-        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 4
-        Write-Host "Disabled USB devices" -ForegroundColor DarkGray
-    }
-    elseif ($response -eq 2) {
-        # Enable USB
-        Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR" -Name "Start" -Value 3
-        Write-Host "Enabled USB devices" -ForegroundColor DarkGray
-    }
-    else {
-        Write-Host "Invalid option" -ForegroundColor Red
-    }
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/usb-toggle.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 function debloat { irm "christitus.com/win" | iex }
