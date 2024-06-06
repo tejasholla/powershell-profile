@@ -324,6 +324,7 @@ function updatePowerShellProfile {
     }
 
     Write-Host "PowerShell profile has been updated."
+    cd
 }
 updatePowerShellProfile
 
