@@ -254,29 +254,27 @@ function keybind {
  	Start-Process $path
  }
 
- function ytdownload {
-    $path = 'D:\Git\ytDownloader'
-    $file = 'ytDownloader.py'
-    $fullPath = Join-Path $path $file
-    $python310Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python310\python.exe'
-    $python312Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python312\python.exe'
-    $gitRepo = 'https://github.com/tejasholla/ytDownloader.git'
-    $gitPath = 'C:\Program Files\Git\bin\git.exe'
+ function updateRepo {
+    param (
+        [string]$repoUrl,
+        [string]$localPath,
+        [string]$gitPath = 'C:\Program Files\Git\bin\git.exe'
+    )
 
     # Check if the directory exists
-    if (-Not (Test-Path $path)) {
-        New-Item -ItemType Directory -Path $path -Force
-        Write-Host "Downloading ytDownloader from GitHub..."
+    if (-Not (Test-Path $localPath)) {
+        New-Item -ItemType Directory -Path $localPath -Force
+        Write-Host "Downloading repository from GitHub..."
         if (Test-Path $gitPath) {
-            & $gitPath clone $gitRepo $path
+            & $gitPath clone $repoUrl $localPath
             Write-Host "Download complete."
         } else {
             Write-Host "Git is not installed. Please install Git or add it to your PATH."
-            return
+            return $false
         }
     } else {
         Write-Host "Checking for updates..."
-        Set-Location -Path $path
+        Set-Location -Path $localPath
         & $gitPath fetch
         $statusOutput = & $gitPath status -uno
         if ($statusOutput -match "Your branch is behind") {
@@ -289,6 +287,23 @@ function keybind {
         Set-Location -Path $pwd
     }
 
+    return $true
+}
+
+function ytdownload {
+    $path = 'D:\Git\ytDownloader'
+    $file = 'ytDownloader.py'
+    $fullPath = Join-Path $path $file
+    $python312Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python312\python.exe'
+    $gitRepo = 'https://github.com/tejasholla/ytDownloader.git'
+
+    # Update or download the repository
+    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
+
+    if (-Not $updateSuccess) {
+        return
+    }
+
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
         & $python312Path $fullPath
@@ -296,6 +311,21 @@ function keybind {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
 }
+
+function updatePowerShellProfile {
+    $path = 'D:\Git\powershell-profile'
+    $gitRepo = 'https://github.com/tejasholla/powershell-profile.git'
+
+    # Update or download the repository
+    $updateSuccess = updateRepo -repoUrl $gitRepo -localPath $path
+
+    if (-Not $updateSuccess) {
+        return
+    }
+
+    Write-Host "PowerShell profile has been updated."
+}
+
 
 function ex{explorer .}
 
