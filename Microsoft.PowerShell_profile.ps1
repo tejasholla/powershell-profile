@@ -254,12 +254,20 @@ function keybind {
  	Start-Process $path
  }
 
- function ytdownload {
+function ytdownload {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ytdownloader.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $($scriptContent -join [Environment]::NewLine)
+
+    # Debugging: Output the script content to check for issues
+    Write-Host "Script content:"
+    Write-Host $scriptContent
+
+    # Ensure the content is treated as a string and join with new lines
+    $scriptString = $scriptContent -join [Environment]::NewLine
+    Invoke-Expression $scriptString
 }
+
 
 function ex{explorer .}
 
