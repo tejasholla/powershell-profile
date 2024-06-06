@@ -287,11 +287,11 @@ function ytdownload {
         )
 
         try {
-            Write-Host "Trying Python executable: $pythonPath"
+            Write-Host "Trying Python executable"
             & $pythonPath $fullPath
             return $true
         } catch {
-            Write-Host "Failed to execute Python script with path $pythonPath: $_"
+            Write-Host "Failed to execute Python script with path"
             return $false
         }
     }
