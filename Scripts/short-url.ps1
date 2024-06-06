@@ -7,11 +7,13 @@ param (
     [Parameter(Mandatory = $false)]
     [string]$Link
 )
+
 BEGIN {
     $BaseURL = ""
     $WebClient = New-Object Net.WebClient
     $ValidUrl = $true
 }
+
 PROCESS {
     if (-not $Shortener) {
         $Shortener = Read-Host "Please enter the URL shortening service (isgd, snipurl, tinyurl, chilp, clickme, sooogd)"
@@ -19,47 +21,46 @@ PROCESS {
     if (-not $Link) {
         $Link = Read-Host "Please enter the URL to be shortened"
     }
-    
+
     if (-not ([System.Uri]::TryCreate($Link, [System.UriKind]::Absolute, [ref]$null))) {
         Write-Error -Message "Invalid URL format!"
         $ValidUrl = $false
         return
     }
+
     switch ($Shortener) {
-        "isgd" {
-            $BaseURL = "https://is.gd/create.php?format=simple&url=$Link"
-        }
-        "snipurl" {
-            $BaseURL = "http://snipurl.com/site/snip?r=simple&link=$Link"
-        }
-        "tinyurl" {
-            $BaseURL = "http://tinyurl.com/api-create.php?url=$Link"
-        }
-        "chilp" {
-            $BaseURL = "https://chilp.it/api.php?url=$Link"
-        }
-        "clickme" {
-            $BaseURL = "http://cliccami.info/api/resturl/?url=$Link"
-        }
-        "sooogd" {
-            $BaseURL = "https://soo.gd/api.php?api=&short=$Link"
-        }
+        "isgd" { $BaseURL = "https://is.gd/create.php?format=simple&url=$Link" }
+        "snipurl" { $BaseURL = "https://snipurl.com/submit.php?link=$Link" }
+        "tinyurl" { $BaseURL = "http://tinyurl.com/api-create.php?url=$Link" }
+        "chilp" { $BaseURL = "https://chilp.it/api.php?url=$Link" }
+        "clickme" { $BaseURL = "http://cliccami.info/api/resturl/?url=$Link" }
+        "sooogd" { $BaseURL = "https://soo.gd/api.php?api=&short=$Link" }
         default {
-            Write-Error -Message "Invalid URL shortener specified. Supported options are 'snipurl', 'tinyurl', 'isgd', 'chilp', 'clickme', or 'sooogd'!"
+            Write-Error -Message "Invalid URL shortener specified. Supported options are 'isgd', 'snipurl', 'tinyurl', 'chilp', 'clickme', or 'sooogd'!"
             return
         }
     }
+
     if ($ValidUrl) {
-        $Response = $WebClient.DownloadString("$BaseURL")
-        $ShortenedUrl = $Response.Trim()
-        [PSCustomObject]@{
-            OriginalURL      = $Link
-            ShortenedURL     = $ShortenedUrl
-            Shortener        = $Shortener
-            CreationDateTime = Get-Date
+        try {
+            $Response = $WebClient.DownloadString($BaseURL)
+            if ($null -eq $Response) {
+                Write-Error -Message "Failed to shorten the URL. The response from the server was null."
+                return
+            }
+            $ShortenedUrl = $Response.Trim()
+            [PSCustomObject]@{
+                OriginalURL      = $Link
+                ShortenedURL     = $ShortenedUrl
+                Shortener        = $Shortener
+                CreationDateTime = Get-Date
+            }
+        } catch {
+            Write-Error -Message "An error occurred while attempting to shorten the URL: $_"
         }
     }
 }
+
 END {
     if ($WebClient) {
         $WebClient.Dispose()

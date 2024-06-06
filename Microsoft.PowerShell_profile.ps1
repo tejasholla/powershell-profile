@@ -807,6 +807,7 @@ function shorturl {
     Remove-Item -Path $tempFile -Force
 }
 
+
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
     wsl --shutdown
