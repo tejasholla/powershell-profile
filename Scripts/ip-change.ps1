@@ -55,3 +55,5 @@ try {
     Write-Error "Failed to change IP Address. Error: $_"
 }
 }
+
+ipchangefun
