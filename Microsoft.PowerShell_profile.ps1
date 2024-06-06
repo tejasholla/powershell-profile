@@ -254,7 +254,7 @@ function keybind {
  	Start-Process $path
  }
 
-function ytplayerfun {
+function ytdownload {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ytdownloader.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
