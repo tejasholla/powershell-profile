@@ -747,7 +747,8 @@ function usb {
 }
 
 function debloat {
-    wt new-tab powershell.exe -NoExit -Command "irm https://christitus.com/win | iex"
+    # Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
+    irm https://christitus.com/win | iex
 }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
