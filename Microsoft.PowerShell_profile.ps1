@@ -157,6 +157,7 @@ function updatePowerShellProfile {
     }
     cd
 }
+updatePowerShellProfile
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
@@ -172,7 +173,6 @@ function Update-Profile {
         if ($newhash.Hash -ne $oldhash.Hash) {
             Copy-Item -Path "$env:temp/Microsoft.PowerShell_profile.ps1" -Destination $PROFILE -Force
             Write-Host "Profile has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
-            updatePowerShellProfile
         }
     } catch {
         Write-Error "Unable to check for `$profile updates"
