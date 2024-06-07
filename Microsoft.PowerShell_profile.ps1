@@ -747,10 +747,10 @@ function usb {
 }
 
 function debloat {
-    $pwshPath = "pwsh.exe"
+    $pwshPath = "C:\Program Files\PowerShell\7\pwsh.exe"  # Update this path if necessary
     $command = "irm https://christitus.com/win | iex"
     $escapedCommand = $command -replace '"', '\"'
-    $arguments = @("--window", "0", "new-tab", "--profile", "PowerShell", "--title", "Debloat", "--", $pwshPath, "-NoExit", "-Command", $escapedCommand)
+    $arguments = @("--window", "0", "new-tab", "--profile", "PowerShell", "--title", "Debloat", "--", "`"$pwshPath`"", "-NoExit", "-Command", "`"$escapedCommand`"")
     Start-Process -FilePath "wt.exe" -ArgumentList $arguments -Verb RunAs
 }
 
