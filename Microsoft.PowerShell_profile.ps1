@@ -262,7 +262,7 @@ function photos{start https://photos.google.com/}
 function imagecompress{start https://www.iloveimg.com/compress-image}
 
 # Download functions -------------------------------------------------------------------------------------------------------------
-function pcdata {
+function ytdownload {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
