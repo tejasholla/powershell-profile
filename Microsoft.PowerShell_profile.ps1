@@ -180,6 +180,7 @@ Import-Module "gsudoModule"
 
 # Set aliases for quick access --------------------------------------------------------------------------------------------------
 Set-Alias -Name su -Value admin
+Set-Alias sudo gsudo
 Set-Alias li ls
 Set-Alias g git
 Set-Alias ip ipconfig
