@@ -747,7 +747,11 @@ function usb {
 }
 
 function debloat {
-    Start-Process -FilePath "pwsh.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex" -Verb RunAs
+    $pwshPath = "pwsh.exe"
+    $command = "irm https://christitus.com/win | iex"
+    $escapedCommand = $command -replace '"', '\"'
+    $arguments = @("--window", "0", "new-tab", "--profile", "PowerShell", "--title", "Debloat", "--", $pwshPath, "-NoExit", "-Command", $escapedCommand)
+    Start-Process -FilePath "wt.exe" -ArgumentList $arguments -Verb RunAs
 }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
