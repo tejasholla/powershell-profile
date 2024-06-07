@@ -176,7 +176,7 @@ function admin {
 }
 
 # sudo function
-Import-Module gsudoModule
+Import-Module "gsudoModule"
 
 # Set aliases for quick access --------------------------------------------------------------------------------------------------
 Set-Alias -Name su -Value admin
