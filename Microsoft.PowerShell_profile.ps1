@@ -287,7 +287,7 @@ function youtube{start www.youtube.com}
 
 function wiki{start https://www.wikiwand.com/en/$args}
 
-function run {
+function url {
     param(
         [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
         [string[]]$args
