@@ -29,7 +29,7 @@ Set-PSReadLineOption -Colors @{
     Operator = 'Magenta'
     ContinuationPrompt = '#56B6C2'
     Error = '#E06C75'
-    Variable = 'Yellow'
+    Variable = 'Yellow'  
     Number = 'Red'
     Type = 'Cyan'
     Comment = 'DarkCyan'
