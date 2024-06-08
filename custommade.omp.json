@@ -11,8 +11,7 @@
           "type": "os"
         },
         {
-          "background": "#ffffff",
-          "foreground": "#000000",
+          "foreground": "#ffffff",
           "leading_diamond": " \ue0b6",
           "properties": {
             "style": "folder"
@@ -23,7 +22,6 @@
           "type": "path"
         },
         {
-          "background": "#29315A",
           "foreground": "#43CCEA",
           "foreground_templates": [
             "{{ if or (.Working.Changed) (.Staging.Changed) }}#FF9248{{ end }}",
@@ -44,7 +42,6 @@
           "type": "git"
         },
         {
-          "background": "#29315A",
           "foreground": "#E4F34A",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -56,7 +53,6 @@
           "type": "python"
         },
         {
-          "background": "#29315A",
           "foreground": "#7FD5EA",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -68,7 +64,6 @@
           "type": "go"
         },
         {
-          "background": "#29315A",
           "foreground": "#42E66C",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -80,7 +75,6 @@
           "type": "node"
         },
         {
-          "background": "#29315A",
           "foreground": "#E64747",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -92,7 +86,6 @@
           "type": "ruby"
         },
         {
-          "background": "#29315A",
           "foreground": "#E64747",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -104,7 +97,6 @@
           "type": "java"
         },
         {
-          "background": "#29315A",
           "foreground": "#9B6BDF",
           "leading_diamond": " \ue0b6",
           "properties": {
@@ -118,8 +110,7 @@
         {
           "type": "php",
           "style": "diamond",
-          "foreground": "#ffffff",
-          "background": "#4063D8",
+          "foreground": "#4063D8",
           "leading_diamond": " \ue0b6",
           "properties": {
             "fetch_version": false
