@@ -45,6 +45,10 @@ Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin -BellStyle Visual
 Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -MaximumHistoryCount 4096
+Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
+Set-PSReadLineOption -HistorySearchCaseSensitive:$false
+Set-PSReadLineOption -HistoryNoDuplicates:$true
 
 Set-PSReadLineKeyHandler -Key Alt+e `
 	-BriefDescription "CWD" `
