@@ -11,8 +11,8 @@
           "type": "os"
         },
         {
-          "background": "#ffffff",
-          "foreground": "#000000",
+          "background": "#000000",
+          "foreground": "#ffffff",
           "leading_diamond": " \ue0b6",
           "properties": {
             "style": "folder"
