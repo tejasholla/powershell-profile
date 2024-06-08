@@ -717,6 +717,13 @@ function usb {
     Invoke-Expression $scriptContent
 }
 
+function shellhere {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/PowerShellHere.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+
 function debloat {
     $pwshPath = "C:\Program Files\PowerShell\7\pwsh.exe"  # Update this path if necessary
     $command = "irm https://christitus.com/win | iex"
