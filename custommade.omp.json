@@ -15,7 +15,6 @@
           "properties": {
             "style": "folder"
           },
-          "style": "diamond",
           "template": "\ue5ff {{ .Path }}",
           "type": "path"
         },
