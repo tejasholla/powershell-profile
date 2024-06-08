@@ -11,7 +11,7 @@
           "type": "os"
         },
         {
-          "background": "#000000",
+          "background": "#1b3c79",
           "foreground": "#ffffff",
           "leading_diamond": " \ue0b6",
           "properties": {
