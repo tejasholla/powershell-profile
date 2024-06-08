@@ -5,6 +5,12 @@
       "type": "rprompt",
       "segments": [
         {
+          "foreground": "#ffffff",
+          "style": "plain",
+          "template": "{{.Icon}} ",
+          "type": "os"
+        },
+        {
           "background": "#ffffff",
           "foreground": "#000000",
           "leading_diamond": " \ue0b6",
