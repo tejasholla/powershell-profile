@@ -21,6 +21,8 @@ Execute the following command in an elevated PowerShell window to install the Po
 ```powershell
 irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
 ```
+## Activity
+![Alt](https://repobeats.axiom.co/api/embed/268176ea5b031198c7e53903c1460f6dea7ac050.svg "Repobeats analytics image")
 
 ## 🛠️ Fix the Missing Font
 
