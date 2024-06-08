@@ -12,13 +12,11 @@
         },
         {
           "foreground": "#ffffff",
-          "leading_diamond": " \ue0b6",
           "properties": {
             "style": "folder"
           },
           "style": "diamond",
           "template": "\ue5ff {{ .Path }}",
-          "trailing_diamond": "\ue0b4",
           "type": "path"
         },
         {
