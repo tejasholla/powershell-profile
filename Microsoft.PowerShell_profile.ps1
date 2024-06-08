@@ -729,11 +729,7 @@ function shellhere {
 }
 
 function debloat {
-    $pwshPath = "C:\Program Files\PowerShell\7\pwsh.exe"  # Update this path if necessary
-    $command = "irm https://christitus.com/win | iex"
-    $escapedCommand = $command -replace '"', '\"'
-    $arguments = @("--window", "0", "new-tab", "--profile", "PowerShell", "--title", "Debloat", "--", "`"$pwshPath`"", "-NoExit", "-Command", "`"$escapedCommand`"")
-    Start-Process -FilePath "wt.exe" -ArgumentList $arguments -Verb RunAs
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
 }
 
 function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
