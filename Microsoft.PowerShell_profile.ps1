@@ -344,7 +344,7 @@ function gituser { git config --global user.name "$args" }
 
 function gitemail { git config --global user.email "$args" }
 
-function gitlist { giit config --list }
+function gitlist { git config --list }
 
 function gst { git status }
 
