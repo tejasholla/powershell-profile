@@ -340,15 +340,25 @@ function github{start https://github.com/tejasholla}
 
 function gitrepo{start https://github.com/tejasholla?tab=repositories}
 
+function gituser { git config --global user.name "$args" }
+
+function gitemail { git config --global user.email "$args" }
+
+function gitlist { giit config --list }
+
 function gst { git status }
 
 function ga { git add . }
+
+function gadd {git add "$args"}
 
 function gc { param($m) git commit -m "$m" }
 
 function gcl { git clone "$args" }
 
 function gp { git push }
+
+function gi { git init }
 
 function gcom {
     git add .
