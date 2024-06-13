@@ -7,9 +7,10 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 # Function to test internet connectivity
 function Test-InternetConnection {
     try {
-        Test-Connection -ComputerName www.google.com -Count 1 -ErrorAction Stop | Out-Null
+        $testConnection = Test-Connection -ComputerName www.google.com -Count 1 -ErrorAction Stop
         return $true
-    } catch {
+    }
+    catch {
         Write-Warning "Internet connection is required but not available. Please check your connection."
         return $false
     }
@@ -23,38 +24,47 @@ if (-not (Test-InternetConnection)) {
 # Check if Windows Terminal is installed
 function Check-InstallWindowsTerminal {
     if (!(Get-Command -Name "wt" -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing Windows Terminal..."
+        Write-Host "Windows Terminal not found. Installing Windows Terminal..."
         try {
-            winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements -h
+            winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements
         } catch {
-            Write-Host "Error: Failed to install Windows Terminal."
+            Write-Error "Failed to install Windows Terminal. Error: $_"
+            break
         }
     } else {
         Write-Host "Windows Terminal is already installed."
     }
 }
-
 Check-InstallWindowsTerminal
 
 # Check if PowerShell 7 is installed
 function Check-InstallPowerShell7 {
     if (-not (Get-Command -Name "pwsh" -ErrorAction SilentlyContinue)) {
-        Write-Host "Installing PowerShell 7..."
+        Write-Host "PowerShell 7 not found. Installing PowerShell 7..."
         try {
             winget install --id Microsoft.Powershell --e --accept-source-agreements --accept-package-agreements
         } catch {
-            Write-Host "Error: Failed to install PowerShell 7."
+            Write-Error "Failed to install PowerShell 7. Error: $_"
+            break
         }
     } else {
         Write-Host "PowerShell 7 is already installed."
     }
 }
-
 Check-InstallPowerShell7
+
+# install/upgrade WINGET package installer (pwshell)
+try {
+    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
+}
+catch {
+    Write-Error "Failed to install/upgrade WINGET package. Error: $_"
+}
 
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
     try {
+        # Detect Version of PowerShell & Create Profile directories if they do not exist.
         $profilePath = ""
         if ($PSVersionTable.PSEdition -eq "Core") { 
             $profilePath = "$env:userprofile\Documents\Powershell"
@@ -68,26 +78,31 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
         }
 
         Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE
-        Write-Host "Applying PowerShell profile..."
-    } catch {
-        Write-Host "Error: Failed to create or update the profile."
+        Write-Host "The profile @ [$PROFILE] has been created."
+        Write-Host "If you want to add any persistent components, please do so at [$profilePath\Profile.ps1] as there is an updater in the installed profile which uses the hash to update the profile and will lead to loss of changes"
     }
-} else {
+    catch {
+        Write-Error "Failed to create or update the profile. Error: $_"
+    }
+}
+else {
     try {
         Get-Item -Path $PROFILE | Move-Item -Destination "oldprofile.ps1" -Force
         Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE
-        Write-Host "Applying PowerShell profile..."
-    } catch {
-        Write-Host "Error: Failed to backup and update the profile."
+        Write-Host "The profile @ [$PROFILE] has been created and old profile removed."
+        Write-Host "Please back up any persistent components of your old profile to [$HOME\Documents\PowerShell\Profile.ps1] as there is an updater in the installed profile which uses the hash to update the profile and will lead to loss of changes"
+    }
+    catch {
+        Write-Error "Failed to backup and update the profile. Error: $_"
     }
 }
 
-# Oh My Posh Install
+# OMP Install
 try {
-    Write-Host "Installing Oh-My-Posh & theme..."
     winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
-} catch {
-    Write-Host "Error: Failed to install Oh My Posh."
+}
+catch {
+    Write-Error "Failed to install Oh My Posh. Error: $_"
 }
 
 # Font Install
@@ -113,164 +128,191 @@ try {
 
         Remove-Item -Path ".\CascadiaCode" -Recurse -Force
         Remove-Item -Path ".\CascadiaCode.zip" -Force
-        Write-Host "Installing Caskaydia Cove Nerd fonts..."
-    } else {
-        Write-Host "Caskaydia Cove Nerd fonts are already installed."
     }
-} catch {
-    Write-Host "Error: Failed to download or install the Cascadia Code font."
 }
+catch {
+    Write-Error "Failed to download or install the Cascadia Code font. Error: $_"
+}
+
+# Final check and message to the user
+if ((Test-Path -Path $PROFILE) -and (winget list --name "OhMyPosh" -e) -and ($fontFamilies -contains "CaskaydiaCove NF")) {
+    Write-Host "Setup completed successfully. Please restart your PowerShell session to apply changes."
+} else {
+    Write-Warning "Setup completed with errors. Please check the error messages above."
+}
+
+# Choco install
+try {
+    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+}
+catch {
+    Write-Error "Failed to install Chocolatey. Error: $_"
+}
+
+# Scoop install
+if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    Write-Host "Scoop is not installed. Installing Scoop..."
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+} else {
+    Write-Host "Scoop is already installed."
+}
+
+# Make Scoop downloads faster
+scoop install aria2
+scoop config aria2-warning-enabled false
+
+# Install git
+scoop install git
+
+# Fastfetch install
+scoop install fastfetch
+Rename-Item -Path "~/.config/fastfetch/config.jsonc" -NewName ("config." + (Get-Date -Format 'dd-MM-yyyy.HH.mm.ss') + ".jsonc") -erroraction 'silentlycontinue'
+fastfetch --gen-config
+del ~\.config\fastfetch\config.jsonc
+Copy-Item -Path ~\scoop\apps\fastfetch\current\presets\paleofetch.jsonc -Destination ~/.config/fastfetch/config.jsonc
+
+# GUI is bloat
+scoop install vcredist2010
+scoop install ffmpeg
+
+# sudo
+scoop install gsudo
+
+# install/upgrade notepad++ (winget)
+try {
+    winget install notepad++.notepad++
+}
+catch {
+    Write-Error "Failed to install/upgrade notepad++. Error: $_"
+}
+
+# Install neovim nightly
+scoop bucket add versions
+
+# install/upgrade neovim
+try {
+    scoop install neovim
+    scoop update neovim
+}
+catch {
+    Write-Error "Failed to install/upgrade neovim. Error: $_"
+}
+
+# Install ripgrep
+scoop install ripgrep
+
+# Install fd
+scoop install fd
+
+# Install lazygit
+scoop install lazygit
+
+# Install universal-ctags
+scoop bucket add extras
+scoop install universal-ctags
+
+# Install 7zip
+scoop install 7zip
+
+# required
+Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+
+# optional but recommended
+Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+
+git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
+
+Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+
+git clone https://github.com/nvim-lua/kickstart.nvim.git $env:USERPROFILE\AppData\Local\nvim\
 
 # Pester Install
 try {
-    Write-Host "Installing Pester..."
     Install-Module -Name Pester -Force -SkipPublisherCheck
-} catch {
-    Write-Host "Error: Failed to install Pester module."
+}
+catch {
+    Write-Error "Failed to install Pester module. Error: $_"
 }
 
 # Terminal Icons Install
 try {
-    Write-Host "Installing Terminal-Icons modules..."
     Install-Module -Name Terminal-Icons -Repository PSGallery -Force
-} catch {
-    Write-Host "Error: Failed to install Terminal Icons module."
+}
+catch {
+    Write-Error "Failed to install Terminal Icons module. Error: $_"
 }
 
 # PSFzf Install
 try {
-    Write-Host "Installing PSFzf..."
     Install-Module -Name PSFzf -Scope CurrentUser -Force
-} catch {
-    Write-Host "Error: Failed to install PSFzf module."
+}
+catch {
+    Write-Error "Failed to install PSFzf module. Error: $_"
 }
 
 # PSReadLine Install
 try {
-    Write-Host "Installing PSReadLine..."
     Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force
-} catch {
-    Write-Host "Error: Failed to install PSReadLine module."
+}
+catch {
+    Write-Error "Failed to install PSReadLine module. Error: $_"
 }
 
 # fzf Install
 try {
-    Write-Host "Installing fzf..."
     scoop install fzf
-} catch {
-    Write-Host "Error: Failed to install fzf module."
+}
+catch {
+    Write-Error "Failed to install fzf module. Error: $_"
 }
 
 # speedtest Install
 try {
-    Write-Host "Installing speedtest-cli..."
     pip install speedtest-cli
-} catch {
-    Write-Host "Error: Failed to install speedtest module."
+}
+catch {
+    Write-Error "Failed to install speedtest module. Error: $_"
 }
 
 # zoxide Install
 try {
-    Write-Host "Installing zoxide..."
     winget install -e --id ajeetdsouza.zoxide
-} catch {
-    Write-Host "Error: Failed to install zoxide."
+    Write-Host "zoxide installed successfully."
+}
+catch {
+    Write-Error "Failed to install zoxide. Error: $_"
 }
 
 # CompletionPredictor Install
 try {
-    Write-Host "Installing CompletionPredictor..."
     Install-Module -Name CompletionPredictor -Scope CurrentUser -Force -SkipPublisherCheck
-} catch {
-    Write-Host "Error: Failed to install CompletionPredictor."
+    Write-Host "CompletionPredictor installed successfully."
+}
+catch {
+    Write-Error "Failed to install CompletionPredictor. Error: $_"
 }
 
-# Scoop Install
 try {
-    Write-Host "Installing Scoop..."
-    Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
-    Write-Host "Installing aria2..."
-    scoop install aria2
-    scoop config aria2-warning-enabled false
-    Write-Host "Installing git..."
-    scoop install git
-    Write-Host "Installing fastfetch..."
-    scoop install fastfetch
-    Write-Host "Installing vcredist2010..."
-    scoop install vcredist2010
-    Write-Host "Installing ffmpeg..."
-    scoop install ffmpeg
-    Write-Host "Installing gsudo..."
-    scoop install gsudo
-    Write-Host "Adding versions bucket and installing neovim..."
-    scoop bucket add versions
-    scoop install neovim
-    scoop update neovim
-    Write-Host "Installing ripgrep..."
-    scoop install ripgrep
-    Write-Host "Installing fd..."
-    scoop install fd
-    Write-Host "Installing lazygit..."
-    scoop install lazygit
-    Write-Host "Adding extras bucket and installing universal-ctags..."
-    scoop bucket add extras
-    scoop install universal-ctags
-    Write-Host "Installing 7zip..."
-    scoop install 7zip
-} catch {
-    Write-Host "Error: Failed to install scoop packages."
-}
+	$StopWatch = [system.diagnostics.stopwatch]::startNew()
 
-# WSL Install
-try {
-    Write-Host "Enabling WSL..."
-    & dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-    Write-Host "Enabling virtual machine platform..."
-    & dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
-    Write-Host "Setting WSL version to 2..."
-    & wsl --set-default-version 2
-} catch {
-    Write-Host "Error: Failed to enable WSL or set version."
-}
+	if ($false) {
 
-# Chocolatey Install
-try {
-    Write-Host "Installing Chocolatey..."
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-} catch {
-    Write-Host "Error: Failed to install Chocolatey."
-}
+		& wsl --install
 
-# Notepad++ Install
-try {
-    Write-Host "Installing Notepad++..."
-    choco install notepadplusplus -y
-} catch {
-    Write-Host "Error: Failed to install Notepad++."
-}
+	} else {
+		"👉 Step 1/3: Enable WSL..."
+		& dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 
-# 7zip Install
-try {
-    Write-Host "Installing 7zip..."
-    choco install 7zip -y
-} catch {
-    Write-Host "Error: Failed to install 7zip."
-}
+		"👉 Step 2/3: Enable virtual machine platform..."
+		& dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 
-# cmake Install
-try {
-    Write-Host "Installing cmake..."
-    choco install cmake -y
-} catch {
-    Write-Host "Error: Failed to install cmake."
-}
+		"👉 Step 3/3: Enable WSL version 2..."
+		& wsl --set-default-version 2
+	}
 
-# Clean temporary files after installations
-try {
-    Write-Host "Cleaning up temporary files..."
-    Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+	[int]$Elapsed = $StopWatch.Elapsed.TotalSeconds
+	"✔️ installed Windows Subsystem for Linux (WSL) in $Elapsed sec"
+	"  NOTE: reboot now, then visit the Microsoft Store and install a Linux distribution (e.g. Ubuntu, openSUSE, SUSE Linux, Kali Linux, Debian, Fedora, Pengwin, or Alpine)"
 } catch {
-    Write-Host "Error: Failed to clean temporary files."
+	"⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
 }
-
-Write-Host "Installation complete!"
