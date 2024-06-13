@@ -7,10 +7,9 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 # Function to test internet connectivity
 function Test-InternetConnection {
     try {
-        $testConnection = Test-Connection -ComputerName www.google.com -Count 1 -ErrorAction Stop
+        Test-Connection -ComputerName www.google.com -Count 1 -ErrorAction Stop | Out-Null
         return $true
-    }
-    catch {
+    } catch {
         Write-Warning "Internet connection is required but not available. Please check your connection."
         return $false
     }
@@ -24,47 +23,38 @@ if (-not (Test-InternetConnection)) {
 # Check if Windows Terminal is installed
 function Check-InstallWindowsTerminal {
     if (!(Get-Command -Name "wt" -ErrorAction SilentlyContinue)) {
-        Write-Host "Windows Terminal not found. Installing Windows Terminal..."
+        Write-Host "Installing Windows Terminal..."
         try {
-            winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements -q
+            winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements -h
         } catch {
-            Write-Error "Failed to install Windows Terminal."
-            break
+            Write-Host "Error: Failed to install Windows Terminal."
         }
     } else {
         Write-Host "Windows Terminal is already installed."
     }
 }
+
 Check-InstallWindowsTerminal
 
 # Check if PowerShell 7 is installed
 function Check-InstallPowerShell7 {
     if (-not (Get-Command -Name "pwsh" -ErrorAction SilentlyContinue)) {
-        Write-Host "PowerShell 7 not found. Installing PowerShell 7..."
+        Write-Host "Installing PowerShell 7..."
         try {
-            winget install --id Microsoft.Powershell --e --accept-source-agreements --accept-package-agreements -q
+            winget install --id Microsoft.Powershell --e --accept-source-agreements --accept-package-agreements
         } catch {
-            Write-Error "Failed to install PowerShell 7."
-            break
+            Write-Host "Error: Failed to install PowerShell 7."
         }
     } else {
         Write-Host "PowerShell 7 is already installed."
     }
 }
-Check-InstallPowerShell7
 
-# install/upgrade WINGET package installer (pwshell)
-try {
-    Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe -ErrorAction SilentlyContinue
-}
-catch {
-    Write-Error "Failed to install/upgrade WINGET package."
-}
+Check-InstallPowerShell7
 
 # Profile creation or update
 if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
     try {
-        # Detect Version of PowerShell & Create Profile directories if they do not exist.
         $profilePath = ""
         if ($PSVersionTable.PSEdition -eq "Core") { 
             $profilePath = "$env:userprofile\Documents\Powershell"
@@ -74,36 +64,30 @@ if (!(Test-Path -Path $PROFILE -PathType Leaf)) {
         }
 
         if (!(Test-Path -Path $profilePath)) {
-            New-Item -Path $profilePath -ItemType "directory" -Force -ErrorAction SilentlyContinue
+            New-Item -Path $profilePath -ItemType "directory"
         }
 
-        Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE -ErrorAction SilentlyContinue
-        Write-Host "The profile @ [$PROFILE] has been created."
-        Write-Host "If you want to add any persistent components, please do so at [$profilePath\Profile.ps1] as there is an updater in the installed profile which uses the hash to update the profile and will lead to loss of changes"
+        Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE
+        Write-Host "Applying PowerShell profile..."
+    } catch {
+        Write-Host "Error: Failed to create or update the profile."
     }
-    catch {
-        Write-Error "Failed to create or update the profile."
-    }
-}
-else {
+} else {
     try {
-        Get-Item -Path $PROFILE | Move-Item -Destination "oldprofile.ps1" -Force -ErrorAction SilentlyContinue
-        Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE -ErrorAction SilentlyContinue
-        Write-Host "The profile @ [$PROFILE] has been created and old profile removed."
-        Write-Host "Please back up any persistent components of your old profile to [$HOME\Documents\PowerShell\Profile.ps1] as there is an updater in the installed profile which uses the hash to update the profile and will lead to loss of changes"
-    }
-    catch {
-        Write-Error "Failed to backup and update the profile."
+        Get-Item -Path $PROFILE | Move-Item -Destination "oldprofile.ps1" -Force
+        Invoke-RestMethod https://github.com/tejasholla/powershell-profile/raw/main/Microsoft.PowerShell_profile.ps1 -OutFile $PROFILE
+        Write-Host "Applying PowerShell profile..."
+    } catch {
+        Write-Host "Error: Failed to backup and update the profile."
     }
 }
 
-# OMP Install
+# Oh My Posh Install
 try {
-    winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh -q
-    Write-Host "Oh My Posh installed successfully."
-}
-catch {
-    Write-Error "Failed to install Oh My Posh."
+    Write-Host "Installing Oh-My-Posh & theme..."
+    winget install -e --accept-source-agreements --accept-package-agreements JanDeDobbeleer.OhMyPosh
+} catch {
+    Write-Host "Error: Failed to install Oh My Posh."
 }
 
 # Font Install
@@ -129,96 +113,164 @@ try {
 
         Remove-Item -Path ".\CascadiaCode" -Recurse -Force
         Remove-Item -Path ".\CascadiaCode.zip" -Force
-        Write-Host "Cascadia Code font installed successfully."
+        Write-Host "Installing Caskaydia Cove Nerd fonts..."
+    } else {
+        Write-Host "Caskaydia Cove Nerd fonts are already installed."
     }
-}
-catch {
-    Write-Error "Failed to download or install the Cascadia Code font."
-}
-
-# Final check and message to the user
-if ((Test-Path -Path $PROFILE) -and (winget list --name "OhMyPosh" -e) -and ($fontFamilies -contains "CaskaydiaCove NF")) {
-    Write-Host "Setup completed successfully. Please restart your PowerShell session to apply changes."
-} else {
-    Write-Warning "Setup completed with errors. Please check the error messages above."
+} catch {
+    Write-Host "Error: Failed to download or install the Cascadia Code font."
 }
 
-# Choco install
+# Pester Install
 try {
+    Write-Host "Installing Pester..."
+    Install-Module -Name Pester -Force -SkipPublisherCheck
+} catch {
+    Write-Host "Error: Failed to install Pester module."
+}
+
+# Terminal Icons Install
+try {
+    Write-Host "Installing Terminal-Icons modules..."
+    Install-Module -Name Terminal-Icons -Repository PSGallery -Force
+} catch {
+    Write-Host "Error: Failed to install Terminal Icons module."
+}
+
+# PSFzf Install
+try {
+    Write-Host "Installing PSFzf..."
+    Install-Module -Name PSFzf -Scope CurrentUser -Force
+} catch {
+    Write-Host "Error: Failed to install PSFzf module."
+}
+
+# PSReadLine Install
+try {
+    Write-Host "Installing PSReadLine..."
+    Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force
+} catch {
+    Write-Host "Error: Failed to install PSReadLine module."
+}
+
+# fzf Install
+try {
+    Write-Host "Installing fzf..."
+    scoop install fzf
+} catch {
+    Write-Host "Error: Failed to install fzf module."
+}
+
+# speedtest Install
+try {
+    Write-Host "Installing speedtest-cli..."
+    pip install speedtest-cli
+} catch {
+    Write-Host "Error: Failed to install speedtest module."
+}
+
+# zoxide Install
+try {
+    Write-Host "Installing zoxide..."
+    winget install -e --id ajeetdsouza.zoxide
+} catch {
+    Write-Host "Error: Failed to install zoxide."
+}
+
+# CompletionPredictor Install
+try {
+    Write-Host "Installing CompletionPredictor..."
+    Install-Module -Name CompletionPredictor -Scope CurrentUser -Force -SkipPublisherCheck
+} catch {
+    Write-Host "Error: Failed to install CompletionPredictor."
+}
+
+# Scoop Install
+try {
+    Write-Host "Installing Scoop..."
+    Invoke-Expression (New-Object System.Net.WebClient).DownloadString('https://get.scoop.sh')
+    Write-Host "Installing aria2..."
+    scoop install aria2
+    scoop config aria2-warning-enabled false
+    Write-Host "Installing git..."
+    scoop install git
+    Write-Host "Installing fastfetch..."
+    scoop install fastfetch
+    Write-Host "Installing vcredist2010..."
+    scoop install vcredist2010
+    Write-Host "Installing ffmpeg..."
+    scoop install ffmpeg
+    Write-Host "Installing gsudo..."
+    scoop install gsudo
+    Write-Host "Adding versions bucket and installing neovim..."
+    scoop bucket add versions
+    scoop install neovim
+    scoop update neovim
+    Write-Host "Installing ripgrep..."
+    scoop install ripgrep
+    Write-Host "Installing fd..."
+    scoop install fd
+    Write-Host "Installing lazygit..."
+    scoop install lazygit
+    Write-Host "Adding extras bucket and installing universal-ctags..."
+    scoop bucket add extras
+    scoop install universal-ctags
+    Write-Host "Installing 7zip..."
+    scoop install 7zip
+} catch {
+    Write-Host "Error: Failed to install scoop packages."
+}
+
+# WSL Install
+try {
+    Write-Host "Enabling WSL..."
+    & dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+    Write-Host "Enabling virtual machine platform..."
+    & dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+    Write-Host "Setting WSL version to 2..."
+    & wsl --set-default-version 2
+} catch {
+    Write-Host "Error: Failed to enable WSL or set version."
+}
+
+# Chocolatey Install
+try {
+    Write-Host "Installing Chocolatey..."
     Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    Write-Host "Chocolatey installed successfully."
-}
-catch {
-    Write-Error "Failed to install Chocolatey."
+} catch {
+    Write-Host "Error: Failed to install Chocolatey."
 }
 
-# Scoop install
-if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Write-Host "Scoop is not installed. Installing Scoop..."
-    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression -ErrorAction SilentlyContinue
-    Write-Host "Scoop installed successfully."
-} else {
-    Write-Host "Scoop is already installed."
-}
-
-# Make Scoop downloads faster
-scoop install aria2 -q
-scoop config aria2-warning-enabled false -q
-
-# Install git
-scoop install git -q
-
-# Fastfetch install
-scoop install fastfetch -q
-Rename-Item -Path "~/.config/fastfetch/config.jsonc" -NewName ("config." + (Get-Date -Format 'dd-MM-yyyy.HH.mm.ss') + ".jsonc") -ErrorAction SilentlyContinue
-fastfetch --gen-config
-Remove-Item ~\.config\fastfetch\config.jsonc -Force
-Copy-Item -Path ~\scoop\apps\fastfetch\current\presets\paleofetch.jsonc -Destination ~/.config/fastfetch/config.jsonc -Force
-
-# GUI is bloat
-scoop install vcredist2010 -q
-scoop install ffmpeg -q
-
-# sudo
-scoop install gsudo -q
-
-# install/upgrade notepad++ (winget)
+# Notepad++ Install
 try {
-    winget install notepad++.notepad++ -q
-    Write-Host "Notepad++ installed successfully."
-}
-catch {
-    Write-Error "Failed to install/upgrade Notepad++."
+    Write-Host "Installing Notepad++..."
+    choco install notepadplusplus -y
+} catch {
+    Write-Host "Error: Failed to install Notepad++."
 }
 
-# Install neovim nightly
-scoop bucket add versions -q
-
-# install/upgrade neovim
+# 7zip Install
 try {
-    scoop install neovim -q
-    scoop update neovim -q
-    Write-Host "Neovim installed/updated successfully."
-}
-catch {
-    Write-Error "Failed to install/upgrade Neovim."
+    Write-Host "Installing 7zip..."
+    choco install 7zip -y
+} catch {
+    Write-Host "Error: Failed to install 7zip."
 }
 
-# Install ripgrep
-scoop install ripgrep -q
+# cmake Install
+try {
+    Write-Host "Installing cmake..."
+    choco install cmake -y
+} catch {
+    Write-Host "Error: Failed to install cmake."
+}
 
-# Install fd
-scoop install fd -q
+# Clean temporary files after installations
+try {
+    Write-Host "Cleaning up temporary files..."
+    Remove-Item -Path "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+} catch {
+    Write-Host "Error: Failed to clean temporary files."
+}
 
-# Install lazygit
-scoop install lazygit -q
-
-# Install universal-ctags
-scoop bucket add extras -q
-scoop install universal-ctags -q
-
-# Install 7zip
-scoop install 7zip -q
-
-# Install alacritty
-scoop install alacritty -q
+Write-Host "Installation complete!"
