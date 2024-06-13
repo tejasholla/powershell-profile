@@ -776,36 +776,6 @@ function shorturl {
     Remove-Item -Path $tempFile -Force
 }
 
-# Function to remove temporary files
-function Remove-TempFiles {
-    param (
-        [string]$outputFile,
-        [string]$errorFile,
-        [string[]]$processNames
-    )
-
-    # Wait until all specified processes are no longer running
-    foreach ($processName in $processNames) {
-        while (Get-Process -Name $processName -ErrorAction SilentlyContinue) {
-            Start-Sleep -Seconds 5
-        }
-    }
-
-    Write-Host "Processes have ended. Removing temporary files..." -ForegroundColor Yellow
-
-    # Remove the temporary files
-    while ($true) {
-        try {
-            Remove-Item $outputFile, $errorFile -Force
-            Write-Host "Temporary files removed." -ForegroundColor Green
-            break
-        } catch {
-            # Wait and try again if the files are in use
-            Start-Sleep -Seconds 5
-        }
-    }
-}
-
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
     wsl --shutdown
