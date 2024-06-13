@@ -1,8 +1,23 @@
+### PowerShell Profile Refactor
+### Version 1.03 - Refactored
+
 # Set PowerShell to use UTF-8 encoding for both input and output
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
-### PowerShell Profile Refactor
-### Version 1.03 - Refactored
+#################################################################################################################################
+############                                                                                                         ############
+############                                          !!!   WARNING:   !!!                                           ############
+############                                                                                                         ############
+############                DO NOT MODIFY THIS FILE. THIS FILE IS HASHED AND UPDATED AUTOMATICALLY.                  ############
+############                    ANY CHANGES MADE TO THIS FILE WILL BE OVERWRITTEN BY COMMITS TO                      ############
+############                       https://github.com/tejasholla/powershell-profile.git.                             ############
+############                                                                                                         ############
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!#
+############                                                                                                         ############
+############                      IF YOU WANT TO MAKE CHANGES, USE THE Edit-Profile FUNCTION                         ############
+############                              AND SAVE YOUR CHANGES IN THE FILE CREATED.                                 ############
+############                                                                                                         ############
+#################################################################################################################################
 
 # Initial GitHub.com connectivity check with 1 second timeout
 $canConnectToGitHub = Test-Connection github.com -Count 1 -Quiet -TimeoutSeconds 1
@@ -736,32 +751,6 @@ function shellhere {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/PowerShellHere.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
     Invoke-Expression $scriptContent
-}
-
-function hb {
-    if ($args.Length -eq 0) {
-        Write-Error "No file path specified."
-        return
-    }
-    
-    $FilePath = $args[0]
-    
-    if (Test-Path $FilePath) {
-        $Content = Get-Content $FilePath -Raw
-    } else {
-        Write-Error "File path does not exist."
-        return
-    }
-    
-    $uri = "http://bin.christitus.com/documents"
-    try {
-        $response = Invoke-RestMethod -Uri $uri -Method Post -Body $Content -ErrorAction Stop
-        $hasteKey = $response.key
-        $url = "http://bin.christitus.com/$hasteKey"
-        Write-Output $url
-    } catch {
-        Write-Error "Failed to upload the document. Error: $_"
-    }
 }
 
 function debloat {
