@@ -179,12 +179,10 @@ function Update-PowerShell {
 }
 Update-PowerShell
 
-#region prompt
 # Shim the oh-my-posh prompt function to:
 #  * add git info to oh-my-posh
 #  * show toasts for long running commands
 #  * add scrollbar mark support
-IncrementProgress "Prompt shim";
 Copy-Item Function:prompt Function:poshPrompt;
 function prompt {
     $previousSuccess = $?;
@@ -253,7 +251,6 @@ function prompt {
     }
     $global:LASTEXITCODE = 0;
 }
-#endregion
 
 function admin {
     if ($args.Count -gt 0) {
