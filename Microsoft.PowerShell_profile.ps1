@@ -776,6 +776,24 @@ function shorturl {
     Remove-Item -Path $tempFile -Force
 }
 
+Function WhoIs {
+    param (
+                    [Parameter(Mandatory=$True,
+                               HelpMessage='Please enter domain name (e.g. microsoft.com)')]
+                               [string]$domain
+            )
+    Write-Host "Connecting to Web Services URL..." -ForegroundColor Green
+    try {
+    #Retrieve the data from web service WSDL
+    If ($whois = New-WebServiceProxy -uri "http://www.webservicex.net/whois.asmx?WSDL") {Write-Host "Ok" -ForegroundColor Green}
+    else {Write-Host "Error" -ForegroundColor Red}
+    Write-Host "Gathering $domain data..." -ForegroundColor Green
+    #Return the data
+    (($whois.getwhois("=$domain")).Split("<<<")[0])
+    } catch {
+    Write-Host "Please enter valid domain name (e.g. microsoft.com)." -ForegroundColor Red}
+    } #end function WhoIs
+    
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
     wsl --shutdown
