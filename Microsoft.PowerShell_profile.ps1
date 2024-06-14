@@ -47,16 +47,20 @@ $Host.UI.RawUI.WindowTitle = "PowerShell {0}$adminSuffix" -f $PSVersionTable.PSV
 # Set colors based on whether the session is running as administrator
 if ($isAdmin) {
     Set-PSReadLineOption -Colors @{
+        Default            = '#98C379'
         Command            = '#f6de4b'
-        Parameter          = 'Green'
-        String             = 'DarkCyan'
-        Operator           = 'Magenta'
+        Comment            = 'DarkCyan'
         ContinuationPrompt = '#56B6C2'
         Error              = '#E06C75'
-        Variable           = 'Yellow'  
-        Number             = 'Red'
+        keyword            = '#C678DD'
+        String             = 'DarkCyan'
+        Number             = '#E5C07B'
+        Member             = '#56B6C2'
+        Operator           = 'Magenta'
         Type               = 'Cyan'
-        Comment            = 'DarkCyan'
+        Parameter          = 'Green' 
+        Variable           = 'Yellow'  
+        Emphasis           = '#98C379'
         InlinePrediction   = '#70A99F'
     }
 } else {
