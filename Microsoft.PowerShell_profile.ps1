@@ -252,6 +252,47 @@ function prompt {
     $global:LASTEXITCODE = 0;
 }
 
+#region clickablepaths
+# This function takes a URI and text, and returns
+# the text formatted with ANSI escape sequence to make
+# a link from that.
+function Format-TerminalClickableString {
+  param(
+    $Uri,
+    $DisplayText);
+
+  $clickableFormatString = "`e]8;;{0}`e\{1}`e]8;;`e\"
+  $formattedString = ($clickableFormatString -F ($Uri,$DisplayText));
+  $formattedString;
+}
+
+# Make the result of dir into clickable links.
+# This is used by ./TerminalClickable.format.ps1xml
+function Format-TerminalClickableFileInfo {
+  [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
+  [OutputType([string])]
+  [CmdletBinding()]
+  param(
+      [Parameter(Mandatory, ValueFromPipeline)]
+      [IO.FileSystemInfo]$FileInfo
+  )
+
+  process {
+    if (Test-Path function:Format-TerminalIcons) {
+      $displayText = Format-TerminalIcons $FileInfo;
+    } else {
+      $displayText = $FileInfo.Name;
+    }
+    Format-TerminalClickableString $FileInfo.FullName $displayText;
+  }
+}
+
+# Run after Terminal-Icons to have both terminal-icons and clickable
+# paths.
+$terminableClickableFormatPath = (Join-Path $PSScriptRoot "TerminalClickable.format.ps1xml");
+Update-FormatData -PrependPath $terminableClickableFormatPath;
+#endregion
+
 function admin {
     if ($args.Count -gt 0) {
         $argList = "& '$args'"
