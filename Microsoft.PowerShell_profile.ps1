@@ -53,21 +53,21 @@ if (Test-IsAdministrator) {
     }
 } else {
     Set-PSReadLineOption -Colors @{
-        Default            = '#98C379'
-        Command            = '#61AFEF'
-        Comment            = '#abb2bf'
-        ContinuationPrompt = '#56B6C2'
-        Error              = '#E06C75'
-        keyword            = '#C678DD'
-        String             = '#e6a26f'
-        Number             = '#E5C07B'
-        Member             = '#56B6C2'
-        Operator           = '#C678DD'
-        Type               = '#98C379'
-        Parameter          = '#e6a26f'
-        Variable           = '#E06C75'
-        Emphasis           = '#98C379'
-        InlinePrediction   = '#E5C07B'
+        Default            = '#98C379' #Light Green
+        Command            = '#61AFEF' #Light Blue
+        Comment            = '#abb2bf' #Light Gray
+        ContinuationPrompt = '#56B6C2' #Cyan
+        Error              = '#E06C75' #Light Red
+        keyword            = '#C678DD' #Light Purple
+        String             = '#e6a26f' #Light Orange
+        Number             = '#E5C07B' #Light Yellow
+        Member             = '#56B6C2' #Cyan
+        Operator           = '#C678DD' #Light Purple
+        Type               = '#98C379' #Light Green
+        Parameter          = '#e6a26f' #Light Orange
+        Variable           = '#E06C75' #Light Red
+        Emphasis           = '#98C379' #Light Green
+        InlinePrediction   = '#E5C07B' #Light Yellow
     }
 }
 
