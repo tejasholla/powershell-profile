@@ -56,6 +56,8 @@ Set-PSReadLineOption -EditMode Emacs
 Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
+Set-PSReadlineKeyHandler -Key 'Escape,_' -Function YankLastArg
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin -BellStyle Visual
