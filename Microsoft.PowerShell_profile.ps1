@@ -440,27 +440,20 @@ function scanhealth { DISM /Online /Cleanup-Image /ScanHealth }
 function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
 
 # Networking Utilities -----------------------------------------------------------------------------------------------------------------
-function online {
-	param($computername)
-	return (test-connection $computername -count 1 -quiet)
-}
-
-function flushdns { Clear-DnsClientCache }
-
-Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
-
-function ipall { ipconfig /all }
-
-function ipnew {
-        ipconfig /release
-	  ipconfig /renew
-}
-
-function ipflush { ipconfig /flushdns }
-
 function wifinetwork{netsh wlan show profile}
 
 function thiswifi{netsh wlan show profile $args key=clear | findstr “Key Content”}
+
+function wifi {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/Wifi-Password/main.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\main.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
+}
 
 function networkdetails{netsh wlan show interfaces}
 
@@ -497,6 +490,24 @@ function Get-HWVersion($computer, $name) {
     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
           Sort DeviceName | 
           Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
+}
+
+function flushdns { Clear-DnsClientCache }
+
+Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
+
+function ipall { ipconfig /all }
+
+function ipnew {
+        ipconfig /release
+	  ipconfig /renew
+}
+
+function ipflush { ipconfig /flushdns }
+
+function online {
+	param($computername)
+	return (test-connection $computername -count 1 -quiet)
 }
 
 function ipchange {
