@@ -41,7 +41,7 @@ After the profile is installed and active, run the `Edit-Profile` function to cr
 ## License
 
 This project is licensed under the MIT License. See the LICENSE file for details.
-
+---
 ***Remember, with great power comes great responsibility. Use these spells wisely, and let the magic unfold!***
 
 Now, enjoy your enhanced and stylish PowerShell experience! 🚀
