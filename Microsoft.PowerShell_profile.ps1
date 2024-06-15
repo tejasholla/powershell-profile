@@ -717,6 +717,10 @@ function loc {
 }
 
 function maps {
+    Start-Process "https://www.openstreetmap.org/"
+}
+
+function gmaps {
     param([string] $From, [String] $To)
 
     process {
