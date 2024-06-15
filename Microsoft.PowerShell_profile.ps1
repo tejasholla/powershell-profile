@@ -333,14 +333,6 @@ function youtube{start www.youtube.com}
 
 function wiki{start https://www.wikiwand.com/en/$args}
 
-function Get-GoogleDirections {
-    param([string] $From, [String] $To)
-
-    process {
-        Start-Process "https://www.google.com/maps/dir/$From/$To/"
-    }
-}
-
 function url {
     param(
         [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
@@ -678,6 +670,26 @@ function imgcomp {
     Invoke-WebRequest -Uri $url -OutFile $scriptPath
     # Execute the downloaded Python script
     python $scriptPath
+}
+
+# Location or map functions -------------------------------------------------------------------------------------------------------
+function loc {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/YourLocation/YourLocation.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\YourLocation.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
+}
+
+function Get-GoogleDirections {
+    param([string] $From, [String] $To)
+
+    process {
+        Start-Process "https://www.google.com/maps/dir/$From/$To/"
+    }
 }
 
 # Recycle bin functions -----------------------------------------------------------------------------------------------------------
