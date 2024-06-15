@@ -437,6 +437,17 @@ function scanhealth { DISM /Online /Cleanup-Image /ScanHealth }
 
 function restorehealth { DISM /Online /Cleanup-Image /RestoreHealth }
 
+function syshealthreport {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/system_health_report.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\system_health_report.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
+}
+
 # Networking Utilities -----------------------------------------------------------------------------------------------------------------
 function wifinetwork{netsh wlan show profile}
 
