@@ -672,13 +672,10 @@ function which($name) { Get-Command $name | Select-Object -ExpandProperty Defini
 function imgcomp {
     # Define the URL of the Python script
     $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/Image_Compressor/Image_Compressor.py"
-
     # Define the path to save the downloaded script
     $scriptPath = "$env:Temp\Image_Compressor.py"
-
     # Download the Python script
     Invoke-WebRequest -Uri $url -OutFile $scriptPath
-
     # Execute the downloaded Python script
     python $scriptPath
 }
