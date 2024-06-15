@@ -305,8 +305,6 @@ function telegram{start https://web.telegram.org/a/}
 
 function photos{start https://photos.google.com/}
 
-function imagecompress{start https://www.iloveimg.com/compress-image}
-
 # Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload {
     # Assuming the script is accessible via the URL
@@ -672,11 +670,22 @@ function New-Directory {
 
 function which($name) { Get-Command $name | Select-Object -ExpandProperty Definition }
 
-function imgcomp {
+function batchrename {
     # Define the URL of the Python script
-    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/Image_Compressor/Image_Compressor.py"
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/batch_rename.py"
     # Define the path to save the downloaded script
-    $scriptPath = "$env:Temp\Image_Compressor.py"
+    $scriptPath = "$env:Temp\batch_rename.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
+}
+
+function organizer {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/organizer.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\organizer.py"
     # Download the Python script
     Invoke-WebRequest -Uri $url -OutFile $scriptPath
     # Execute the downloaded Python script
@@ -701,6 +710,20 @@ function Get-GoogleDirections {
     process {
         Start-Process "https://www.google.com/maps/dir/$From/$To/"
     }
+}
+
+# Image compressor functions ------------------------------------------------------------------------------------------------------
+function imagecompress{start https://www.iloveimg.com/compress-image}
+
+function imgcomp {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/Image_Compressor/Image_Compressor.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\Image_Compressor.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
 }
 
 # Recycle bin functions -----------------------------------------------------------------------------------------------------------
