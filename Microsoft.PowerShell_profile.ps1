@@ -602,7 +602,7 @@ function Expand-File {
         Write-Host "File extraction process completed." -ForegroundColor Cyan
       }
     }
-  }
+}
 
 function grep($regex, $dir) {
         if ( $dir ) {
