@@ -403,6 +403,7 @@ function gcom {
     git add .
     git commit -m "$args"
 }
+
 function lazyg {
     git add .
     git commit -m "$args"
@@ -715,7 +716,7 @@ function loc {
     python $scriptPath
 }
 
-function Get-GoogleDirections {
+function maps {
     param([string] $From, [String] $To)
 
     process {
