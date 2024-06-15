@@ -393,7 +393,7 @@ function gadd {git add "$args"}
 
 function gc { param($m) git commit -m "$m" }
 
-function gcl { git clone "$args" }
+function clone { git clone "$args" }
 
 function gp { git push }
 
