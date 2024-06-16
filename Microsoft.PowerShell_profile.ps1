@@ -38,6 +38,7 @@ Import-Module -Name z
 
 # Admin Check and Prompt Customization
 $isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+
 function prompt {
     if ($isAdmin) { "[" + (Get-Location) + "] # " } else { "[" + (Get-Location) + "] $ " }
 }
@@ -344,7 +345,7 @@ function url {
     }
 }
 
-# windows defender ----------------------------------------------------------------------------------------------------------------
+# windows tools ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
@@ -361,6 +362,13 @@ function windef {
     } catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
+}
+
+function windrive {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Download_Install_Updates_for_Drivers.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 # Enhanced Listing -----------------------------------------------------------------------------------------------------------------
@@ -774,6 +782,13 @@ function binclean {
         Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
     }
     Write-Host "Recycle Bin cleanup complete."
+}
+
+function clean {
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean up Windows.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 # weather function ---------------------------------------------------------------------------------------------------------------------
