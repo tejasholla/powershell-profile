@@ -1,11 +1,24 @@
-# Add PowerShell Prompt Here to Explorer context menu for Windows PowerShell v1.0
+if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\.ps1))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\.ps1 -Force
+}
 
-New-Item HKLM:\SOFTWARE\Classes\Directory\shell\PowerShellHere
-New-Item HKLM:\SOFTWARE\Classes\Directory\shell\PowerShellHere\command
-Set-ItemProperty HKLM:\SOFTWARE\Classes\Directory\shell\PowerShellHere -Name "(Default)" -Value "PowerShell Prompt Here"
-Set-ItemProperty HKLM:\SOFTWARE\Classes\Directory\shell\PowerShellHere\command -Name "(Default)" -Value "`"$PSHome\powershell.exe`" -NoExit -Command Set-Location -LiteralPath `'%L`'"
+if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1 -Force
+}
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1 -Name EditFlags -Type DWord -Value 131072 -Force
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1 -Name FriendlyTypeName -Type ExpandString -Value "@`"%systemroot%\system32\windowspowershell\v1.0\powershell.exe`",-103" -Force
 
-New-Item HKLM:\SOFTWARE\Classes\Drive\shell\PowerShellHere
-New-Item HKLM:\SOFTWARE\Classes\Drive\shell\PowerShellHere\command
-Set-ItemProperty HKLM:\SOFTWARE\Classes\Drive\shell\PowerShellHere -Name "(Default)" -Value "PowerShell Prompt Here"
-Set-ItemProperty HKLM:\SOFTWARE\Classes\Drive\shell\PowerShellHere\command -Name "(Default)" -Value "`"$PSHome\powershell.exe`" -NoExit -Command Set-Location -LiteralPath `'%L`'"
+if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\DefaultIcon))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\DefaultIcon -Force
+}
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\DefaultIcon -Name "(Default)" -Type String -Value "`"C:\Windows\System32\WindowsPowerShell\v1.0\powershell_ise.exe`",1" -Force
+
+if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\Shell\RunAs\Command))
+{
+	New-Item -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\Shell\RunAs\Command -Force
+}
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\Shell\RunAs -Name HasLUAShield -Type String -Value "" -Force
+New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Microsoft.PowerShellScript.1\Shell\RunAs\Command -Name "(Default)" -Type String -Value "powershell.exe -NoExit -ExecutionPolicy Bypass -Command & '%1'"
