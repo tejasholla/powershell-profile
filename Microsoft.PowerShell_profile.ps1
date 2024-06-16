@@ -364,13 +364,6 @@ function windef {
     }
 }
 
-function windrive {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Download_Install_Updates_for_Drivers.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
-}
-
 # Enhanced Listing -----------------------------------------------------------------------------------------------------------------
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 
