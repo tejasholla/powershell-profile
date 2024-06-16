@@ -784,9 +784,9 @@ function binclean {
     Write-Host "Recycle Bin cleanup complete."
 }
 
-function clean {
+function cleanwin {
     # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean up Windows.ps1"
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
     Invoke-Expression $scriptContent
 }
