@@ -266,6 +266,7 @@ Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias hosts EditHosts -option AllScope
 Set-Alias history EditHistory -option AllScope
+Set-Alias -Name vim -Value $EDITOR
 
 # Function definitions ------------------------------------------------------------------------------------------------------------
 function profile {
@@ -295,7 +296,6 @@ $EDITOR = if (Test-CommandExists nvim) { 'nvim' }
           elseif (Test-CommandExists code) { 'code' }
           elseif (Test-CommandExists notepad++) { 'npp' }
           else { 'notepad' }
-Set-Alias -Name vim -Value $EDITOR
 
 function Launch-Nvim {
 	$mycmd = "nvim"
