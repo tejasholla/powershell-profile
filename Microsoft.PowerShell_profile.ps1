@@ -912,25 +912,15 @@ function chatty {
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
 function Get-Theme {
-    $themeConfigUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
-
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType Leaf) {
-        $profileContent = Get-Content -Path $PROFILE.CurrentUserAllHosts -Raw
-        $existingTheme = $profileContent | Select-String -Pattern "oh-my-posh init pwsh --config"
-
-        if ($null -ne $existingTheme) {
-            # Remove the existing theme initialization line
-            $newProfileContent = $profileContent -replace [regex]::Escape($existingTheme.Line), ""
-            Set-Content -Path $PROFILE.CurrentUserAllHosts -Value $newProfileContent
+    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+        if ($null -ne $existingTheme) { # $null
+            Invoke-Expression $existingTheme
+            return
         }
+    } else {
+        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
-
-    # Add the new theme initialization line
-    $themeInitialization = "oh-my-posh init pwsh --config $themeConfigUrl | Invoke-Expression"
-    Add-Content -Path $PROFILE.CurrentUserAllHosts -Value $themeInitialization
-
-    # Apply the theme immediately
-    Invoke-Expression $themeInitialization
 }
 Get-Theme
 
