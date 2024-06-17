@@ -912,16 +912,28 @@ function chatty {
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
 function Get-Theme {
-    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
-        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($null -ne $existingTheme) { # $null
-            Invoke-Expression $existingTheme
-            return
+    $configUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
+    $profilePath = $PROFILE.CurrentUserAllHosts
+
+    # Check if the profile file exists
+    if (Test-Path -Path $profilePath -PathType Leaf) {
+        # Get the existing theme configuration
+        $existingTheme = Select-String -Raw -Path $profilePath -Pattern "oh-my-posh init pwsh --config"
+
+        if ($null -ne $existingTheme) {
+            # Remove the existing theme configuration
+            (Get-Content -Path $profilePath) -notmatch "oh-my-posh init pwsh --config" | Set-Content -Path $profilePath
         }
-    } else {
-        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
+
+    # Add or update the theme configuration
+    $themeConfig = "oh-my-posh init pwsh --config $configUrl | Invoke-Expression"
+    Add-Content -Path $profilePath -Value $themeConfig
+
+    # Load the new theme
+    Invoke-Expression $themeConfig
 }
+
 Get-Theme
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
