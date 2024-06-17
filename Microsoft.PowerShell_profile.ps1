@@ -101,7 +101,7 @@ Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key 'Ctrl+r' -Function ReverseSearchHistory
+Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
 Set-PSReadLineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
 Set-PSReadLineKeyHandler -Key 'Ctrl+e' -Function EndOfLine
