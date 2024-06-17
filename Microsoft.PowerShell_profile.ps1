@@ -245,6 +245,8 @@ set-Alias root Set-Home
 Set-Alias -Name vi -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
 Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
+Set-Alias hosts EditHosts -option AllScope
+Set-Alias history EditHistory -option AllScope
 
 # Function definitions ------------------------------------------------------------------------------------------------------------
 function profile {
@@ -255,6 +257,8 @@ function profile {
 function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload-profile { & $profile }
+
+function EditHistory {npp (Get-PSReadlineOption).HistorySavePath}
 
 # app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -552,6 +556,8 @@ function iplocate {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
+
+function EditHosts {sudo notepad $env:windir\System32\drivers\etc\hosts}
 
 # Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
 function cpy { Set-Clipboard $args[0] }
