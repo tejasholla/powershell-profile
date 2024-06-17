@@ -323,7 +323,7 @@ function keybind {
  	Start-Process $path
  }
 
-function ex{explorer .}
+ function ex { explorer . }
 
 function telegram{start https://web.telegram.org/a/}
 
