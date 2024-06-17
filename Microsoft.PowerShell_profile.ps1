@@ -911,7 +911,18 @@ function chatty {
 }
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
-oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+function Get-Theme {
+    if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
+        $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
+        if ($null -ne $existingTheme) { # $null
+            Invoke-Expression $existingTheme
+            return
+        }
+    } else {
+        oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
+    }
+}
+Get-Theme
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     # Invoke-Expression (& { (zoxide init powershell | Out-String) })
