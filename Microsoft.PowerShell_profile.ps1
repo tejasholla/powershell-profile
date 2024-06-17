@@ -100,18 +100,6 @@ Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
 Set-PSReadLineOption -HistorySearchCaseSensitive:$false
 Set-PSReadLineOption -HistoryNoDuplicates:$true
 
-$historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-
-# Read the history file
-$history = Get-Content $historyFilePath
-
-# Remove duplicates while preserving order
-$uniqueHistory = $history | Select-Object -Unique
-
-# Write the unique history back to the file
-$uniqueHistory | Set-Content $historyFilePath
-
-
 Set-PSReadLineKeyHandler -Key Alt+e `
 	-BriefDescription "CWD" `
 	-LongDescription "Open the current working directory in the Windows Explorer" `
@@ -135,6 +123,18 @@ Import-Module -Name CompletionPredictor
 
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
+
+# Set-PSReadLineOption history files duplicates clear
+function historyclear{
+    $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+    # Read the history file
+    $history = Get-Content $historyFilePath
+    # Remove duplicates while preserving order
+    $uniqueHistory = $history | Select-Object -Unique
+    # Write the unique history back to the file
+    $uniqueHistory | Set-Content $historyFilePath
+}
+historyclear
 
 # Check for Fastfetch Updates
 function Update-FastFetch {
