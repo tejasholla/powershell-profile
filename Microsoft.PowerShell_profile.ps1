@@ -124,8 +124,8 @@ Import-Module -Name CompletionPredictor
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
-# Set-PSReadLineOption history files duplicates clear
-function historyclear{
+# Function to clear duplicates in history file
+function historyclear {
     $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
     # Read the history file
     $history = Get-Content $historyFilePath
@@ -134,6 +134,31 @@ function historyclear{
     # Write the unique history back to the file
     $uniqueHistory | Set-Content $historyFilePath
 }
+
+# Function to add command to history if it doesn't already exist
+function Add-UniqueHistory {
+    param (
+        [string]$Command
+    )
+
+    $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+
+    if (-Not (Get-Content $historyFilePath | Select-String -Pattern "^$Command$")) {
+        Add-History -InputObject $Command
+        Add-Content -Path $historyFilePath -Value $Command
+    }
+}
+
+# Register the function to run after each command
+$executionContext.SessionState.InvokeCommand.PreCommandLookupAction = {
+    param ($sender, $args)
+    $currentCommand = $args.Command
+
+    # Add the current command to history if it doesn't exist
+    Add-UniqueHistory -Command $currentCommand
+}
+
+# Clear duplicates in history file when profile loads
 historyclear
 
 # Check for Fastfetch Updates
