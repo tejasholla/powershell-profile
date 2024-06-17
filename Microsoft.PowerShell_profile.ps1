@@ -221,27 +221,6 @@ function historyclear {
         Write-Error "Failed to clear history: $_"
     }
 }
-
-# Function to filter and save commands to history
-function Add-HistoryCommand {
-    param(
-        [string]$Command,
-        [bool]$Success
-    )
-
-    $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-    
-    if ($Success -and $Command -notmatch "^\s*$") {
-        Add-Content -Path $historyFile -Value $Command
-    }
-}
-
-# Register a handler for the CommandAddedToHistory event
-Register-EngineEvent -SourceIdentifier PSReadLine::CommandAddedToHistory -Action {
-    $EventArgs = $Event.MessageData
-    Add-HistoryCommand -Command $EventArgs.CommandLine -Success ($EventArgs.Result -eq "Success")
-}
-
 # Clear duplicates in history file when profile loads
 historyclear
 
