@@ -273,7 +273,7 @@ function profile {
 	Start-Process $path
 }
 
-function Edit-Profile { notepad++ "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
+function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload-profile { & $profile }
 
