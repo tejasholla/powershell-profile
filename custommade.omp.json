@@ -10,6 +10,7 @@
           "template": "{{.Icon}} ",
           "type": "os"
         },
+
         {
           "background": "#ffffff",
           "foreground": "#000000",
