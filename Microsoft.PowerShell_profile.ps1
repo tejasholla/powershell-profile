@@ -86,19 +86,31 @@ if ($isAdmin) {
 
 # PSReadLine configuration
 Set-PSReadLineOption -EditMode Emacs
-Set-PSReadLineOption -BellStyle None
 Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
 Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
 Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin -BellStyle Visual
+Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+Set-PSReadLineOption -BellStyle Visual
 Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -MaximumHistoryCount 4096
 Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
 Set-PSReadLineOption -HistorySearchCaseSensitive:$false
 Set-PSReadLineOption -HistoryNoDuplicates:$true
+
+$historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+
+# Read the history file
+$history = Get-Content $historyFilePath
+
+# Remove duplicates while preserving order
+$uniqueHistory = $history | Select-Object -Unique
+
+# Write the unique history back to the file
+$uniqueHistory | Set-Content $historyFilePath
+
 
 Set-PSReadLineKeyHandler -Key Alt+e `
 	-BriefDescription "CWD" `
