@@ -113,7 +113,7 @@ Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription 
 # Function to clear duplicate entries in the history file
 function Remove-DuplicateHistoryEntries {
     try {
-        $historyPath = [System.IO.Path]::Combine($env:APPDATA, 'Microsoft', 'Windows', 'PowerShell', 'PSReadLine', 'ConsoleHost_history.txt')
+        $historyPath = (Get-PSReadlineOption).HistorySavePath
         if (Test-Path $historyPath) {
             $uniqueHistory = Get-Content $historyPath | Select-Object -Unique
             $uniqueHistory | Set-Content $historyPath
