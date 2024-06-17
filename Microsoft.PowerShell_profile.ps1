@@ -126,13 +126,9 @@ $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
 # Function to clear duplicates in history file
 function historyclear {
-    $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-    # Read the history file
-    $history = Get-Content $historyFilePath
-    # Remove duplicates while preserving order
-    $uniqueHistory = $history | Select-Object -Unique
-    # Write the unique history back to the file
-    $uniqueHistory | Set-Content $historyFilePath
+    $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+    $history = Get-Content $historyFile | Select-Object -Unique
+    $history | Set-Content $historyFile
 }
 
 # Function to add command to history if it doesn't already exist
@@ -152,10 +148,7 @@ function Add-UniqueHistory {
 # Register the function to run after each command
 $executionContext.SessionState.InvokeCommand.PreCommandLookupAction = {
     param ($sender, $args)
-    $currentCommand = $args.Command
-
-    # Add the current command to history if it doesn't exist
-    Add-UniqueHistory -Command $currentCommand
+    Add-UniqueHistory -Command $args.Command
 }
 
 # Clear duplicates in history file when profile loads
