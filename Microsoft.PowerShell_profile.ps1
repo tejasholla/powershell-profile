@@ -124,24 +124,32 @@ Import-Module -Name CompletionPredictor
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
-# Function to clear duplicates in history file
+# Function to clear duplicate entries in the history file
 function historyclear {
-    $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-    $history = Get-Content $historyFile | Select-Object -Unique
-    $history | Set-Content $historyFile
+    try {
+        $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+        $history = Get-Content $historyFile | Select-Object -Unique
+        $history | Set-Content $historyFile
+    } catch {
+        Write-Error "Failed to clear history: $_"
+    }
 }
 
-# Function to add command to history if it doesn't already exist
+# Function to add a command to history if it doesn't already exist
 function Add-UniqueHistory {
     param (
         [string]$Command
     )
 
-    $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+    try {
+        $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
 
-    if (-Not (Get-Content $historyFilePath | Select-String -Pattern "^$Command$")) {
-        Add-History -InputObject $Command
-        Add-Content -Path $historyFilePath -Value $Command
+        if (-Not (Get-Content $historyFilePath | Select-String -Pattern "^$Command$")) {
+            Add-History -InputObject $Command
+            Add-Content -Path $historyFilePath -Value $Command
+        }
+    } catch {
+        Write-Error "Failed to add command to history: $_"
     }
 }
 
@@ -153,6 +161,7 @@ $executionContext.SessionState.InvokeCommand.PreCommandLookupAction = {
 
 # Clear duplicates in history file when profile loads
 historyclear
+
 
 # Check for Fastfetch Updates
 function Update-FastFetch {
