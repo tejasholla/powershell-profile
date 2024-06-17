@@ -124,45 +124,6 @@ Import-Module -Name CompletionPredictor
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
-# Function to clear duplicate entries in the history file
-function historyclear {
-    try {
-        $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-        $history = Get-Content $historyFile | Select-Object -Unique
-        $history | Set-Content $historyFile
-    } catch {
-        Write-Error "Failed to clear history: $_"
-    }
-}
-
-# Function to add a command to history if it doesn't already exist
-function Add-UniqueHistory {
-    param (
-        [string]$Command
-    )
-
-    try {
-        $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-
-        if (-Not (Get-Content $historyFilePath | Select-String -Pattern "^$Command$")) {
-            Add-History -InputObject $Command
-            Add-Content -Path $historyFilePath -Value $Command
-        }
-    } catch {
-        Write-Error "Failed to add command to history: $_"
-    }
-}
-
-# Register the function to run after each command
-$executionContext.SessionState.InvokeCommand.PreCommandLookupAction = {
-    param ($sender, $args)
-    Add-UniqueHistory -Command $args.Command
-}
-
-# Clear duplicates in history file when profile loads
-historyclear
-
-
 # Check for Fastfetch Updates
 function Update-FastFetch {
     if (-not $global:canConnectToGitHub) {
@@ -249,6 +210,43 @@ function Update-PowerShell {
     }
 }
 Update-PowerShell
+
+# Function to clear duplicate entries in the history file
+function historyclear {
+    try {
+        $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+        $history = Get-Content $historyFile | Select-Object -Unique
+        $history | Set-Content $historyFile
+    } catch {
+        Write-Error "Failed to clear history: $_"
+    }
+}
+
+# Function to add a command to history if it doesn't already exist
+function Add-UniqueHistory {
+    param (
+        [string]$Command
+    )
+
+    try {
+        $historyFilePath = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
+
+        if (-Not (Get-Content $historyFilePath | Select-String -Pattern "^$Command$")) {
+            Add-History -InputObject $Command
+            Add-Content -Path $historyFilePath -Value $Command
+        }
+    } catch {
+        Write-Error "Failed to add command to history: $_"
+    }
+}
+
+# Register the function to run after each command
+$executionContext.SessionState.InvokeCommand.PreCommandLookupAction = {
+    param ($sender, $args)
+    Add-UniqueHistory -Command $args.Command
+}
+# Clear duplicates in history file when profile loads
+historyclear
 
 function admin {
     if ($args.Count -gt 0) {
