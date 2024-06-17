@@ -86,12 +86,6 @@ if ($isAdmin) {
 
 # PSReadLine configuration
 Set-PSReadLineOption -EditMode Emacs
-Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
-Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
-Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 Set-PSReadLineOption -PredictionSource HistoryAndPlugin
 Set-PSReadLineOption -BellStyle Visual
 Set-PSReadLineOption -PredictionViewStyle ListView
@@ -100,10 +94,46 @@ Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
 Set-PSReadLineOption -HistorySearchCaseSensitive:$false
 Set-PSReadLineOption -HistoryNoDuplicates:$true
 
-Set-PSReadLineKeyHandler -Key Alt+e `
-	-BriefDescription "CWD" `
-	-LongDescription "Open the current working directory in the Windows Explorer" `
-	-ScriptBlock { Start-Process explorer -ArgumentList '.' }
+# Custom key bindings
+Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
+Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
+Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadLineKeyHandler -Key 'Ctrl+r' -Function ReverseSearchHistory
+Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
+Set-PSReadLineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
+Set-PSReadLineKeyHandler -Key 'Ctrl+e' -Function EndOfLine
+Set-PSReadLineKeyHandler -Key 'Ctrl+k' -Function KillLine
+Set-PSReadLineKeyHandler -Key 'Ctrl+u' -Function BackwardKillLine
+Set-PSReadLineKeyHandler -Key 'Ctrl+w' -Function KillRegion
+Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription "Open the current working directory in the Windows Explorer" -ScriptBlock { Start-Process explorer -ArgumentList '.' }
+
+# Set the warning duration to 1 second
+Set-PSReadLineOption -ContinuationPrompt "`e[33m>> `e[0m"
+Set-PSReadLineOption -CommandValidationHandler {
+    param($command)
+    if ($command -match 'rm .* -rf') {
+        Write-Host "Warning: You are about to delete files recursively!" -ForegroundColor Yellow
+        Start-Sleep -Seconds 1
+    }
+}
+
+# Function to clear duplicate entries in the history file
+function Remove-DuplicateHistoryEntries {
+    try {
+        $historyPath = [System.IO.Path]::Combine($env:APPDATA, 'Microsoft', 'Windows', 'PowerShell', 'PSReadLine', 'ConsoleHost_history.txt')
+        if (Test-Path $historyPath) {
+            $uniqueHistory = Get-Content $historyPath | Select-Object -Unique
+            $uniqueHistory | Set-Content $historyPath
+        }
+    } catch {
+        Write-Error "Failed to clear history: $_"
+    }
+}
+# Clear duplicates in history file when profile loads
+Remove-DuplicateHistoryEntries
 
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
@@ -210,20 +240,6 @@ function Update-PowerShell {
     }
 }
 Update-PowerShell
-
-# Function to clear duplicate entries in the history file
-function historyclear {
-    try {
-        $historyFile = "$env:APPDATA\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt"
-        $history = Get-Content $historyFile | Select-Object -Unique
-        $history | Set-Content $historyFile
-    } catch {
-        Write-Error "Failed to clear history: $_"
-    }
-}
-# Clear duplicates in history file when profile loads
-historyclear
-
 
 function admin {
     if ($args.Count -gt 0) {
