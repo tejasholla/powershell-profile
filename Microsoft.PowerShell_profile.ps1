@@ -168,7 +168,6 @@ function Update-FastFetch {
         Write-Error "Failed to update FastFetch. Error: $_"
     }
 }
-
 Update-FastFetch
 
 # Display Fastfetch
