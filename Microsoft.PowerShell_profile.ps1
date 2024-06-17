@@ -911,7 +911,7 @@ function chatty {
 }
 
 # Utility functions ----------------------------------------------------------------------------------------------------------------------------------
-function Get-Theme {
+function theme_update {
     $configUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json"
     $profilePath = $PROFILE.CurrentUserAllHosts
 
@@ -934,7 +934,7 @@ function Get-Theme {
     Invoke-Expression $themeConfig
 }
 
-Get-Theme
+theme_update
 
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     # Invoke-Expression (& { (zoxide init powershell | Out-String) })
