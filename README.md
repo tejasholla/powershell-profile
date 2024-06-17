@@ -4,7 +4,7 @@
 
 <h4 align="center">
 <img src="https://img.shields.io/badge/Powershell-v7.4.2-blue?style=for-the-badge&logo=powershell&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41" />
-<img src="https://img.shields.io/badge/windows_terminal-v1.20.11271.0-blue?style=for-the-badge&logo=powershell&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41" />
+<img src="https://img.shields.io/badge/windows_terminal-v1.20.11381.0-blue?style=for-the-badge&logo=powershell&color=DDB6F2&logoColor=D9E0EE&labelColor=302D41" />
 </h4>
 
 A stylish and functional PowerShell profile that looks and feels almost as good as a Linux terminal.
@@ -43,6 +43,7 @@ After the profile is installed and active, run the `Edit-Profile` function to cr
 This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
-***Remember, with great power comes great responsibility. Use these spells wisely, and let the magic unfold!***
+
+**_Remember, with great power comes great responsibility. Use these spells wisely, and let the magic unfold!_**
 
 Now, enjoy your enhanced and stylish PowerShell experience! 🚀
