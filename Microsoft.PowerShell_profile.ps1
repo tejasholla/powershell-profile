@@ -110,16 +110,6 @@ Set-PSReadLineKeyHandler -Key 'Ctrl+u' -Function BackwardKillLine
 Set-PSReadLineKeyHandler -Key 'Ctrl+w' -Function KillRegion
 Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription "Open the current working directory in the Windows Explorer" -ScriptBlock { Start-Process explorer -ArgumentList '.' }
 
-# Set the warning duration to 1 second
-Set-PSReadLineOption -ContinuationPrompt "`e[33m>> `e[0m"
-Set-PSReadLineOption -CommandValidationHandler {
-    param($command)
-    if ($command -match 'rm .* -rf') {
-        Write-Host "Warning: You are about to delete files recursively!" -ForegroundColor Yellow
-        Start-Sleep -Seconds 1
-    }
-}
-
 # Function to clear duplicate entries in the history file
 function Remove-DuplicateHistoryEntries {
     try {
