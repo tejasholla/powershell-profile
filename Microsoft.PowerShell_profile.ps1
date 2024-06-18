@@ -250,9 +250,9 @@ set-Alias ff Find-Files
 set-Alias unzip Expand-File
 set-Alias mkdir New-Directory
 set-Alias root Set-Home
-Set-Alias -Name vi -Value Launch-Nvim -Description "Launch neovim"
-Set-Alias -Name vim -Value Launch-Nvim -Description "Launch neovim"
-Set-Alias -Name nvim -Value Launch-Nvim -Description "Launch neovim"
+Set-Alias -Name vi -Value Launch-Nvim
+Set-Alias -Name vim -Value Launch-Nvim
+Set-Alias -Name nvim -Value Launch-Nvim
 Set-Alias hosts EditHosts -option AllScope
 Set-Alias history EditHistory -option AllScope
 
