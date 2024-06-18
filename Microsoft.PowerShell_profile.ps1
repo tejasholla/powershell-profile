@@ -103,11 +103,6 @@ Set-PSReadlineKeyHandler -Key 'Ctrl+q' -Function TabCompleteNext
 Set-PSReadlineKeyHandler -Key 'Ctrl+Shift+q' -Function TabCompletePrevious
 Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
-Set-PSReadLineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
-Set-PSReadLineKeyHandler -Key 'Ctrl+e' -Function EndOfLine
-Set-PSReadLineKeyHandler -Key 'Ctrl+k' -Function KillLine
-Set-PSReadLineKeyHandler -Key 'Ctrl+u' -Function BackwardKillLine
-Set-PSReadLineKeyHandler -Key 'Ctrl+w' -Function KillRegion
 Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription "Open the current working directory in the Windows Explorer" -ScriptBlock { Start-Process explorer -ArgumentList '.' }
 
 # Function to clear duplicate entries in the history file
