@@ -99,8 +99,8 @@ Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadlineKeyHandler -Key 'Ctrl+Q' -Function TabCompleteNext
-Set-PSReadlineKeyHandler -Key 'Ctrl+Shift+Q' -Function TabCompletePrevious
+Set-PSReadlineKeyHandler -Key 'Ctrl+q' -Function TabCompleteNext
+Set-PSReadlineKeyHandler -Key 'Ctrl+Shift+q' -Function TabCompletePrevious
 Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
 Set-PSReadLineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
