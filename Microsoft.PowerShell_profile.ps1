@@ -360,8 +360,7 @@ function url {
 # windows tools ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
-    
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"   
     try {
         $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop        
         # Remove BOM if present
