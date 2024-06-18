@@ -1,5 +1,5 @@
 ### PowerShell Profile Refactor
-### Version 1.03 - Refactored
+### Version 1.04 - Refactored
 
 # Set PowerShell to use UTF-8 encoding for both input and output
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
@@ -99,8 +99,6 @@ Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadlineKeyHandler -Key 'Ctrl+q' -Function TabCompleteNext
-Set-PSReadlineKeyHandler -Key 'Ctrl+Shift+q' -Function TabCompletePrevious
 Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
 Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription "Open the current working directory in the Windows Explorer" -ScriptBlock { Start-Process explorer -ArgumentList '.' }
@@ -144,7 +142,6 @@ function Update-FastFetch {
     if (-not $global:canConnectToGitHub) {
         return
     }
-
     try {
         $updateNeeded = $false
         $currentVersion = Get-Command fastfetch | Select-Object -ExpandProperty Version
@@ -158,12 +155,10 @@ function Update-FastFetch {
         } else {
             $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
         }
-
         $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
         if ($currentVersion -lt $latestVersion) {
             $updateNeeded = $true
         }
-
         if ($updateNeeded) {
             scoop update fastfetch
         }
@@ -182,7 +177,6 @@ function Update-Profile {
         Write-Host "Skipping profile update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
         return
     }
-
     try {
         $url = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Microsoft.PowerShell_profile.ps1"
         $oldhash = Get-FileHash $PROFILE
@@ -369,13 +363,11 @@ function windef {
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"
     
     try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop        
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
             $scriptContent = $scriptContent.Substring(1)
-        }
-        
+        }       
         Invoke-Expression $scriptContent
     } catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
@@ -491,7 +483,6 @@ function NetworkSpeed {
     try {
         $output = speedtest-cli --simple
         $lines = $output -split "\n"
-
         foreach ($line in $lines) {
             if ($line -like "*Ping*") {
                 Write-Host $line -ForegroundColor Cyan
@@ -515,7 +506,6 @@ function Get-HWVersion($computer, $name) {
 
     $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
     if($pingresult.statuscode -ne 0) { return }
-
     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
           Sort DeviceName | 
           Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
@@ -548,22 +538,17 @@ function ipchange {
 
 function iplocate {
     # Path to the script on GitHub
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/locate-ipaddress.ps1"
-    
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/locate-ipaddress.ps1"  
     try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop       
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
             $scriptContent = $scriptContent.Substring(1)
         }
-
         # Save script content to a temporary file
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
-
-        . $tempScriptPath
-        
+        . $tempScriptPath        
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
     } catch {
