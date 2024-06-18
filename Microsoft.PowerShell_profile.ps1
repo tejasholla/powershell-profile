@@ -85,10 +85,8 @@ if ($isAdmin) {
 }
 
 # PSReadLine configuration
-Set-PSReadLineOption -EditMode Emacs
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+Set-PSReadLineOption -EditMode Emacs -PredictionSource HistoryAndPlugin -PredictionViewStyle ListView
 Set-PSReadLineOption -BellStyle Visual
-Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -MaximumHistoryCount 4096
 Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
 Set-PSReadLineOption -HistorySearchCaseSensitive:$false
@@ -101,6 +99,8 @@ Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+Set-PSReadlineKeyHandler -Key 'Ctrl+Q' -Function TabCompleteNext
+Set-PSReadlineKeyHandler -Key 'Ctrl+Shift+Q' -Function TabCompletePrevious
 Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
 Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
 Set-PSReadLineKeyHandler -Key 'Ctrl+a' -Function BeginningOfLine
