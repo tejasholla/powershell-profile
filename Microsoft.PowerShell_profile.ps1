@@ -530,10 +530,10 @@ function online {
 }
 
 function ipchange {
-        # Assuming the script is accessible via the URL
-        $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1"
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath
-        Invoke-Expression $scriptContent
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
 }
 
 function iplocate {
@@ -585,12 +585,10 @@ function Expand-File {
     param (
       [Parameter(Mandatory = $true, Position = 0)]
       [string]$File
-    )
-  
+    ) 
     BEGIN {
       Write-Host "Starting file extraction process..." -ForegroundColor Cyan
-    }
-  
+    }  
     PROCESS {
       try {
         Write-Host "Extracting file '$File' to '$PWD'..." -ForegroundColor Cyan
@@ -601,8 +599,7 @@ function Expand-File {
       catch {
         Write-Error "Failed to extract file '$File'. Error: $_"
       }
-    }
-  
+    } 
     END {
       if (-not $Error) {
         Write-Host "File extraction process completed." -ForegroundColor Cyan
@@ -641,8 +638,7 @@ function Set-FreshFile {
     param (
       [Parameter(Mandatory = $true)]
       [string]$File
-    )
-  
+    )  
     # Check if the file exists
     if (Test-Path $File) {
       # If the file exists, update its timestamp
@@ -661,8 +657,7 @@ function Find-Files {
     param (
       [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
       [string]$Name
-    )
-    
+    )   
     # Search for files matching the specified name pattern
     Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
       Write-Output $_.FullName
@@ -675,8 +670,7 @@ function New-Directory {
     param (
       [Parameter(Position = 0, Mandatory = $true)]
       [string]$name
-    )
-  
+    )  
     try {
       $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
       Set-Location -Path $newDir.FullName
@@ -728,7 +722,6 @@ function maps {
 
 function gmaps {
     param([string] $From, [String] $To)
-
     process {
         Start-Process "https://www.google.com/maps/dir/$From/$To/"
     }
@@ -758,18 +751,15 @@ function binclean {
     try {
         $recycleBin = (New-Object -ComObject Shell.Application).NameSpace(0xA)
         $items = $recycleBin.Items()
-
         if ($items.Count -eq 0) {
             Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
             return
         }
         $totalItems = $items.Count
         $currentItem = 0
-
         $items | ForEach-Object {
             $currentItem++
             $itemPath = $_.Path
-
             try {
                 Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
             } catch {
@@ -794,22 +784,17 @@ function weatherfun{curl wttr.in/$args}
 
 function weather {
     # Path to the script on GitHub
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"
-    
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/list-weather.ps1"   
     try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop        
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
             $scriptContent = $scriptContent.Substring(1)
         }
-
         # Save script content to a temporary file
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
-
-        . $tempScriptPath
-        
+        . $tempScriptPath  
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
     } catch {
@@ -820,22 +805,17 @@ function weather {
 # other functions --------------------------------------------------------------------------------------------------------------------------
 function checkpass {
     # Path to the script on GitHub
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"
-    
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"  
     try {
-        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop
-        
+        $scriptContent = Invoke-RestMethod -Uri $scriptPath -ErrorAction Stop    
         # Remove BOM if present
         if ($scriptContent[0] -eq 0xFEFF) {
             $scriptContent = $scriptContent.Substring(1)
         }
-
         # Save script content to a temporary file
         $tempScriptPath = [System.IO.Path]::GetTempFileName() + ".ps1"
         Set-Content -Path $tempScriptPath -Value $scriptContent
-
-        . $tempScriptPath
-        
+        . $tempScriptPath      
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
     } catch {
@@ -884,14 +864,11 @@ function shorturl {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/short-url.ps1"
     $scriptContent = Invoke-RestMethod -Uri $scriptPath
-
     # Save the script content to a temporary file
     $tempFile = [System.IO.Path]::GetTempFileName() + ".ps1"
     Set-Content -Path $tempFile -Value $scriptContent
-
     # Execute the temporary script file
     . $tempFile
-
     # Remove the temporary file
     Remove-Item -Path $tempFile -Force
 }
@@ -909,8 +886,7 @@ function linux {Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')}
 function chatgpt{start https://chatgpt.com/}
 
 function chatty {
-    start http://localhost:8080/
-    
+    start http://localhost:8080/   
     # Open WSL in a new Windows Terminal tab
     linux
 }
