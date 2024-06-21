@@ -460,9 +460,9 @@ function syshealthreport {
 }
 
 # Networking Utilities -----------------------------------------------------------------------------------------------------------------
-function wifinetwork{netsh wlan show profile}
+function wifinetwork{ netsh wlan show profile }
 
-function thiswifi{netsh wlan show profile $args key=clear | findstr “Key Content”}
+function thiswifi{ netsh wlan show profile $args key=clear | findstr “Key Content” }
 
 function wifi {
     # Define the URL of the Python script
