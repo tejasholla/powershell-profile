@@ -1,16 +1,17 @@
-# Hey there! I got tired of downloading wallpapers manually so here it is.
 import os
 import getpass
 import re
 import requests
-import tqdm
-import time
 import urllib
 import json
 
-os.makedirs('Wallhaven', exist_ok=True)
-BASEURL="https://wallhaven.cc/api/v1/w/"
-cookies=dict()
+# Determine the path to the Pictures directory and create the Wallpapers folder if it doesn't exist
+pictures_dir = os.path.join(os.path.expanduser("~"), "Pictures")
+wallpapers_dir = os.path.join(pictures_dir, "Wallpapers")
+os.makedirs(wallpapers_dir, exist_ok=True)
+
+BASEURL = "https://wallhaven.cc/api/v1/w/"
+cookies = dict()
 
 global APIKEY
 APIKEY = ""
@@ -24,13 +25,13 @@ def category():
     all     - Every wallpaper.
     general - For 'general' wallpapers only.
     anime   - For 'Anime' Wallpapers only.
-    people  - For 'people' wallapapers only.
-    ga      - For 'General' and 'Anime' wallapapers only.
+    people  - For 'people' wallpapers only.
+    ga      - For 'General' and 'Anime' wallpapers only.
     gp      - For 'General' and 'People' wallpapers only.
     ****************************************************************
     ''')
     ccode = input('Enter Category: ').lower()
-    ctags = {'all':'111', 'anime':'010', 'general':'100', 'people':'001', 'ga':'110', 'gp':'101' }
+    ctags = {'all': '111', 'anime': '010', 'general': '100', 'people': '001', 'ga': '110', 'gp': '101'}
     ctag = ctags[ccode]
 
     print('''
@@ -47,49 +48,49 @@ def category():
     ****************************************************************
     ''')
     pcode = input('Enter Purity: ')
-    ptags = {'sfw':'100', 'sketchy':'010', 'nsfw':'001', 'ws':'110', 'wn':'101', 'sn':'011', 'all':'111'}
+    ptags = {'sfw': '100', 'sketchy': '010', 'nsfw': '001', 'ws': '110', 'wn': '101', 'sn': '011', 'all': '111'}
     ptag = ptags[pcode]
 
-    BASEURL = 'https://wallhaven.cc/api/v1/search?apikey=' + APIKEY + "&categories=" +\
-        ctag + '&purity=' + ptag + '&page='
+    BASEURL = 'https://wallhaven.cc/api/v1/search?apikey=' + APIKEY + "&categories=" + \
+              ctag + '&purity=' + ptag + '&page='
 
 def latest():
     global BASEURL
     print('Downloading latest')
     topListRange = '1M'
-    BASEURL = 'https://wallhaven.cc/api/v1/search?apikey=' + APIKEY + '&topRange=' +\
-    topListRange + '&sorting=toplist&page='
+    BASEURL = 'https://wallhaven.cc/api/v1/search?apikey=' + APIKEY + '&topRange=' + \
+              topListRange + '&sorting=toplist&page='
 
 def search():
     global BASEURL
     query = input('Enter search query: ')
     BASEURL = 'https://wallhaven.cc/api/v1/search?apikey=' + APIKEY + '&q=' + \
-        urllib.parse.quote_plus(query) + '&page='
+              urllib.parse.quote_plus(query) + '&page='
 
 def downloadPage(pageId, totalImage):
     url = BASEURL + str(pageId)
     urlreq = requests.get(url, cookies=cookies)
-    pagesImages = json.loads(urlreq.content);
+    pagesImages = json.loads(urlreq.content)
     pageData = pagesImages["data"]
 
     for i in range(len(pageData)):
         currentImage = (((pageId - 1) * 24) + (i + 1))
 
         url = pageData[i]["path"]
-        
+
         filename = os.path.basename(url)
-        osPath = os.path.join('Wallhaven', filename)
+        osPath = os.path.join(wallpapers_dir, filename)
         if not os.path.exists(osPath):
             imgreq = requests.get(url, cookies=cookies)
             if imgreq.status_code == 200:
-                print("Downloading : %s - %s / %s" % (filename, currentImage , totalImage))
+                print("Downloading : %s - %s / %s" % (filename, currentImage, totalImage))
                 with open(osPath, 'ab') as imageFile:
                     for chunk in imgreq.iter_content(1024):
                         imageFile.write(chunk)
-            elif (imgreq.status_code != 403 and imgreq.status_code != 404):
-                print("Unable to download %s - %s / %s" % (filename, currentImage , totalImage))
+            elif imgreq.status_code != 403 and imgreq.status_code != 404:
+                print("Unable to download %s - %s / %s" % (filename, currentImage, totalImage))
         else:
-            print("%s already exist - %s / %s" % (filename, currentImage , totalImage))
+            print("%s already exists - %s / %s" % (filename, currentImage, totalImage))
 
 def main():
     Choice = input('''Choose how you want to download the image:
@@ -102,7 +103,7 @@ def main():
     while Choice not in ['category', 'latest', 'search']:
         if Choice != None:
             print('You entered an incorrect value.')
-        choice = input('Enter choice: ')
+        Choice = input('Enter choice: ')
 
     if Choice == 'category':
         category()
@@ -111,7 +112,7 @@ def main():
     elif Choice == 'search':
         search()
 
-    pgid = int(input('How Many pages you want to Download: '))
+    pgid = int(input('How many pages do you want to download: '))
     totalImageToDownload = str(24 * pgid)
     print('Number of Wallpapers to Download: ' + totalImageToDownload)
     for j in range(1, pgid + 1):
