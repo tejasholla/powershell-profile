@@ -326,6 +326,17 @@ function ytdownload {
     Invoke-Expression $scriptContent
 }
 
+function wallpaper {
+    # Define the URL of the Python script
+    $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/wallpaper_engine/wallhaven-dl.py"
+    # Define the path to save the downloaded script
+    $scriptPath = "$env:Temp\wallhaven-dl.py"
+    # Download the Python script
+    Invoke-WebRequest -Uri $url -OutFile $scriptPath
+    # Execute the downloaded Python script
+    python $scriptPath
+}
+
 # Browser related ----------------------------------------------------------------------------------------------------------------
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
