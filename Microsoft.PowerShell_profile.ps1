@@ -502,7 +502,6 @@ function NetworkSpeed {
 }
 
 function Get-HWVersion($computer, $name) {
-
     $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
     if($pingresult.statuscode -ne 0) { return }
     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
