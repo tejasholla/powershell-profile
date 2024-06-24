@@ -40,11 +40,13 @@ function Check-InstallWindowsTerminal {
         Write-Host "Windows Terminal not found. Installing Windows Terminal..."
         try {
             winget install --id Microsoft.WindowsTerminal -e --accept-source-agreements --accept-package-agreements
-        } catch {
+        }
+        catch {
             Write-Error "Failed to install Windows Terminal. Error: $_"
             break
         }
-    } else {
+    }
+    else {
         Write-Host "Windows Terminal is already installed."
     }
 }
@@ -56,11 +58,13 @@ function Check-InstallPowerShell7 {
         Write-Host "PowerShell 7 not found. Installing PowerShell 7..."
         try {
             winget install --id Microsoft.Powershell --e --accept-source-agreements --accept-package-agreements
-        } catch {
+        }
+        catch {
             Write-Error "Failed to install PowerShell 7. Error: $_"
             break
         }
-    } else {
+    }
+    else {
         Write-Host "PowerShell 7 is already installed."
     }
 }
@@ -150,7 +154,8 @@ catch {
 # Final check and message to the user
 if ((Test-Path -Path $PROFILE) -and (winget list --name "OhMyPosh" -e) -and ($fontFamilies -contains "CaskaydiaCove NF")) {
     Write-Host "Setup completed successfully. Please restart your PowerShell session to apply changes."
-} else {
+}
+else {
     Write-Warning "Setup completed with errors. Please check the error messages above."
 }
 
@@ -166,7 +171,8 @@ catch {
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
     Write-Host "Scoop is not installed. Installing Scoop..."
     Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
-} else {
+}
+else {
     Write-Host "Scoop is already installed."
 }
 
@@ -306,26 +312,28 @@ catch {
 }
 
 try {
-	$StopWatch = [system.diagnostics.stopwatch]::startNew()
+    $StopWatch = [system.diagnostics.stopwatch]::startNew()
 
-	if ($false) {
+    if ($false) {
 
-		& wsl --install
+        & wsl --install
 
-	} else {
-		"👉 Step 1/3: Enable WSL..."
-		& dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+    }
+    else {
+        "👉 Step 1/3: Enable WSL..."
+        & dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 
-		"👉 Step 2/3: Enable virtual machine platform..."
-		& dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+        "👉 Step 2/3: Enable virtual machine platform..."
+        & dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 
-		"👉 Step 3/3: Enable WSL version 2..."
-		& wsl --set-default-version 2
-	}
+        "👉 Step 3/3: Enable WSL version 2..."
+        & wsl --set-default-version 2
+    }
 
-	[int]$Elapsed = $StopWatch.Elapsed.TotalSeconds
-	"✔️ installed Windows Subsystem for Linux (WSL) in $Elapsed sec"
-	"  NOTE: reboot now, then visit the Microsoft Store and install a Linux distribution (e.g. Ubuntu, openSUSE, SUSE Linux, Kali Linux, Debian, Fedora, Pengwin, or Alpine)"
-} catch {
-	"⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
+    [int]$Elapsed = $StopWatch.Elapsed.TotalSeconds
+    "✔️ installed Windows Subsystem for Linux (WSL) in $Elapsed sec"
+    "  NOTE: reboot now, then visit the Microsoft Store and install a Linux distribution (e.g. Ubuntu, openSUSE, SUSE Linux, Kali Linux, Debian, Fedora, Pengwin, or Alpine)"
+}
+catch {
+    "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
 }

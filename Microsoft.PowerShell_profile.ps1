@@ -64,7 +64,8 @@ if ($isAdmin) {
         Emphasis           = '#98C379'
         InlinePrediction   = '#70A99F'
     }
-} else {
+}
+else {
     Set-PSReadLineOption -Colors @{
         Default            = '#98C379' #Light Green
         Command            = '#61AFEF' #Light Blue
@@ -111,7 +112,8 @@ function Remove-DuplicateHistoryEntries {
             $uniqueHistory = Get-Content $historyPath | Select-Object -Unique
             $uniqueHistory | Set-Content $historyPath
         }
-    } catch {
+    }
+    catch {
         Write-Error "Failed to clear history: $_"
     }
 }
@@ -121,9 +123,9 @@ Remove-DuplicateHistoryEntries
 $scriptblock = {
     param($wordToComplete, $commandAst, $cursorPosition)
     dotnet complete --position $cursorPosition $commandAst.ToString() |
-        ForEach-Object {
-            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-        }
+    ForEach-Object {
+        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+    }
 }
 Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
 
@@ -152,7 +154,8 @@ function Update-FastFetch {
                 "Authorization" = "token $env:pwsh_github_api"
             }
             $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl -Headers $headers
-        } else {
+        }
+        else {
             $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
         }
         $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
@@ -162,7 +165,8 @@ function Update-FastFetch {
         if ($updateNeeded) {
             scoop update fastfetch
         }
-    } catch {
+    }
+    catch {
         Write-Error "Failed to update FastFetch. Error: $_"
     }
 }
@@ -186,9 +190,11 @@ function Update-Profile {
             Copy-Item -Path "$env:temp/Microsoft.PowerShell_profile.ps1" -Destination $PROFILE -Force
             Write-Host "Profile has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
         }
-    } catch {
+    }
+    catch {
         Write-Error "Unable to check for `$profile updates"
-    } finally {
+    }
+    finally {
         Remove-Item "$env:temp/Microsoft.PowerShell_profile.ps1" -ErrorAction SilentlyContinue
     }
 }
@@ -214,7 +220,8 @@ function Update-PowerShell {
             winget upgrade "Microsoft.PowerShell" --accept-source-agreements --accept-package-agreements
             Write-Host "PowerShell has been updated. Please restart your shell to reflect changes" -ForegroundColor Magenta
         }
-    } catch {
+    }
+    catch {
         Write-Error "Failed to update PowerShell. Error: $_"
     }
 }
@@ -224,7 +231,8 @@ function admin {
     if ($args.Count -gt 0) {
         $argList = "& '$args'"
         Start-Process wt -Verb runAs -ArgumentList "pwsh.exe -NoExit -Command $argList"
-    } else {
+    }
+    else {
         Start-Process wt -Verb runAs
     }
 }
@@ -258,17 +266,17 @@ Set-Alias history EditHistory -option AllScope
 
 # Function definitions ------------------------------------------------------------------------------------------------------------
 function profile {
-	$path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
-	Start-Process $path
+    $path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
+    Start-Process $path
 }
 
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload-profile { & $profile }
 
-function EditHistory {npp (Get-PSReadlineOption).HistorySavePath}
+function EditHistory { npp (Get-PSReadlineOption).HistorySavePath }
 
-function exepolicy{ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser }
+function exepolicy { Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser }
 
 # app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
@@ -281,44 +289,46 @@ function Test-CommandExists {
 
 # Editor Configuration
 $EDITOR = if (Test-CommandExists nvim) { 'nvim' }
-          elseif (Test-CommandExists vim) { 'nvim' }
-          elseif (Test-CommandExists vi) { 'nvim' }
-          elseif (Test-CommandExists code) { 'code' }
-          elseif (Test-CommandExists notepad++) { 'npp' }
-          else { 'notepad' }
+elseif (Test-CommandExists vim) { 'nvim' }
+elseif (Test-CommandExists vi) { 'nvim' }
+elseif (Test-CommandExists code) { 'code' }
+elseif (Test-CommandExists notepad++) { 'npp' }
+else { 'notepad' }
 Set-Alias -Name vim -Value $EDITOR
 
 function Launch-Nvim {
-	$mycmd = "nvim"
-	$cmd = where.exe $mycmd
-	if ( Get-Command "wt" -ErrorAction SilentlyContinue ) {
-		$command = "wt"
-		$cargs = "$cmd $args"
-	} else {
-		$command = "cmd"
-		$cargs = "/c $cmd $args"
-	}
-	Write-Host "command: [$command] cargs: [$cargs]"
-	$parameters = $cargs -join ' '
-	if ($parameters) {
-		Start-Process -FilePath $command -ArgumentList $parameters
-	} else {
-		Start-Process -FilePath $command
-	}
+    $mycmd = "nvim"
+    $cmd = where.exe $mycmd
+    if ( Get-Command "wt" -ErrorAction SilentlyContinue ) {
+        $command = "wt"
+        $cargs = "$cmd $args"
+    }
+    else {
+        $command = "cmd"
+        $cargs = "/c $cmd $args"
+    }
+    Write-Host "command: [$command] cargs: [$cargs]"
+    $parameters = $cargs -join ' '
+    if ($parameters) {
+        Start-Process -FilePath $command -ArgumentList $parameters
+    }
+    else {
+        Start-Process -FilePath $command
+    }
 }
 
 function notes { vim "$Env:USERPROFILE\Documents\Notes.txt" }
 
 function keybind {
-	$path = Join-Path $env:USERPROFILE 'Pictures\Screenshots\Terminal_keys'
- 	Start-Process $path
- }
+    $path = Join-Path $env:USERPROFILE 'Pictures\Screenshots\Terminal_keys'
+    Start-Process $path
+}
 
 function ex { Start-Process explorer.exe "shell:MyComputerFolder" }
 
-function telegram{start https://web.telegram.org/a/}
+function telegram { start https://web.telegram.org/a/ }
 
-function photos{start https://photos.google.com/}
+function photos { start https://photos.google.com/ }
 
 # Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload {
@@ -347,25 +357,26 @@ function browser {
 
 function edge { Start-Process "msedge" }
 
-function gs{start www.google.com/search?q=$args}
+function gs { start www.google.com/search?q=$args }
 
-function google{start www.google.com}
+function google { start www.google.com }
 
-function ys{start www.youtube.com/search?q=$args}
+function ys { start www.youtube.com/search?q=$args }
 
-function youtube{start www.youtube.com}
+function youtube { start www.youtube.com }
 
-function wiki{start https://www.wikiwand.com/en/$args}
+function wiki { start https://www.wikiwand.com/en/$args }
 
 function url {
     param(
-        [Parameter(Mandatory=$true, ValueFromRemainingArguments=$true)]
+        [Parameter(Mandatory = $true, ValueFromRemainingArguments = $true)]
         [string[]]$args
     )
     $target = $args[0]
     if (Test-Path $target) {
         Start-Process $target -ErrorAction SilentlyContinue
-    } else {
+    }
+    else {
         Start-Process "https://$target"
     }
 }
@@ -381,7 +392,8 @@ function windef {
             $scriptContent = $scriptContent.Substring(1)
         }       
         Invoke-Expression $scriptContent
-    } catch {
+    }
+    catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
@@ -391,16 +403,16 @@ function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 
 function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
 
-function lscheck{nu -c "ls $args"}
+function lscheck { nu -c "ls $args" }
 
-function lsnu{nu -c "ls"}
+function lsnu { nu -c "ls" }
 
-function lscommand{nu -c "$args"}
+function lscommand { nu -c "$args" }
 
 # Git Shortcuts -----------------------------------------------------------------------------------------------------------------
-function github{start https://github.com/tejasholla}
+function github { start https://github.com/tejasholla }
 
-function gitrepo{start https://github.com/tejasholla?tab=repositories}
+function gitrepo { start https://github.com/tejasholla?tab=repositories }
 
 function gituser { git config --global user.name "$args" }
 
@@ -412,7 +424,7 @@ function gst { git status }
 
 function ga { git add . }
 
-function gadd {git add "$args"}
+function gadd { git add "$args" }
 
 function gc { param($m) git commit -m "$m" }
 
@@ -433,11 +445,11 @@ function lazyg {
     git push
 }
 
-function graph {git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all}
+function graph { git log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --all }
 
-function ss {git status --short}
+function ss { git status --short }
 
-function nuke {git reset --hard; git clean -xdf}
+function nuke { git reset --hard; git clean -xdf }
 
 # Quick Access to System Information -----------------------------------------------------------------------------------------------------------------
 function sysinfo { Get-ComputerInfo }
@@ -473,9 +485,9 @@ function syshealthreport {
 }
 
 # Networking Utilities -----------------------------------------------------------------------------------------------------------------
-function wifinetwork{ netsh wlan show profile }
+function wifinetwork { netsh wlan show profile }
 
-function thiswifi{ netsh wlan show profile $args key=clear | findstr “Key Content” }
+function thiswifi { netsh wlan show profile $args key=clear | findstr “Key Content” }
 
 function wifi {
     # Define the URL of the Python script
@@ -488,7 +500,7 @@ function wifi {
     python $scriptPath
 }
 
-function networkdetails{netsh wlan show interfaces}
+function networkdetails { netsh wlan show interfaces }
 
 # NetworkSpeed check
 function NetworkSpeed {
@@ -509,17 +521,18 @@ function NetworkSpeed {
                 Write-Host $line
             }
         }
-    } catch {
+    }
+    catch {
         Write-Host "Failed to perform speed test. Error: $_" -ForegroundColor Red
     }
 }
 
 function Get-HWVersion($computer, $name) {
     $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
-    if($pingresult.statuscode -ne 0) { return }
+    if ($pingresult.statuscode -ne 0) { return }
     Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
-          Sort DeviceName | 
-          Select @{Name="Server";Expression={$_.__Server}}, DeviceName, @{Name="DriverDate";Expression={[System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy")}}, DriverVersion
+    Sort DeviceName | 
+    Select @{Name = "Server"; Expression = { $_.__Server } }, DeviceName, @{Name = "DriverDate"; Expression = { [System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy") } }, DriverVersion
 }
 
 function flushdns { Clear-DnsClientCache }
@@ -529,15 +542,15 @@ Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
 function ipall { ipconfig /all }
 
 function ipnew {
-        ipconfig /release
-	  ipconfig /renew
+    ipconfig /release
+    ipconfig /renew
 }
 
 function ipflush { ipconfig /flushdns }
 
 function online {
-	param($computername)
-	return (test-connection $computername -count 1 -quiet)
+    param($computername)
+    return (test-connection $computername -count 1 -quiet)
 }
 
 function ipchange {
@@ -562,12 +575,13 @@ function iplocate {
         . $tempScriptPath        
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
-    } catch {
+    }
+    catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
 
-function EditHosts {sudo notepad $env:windir\System32\drivers\etc\hosts}
+function EditHosts { sudo notepad $env:windir\System32\drivers\etc\hosts }
 
 # Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
 function cpy { Set-Clipboard $args[0] }
@@ -579,10 +593,10 @@ function Set-Home {
     [CmdletBinding()]
     [Alias("root")]
     param (
-      # This function does not accept any parameters
+        # This function does not accept any parameters
     )
     Set-Location -Path $HOME
-  }
+}
 
 function cdc { set-location C:\ }
 
@@ -594,50 +608,50 @@ function Expand-File {
     [CmdletBinding()]
     [Alias("unzip")]
     param (
-      [Parameter(Mandatory = $true, Position = 0)]
-      [string]$File
+        [Parameter(Mandatory = $true, Position = 0)]
+        [string]$File
     ) 
     BEGIN {
-      Write-Host "Starting file extraction process..." -ForegroundColor Cyan
+        Write-Host "Starting file extraction process..." -ForegroundColor Cyan
     }  
     PROCESS {
-      try {
-        Write-Host "Extracting file '$File' to '$PWD'..." -ForegroundColor Cyan
-        $FullFilePath = Get-Item -Path $File -ErrorAction Stop | Select-Object -ExpandProperty FullName
-        Expand-Archive -Path $FullFilePath -DestinationPath $PWD -Force -ErrorAction Stop
-        Write-Host "File extraction completed successfully." -ForegroundColor Green
-      }
-      catch {
-        Write-Error "Failed to extract file '$File'. Error: $_"
-      }
+        try {
+            Write-Host "Extracting file '$File' to '$PWD'..." -ForegroundColor Cyan
+            $FullFilePath = Get-Item -Path $File -ErrorAction Stop | Select-Object -ExpandProperty FullName
+            Expand-Archive -Path $FullFilePath -DestinationPath $PWD -Force -ErrorAction Stop
+            Write-Host "File extraction completed successfully." -ForegroundColor Green
+        }
+        catch {
+            Write-Error "Failed to extract file '$File'. Error: $_"
+        }
     } 
     END {
-      if (-not $Error) {
-        Write-Host "File extraction process completed." -ForegroundColor Cyan
-      }
+        if (-not $Error) {
+            Write-Host "File extraction process completed." -ForegroundColor Cyan
+        }
     }
 }
 
 function grep($regex, $dir) {
-        if ( $dir ) {
-                Get-ChildItem $dir | select-string $regex
-                return
-        }
-        $input | select-string $regex
+    if ( $dir ) {
+        Get-ChildItem $dir | select-string $regex
+        return
+    }
+    $input | select-string $regex
 }
 
 function df { get-volume }
 
-function sed($file, $find, $replace){
+function sed($file, $find, $replace) {
         (Get-Content $file).replace("$find", $replace) | Set-Content $file
 }
 
 function export($name, $value) {
-        set-item -force -path "env:$name" -value $value;
+    set-item -force -path "env:$name" -value $value;
 }
 
 function pkill($name) {
-        Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
+    Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
 }
 
 function pgrep($name) { Get-Process $name }
@@ -647,31 +661,31 @@ function Set-FreshFile {
     [CmdletBinding()]
     [Alias("touch")]
     param (
-      [Parameter(Mandatory = $true)]
-      [string]$File
+        [Parameter(Mandatory = $true)]
+        [string]$File
     )  
     # Check if the file exists
     if (Test-Path $File) {
-      # If the file exists, update its timestamp
+        # If the file exists, update its timestamp
         (Get-Item $File).LastWriteTime = Get-Date
     }
     else {
-      # If the file doesn't exist, create it with an empty content
-      "" | Out-File $File -Encoding ASCII
+        # If the file doesn't exist, create it with an empty content
+        "" | Out-File $File -Encoding ASCII
     }
-  }
+}
  
 # Find-Files
 function Find-Files {
     [CmdletBinding()]
     [Alias("ff")]
     param (
-      [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
-      [string]$Name
+        [Parameter(Mandatory = $true, Position = 0, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [string]$Name
     )   
     # Search for files matching the specified name pattern
     Get-ChildItem -Recurse -Filter $Name -ErrorAction SilentlyContinue | ForEach-Object {
-      Write-Output $_.FullName
+        Write-Output $_.FullName
     }
 }
 
@@ -679,15 +693,15 @@ function New-Directory {
     [CmdletBinding()]
     [Alias("mkcd")]
     param (
-      [Parameter(Position = 0, Mandatory = $true)]
-      [string]$name
+        [Parameter(Position = 0, Mandatory = $true)]
+        [string]$name
     )  
     try {
-      $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
-      Set-Location -Path $newDir.FullName
+        $newDir = New-Item -Path $PWD -Name $name -ItemType Directory -ErrorAction Stop
+        Set-Location -Path $newDir.FullName
     }
     catch {
-      Write-Warning "Failed to create directory '$name'. Error: $_"
+        Write-Warning "Failed to create directory '$name'. Error: $_"
     }
 }
 
@@ -739,7 +753,7 @@ function gmaps {
 }
 
 # Image compressor functions ------------------------------------------------------------------------------------------------------
-function imagecompress{start https://www.iloveimg.com/compress-image}
+function imagecompress { start https://www.iloveimg.com/compress-image }
 
 function imgcomp {
     # Define the URL of the Python script
@@ -773,11 +787,13 @@ function binclean {
             $itemPath = $_.Path
             try {
                 Remove-Item $itemPath -Force -Recurse -ErrorAction Stop
-            } catch {
+            }
+            catch {
                 Write-Host "Failed to delete: $itemPath" -ForegroundColor Yellow
             }
         }
-    } catch {
+    }
+    catch {
         Write-Host "An error occurred while accessing the Recycle Bin: $_" -ForegroundColor Red
     }
     Write-Host "Recycle Bin cleanup complete."
@@ -791,7 +807,7 @@ function cleanwin {
 }
 
 # weather function ---------------------------------------------------------------------------------------------------------------------
-function weatherfun{curl wttr.in/$args}
+function weatherfun { curl wttr.in/$args }
 
 function weather {
     # Path to the script on GitHub
@@ -808,7 +824,8 @@ function weather {
         . $tempScriptPath  
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
-    } catch {
+    }
+    catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
@@ -829,7 +846,8 @@ function checkpass {
         . $tempScriptPath      
         # Cleanup the temporary file
         Remove-Item -Path $tempScriptPath -Force
-    } catch {
+    }
+    catch {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
@@ -838,7 +856,8 @@ function timezone {
     try {
         [system.threading.thread]::currentThread.currentCulture = [system.globalization.cultureInfo]"en-US"
         Get-Timezone 
-    } catch {
+    }
+    catch {
         "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($Error[0])"
     }
 }
@@ -868,7 +887,7 @@ function debloat {
     Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
 }
 
-function setup {irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex}
+function setup { irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex }
 
 # Shortens a URL using various free URL shortening services.
 function shorturl {
@@ -891,10 +910,10 @@ function reset-wsl {
     cd
 }
 
-function linux {Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl')}
+function linux { Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl') }
 
 # AI run functions -----------------------------------------------------------------------------------------------------------------
-function chatgpt{start https://chatgpt.com/}
+function chatgpt { start https://chatgpt.com/ }
 
 function chatty {
     start http://localhost:8080/   
@@ -906,11 +925,13 @@ function chatty {
 function Get-Theme {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
-        if ($null -ne $existingTheme) { # $null
+        if ($null -ne $existingTheme) {
+            # $null
             Invoke-Expression $existingTheme
             return
         }
-    } else {
+    }
+    else {
         oh-my-posh init pwsh --config https://raw.githubusercontent.com/tejasholla/powershell-profile/main/custommade.omp.json | Invoke-Expression
     }
 }
@@ -919,14 +940,16 @@ Get-Theme
 if (Get-Command zoxide -ErrorAction SilentlyContinue) {
     # Invoke-Expression (& { (zoxide init powershell | Out-String) })
     Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
-} else {
+}
+else {
     Write-Host "zoxide command not found. Attempting to install via winget..."
     try {
         winget install -e --id ajeetdsouza.zoxide
         Write-Host "zoxide installed successfully. Initializing..."
         # Invoke-Expression (& { (zoxide init powershell | Out-String) })
         Invoke-Expression (& { (zoxide init --cmd cd powershell | Out-String) })
-    } catch {
+    }
+    catch {
         Write-Error "Failed to install zoxide. Error: $_"
     }
 }

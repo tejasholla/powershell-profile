@@ -16,7 +16,7 @@ if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 
 $SageSet = "StateFlags0099"
 $Base = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\"
-$Locations= @(
+$Locations = @(
     "Active Setup Temp Folders"
     "BranchCache"
     "Downloaded Program Files"
@@ -52,20 +52,19 @@ $Locations= @(
     "Windows Upgrade Log Files"
 )
 
-	# -ea silentlycontinue will supress error messages
-	ForEach($Location in $Locations) {
-		Set-ItemProperty -Path $($Base+$Location) -Name $SageSet -Type DWORD -Value 2 -ea silentlycontinue | Out-Null
-	}
+# -ea silentlycontinue will supress error messages
+ForEach ($Location in $Locations) {
+    Set-ItemProperty -Path $($Base + $Location) -Name $SageSet -Type DWORD -Value 2 -ea silentlycontinue | Out-Null
+}
 
-	# Do the clean-up. Have to convert the SageSet number
-	$Args = "/sagerun:$([string]([int]$SageSet.Substring($SageSet.Length-4)))"
-	Start-Process -Wait "$env:SystemRoot\System32\cleanmgr.exe" -ArgumentList $Args
+# Do the clean-up. Have to convert the SageSet number
+$Args = "/sagerun:$([string]([int]$SageSet.Substring($SageSet.Length-4)))"
+Start-Process -Wait "$env:SystemRoot\System32\cleanmgr.exe" -ArgumentList $Args
 
-	# Remove the Stateflags
-	ForEach($Location in $Locations)
-	{
-		Remove-ItemProperty -Path $($Base+$Location) -Name $SageSet -Force -ea silentlycontinue | Out-Null
-	}
+# Remove the Stateflags
+ForEach ($Location in $Locations) {
+    Remove-ItemProperty -Path $($Base + $Location) -Name $SageSet -Force -ea silentlycontinue | Out-Null
+}
 
 # Clear the screen and return to a PS prompt
 Clear-Host
