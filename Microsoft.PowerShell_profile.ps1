@@ -268,6 +268,8 @@ function reload-profile { & $profile }
 
 function EditHistory {npp (Get-PSReadlineOption).HistorySavePath}
 
+function exepolicy{ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser }
+
 # app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
