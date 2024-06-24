@@ -51,7 +51,8 @@ PROCESS {
                 Shortener        = $Shortener
                 CreationDateTime = Get-Date
             }
-        } catch {
+        }
+        catch {
             Write-Error -Message "An error occurred while attempting to shorten the URL: $_"
         }
     }

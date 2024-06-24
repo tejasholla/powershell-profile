@@ -10,20 +10,20 @@ clean_empty_files() {
 touch ~/.hushlogin
 
 # Update package list silently
-sudo apt update > /dev/null 2>&1
+sudo apt update >/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo -e "\033[1;31mFailed to update package list. Please check your internet connection or package manager configuration.\033[0m"
   exit 1
 fi
 
 # Clean up storage by removing unused packages
-sudo apt autoremove -y > /dev/null 2>&1
+sudo apt autoremove -y >/dev/null 2>&1
 
 # Clean up cache memory
-sudo apt clean > /dev/null 2>&1
+sudo apt clean >/dev/null 2>&1
 
 # Remove unwanted files (e.g., temporary files)
-sudo rm -rf /tmp/* /var/tmp/* > /dev/null 2>&1
+sudo rm -rf /tmp/* /var/tmp/* >/dev/null 2>&1
 
 # Remove empty files and directories from the entire WSL folder, excluding problematic areas
 clean_empty_files "/home"
@@ -36,7 +36,7 @@ UPDATES=$(apt list --upgradable 2>/dev/null | grep -v "Listing..." | wc -l)
 
 if [ "$UPDATES" -gt 0 ]; then
   # Upgrade installed packages silently
-  sudo apt upgrade -y > /dev/null 2>&1
+  sudo apt upgrade -y >/dev/null 2>&1
   if [ $? -ne 0 ]; then
     echo -e "\033[1;31mFailed to upgrade packages. Please check for errors.\033[0m"
     exit 1
@@ -48,7 +48,7 @@ else
 fi
 
 # Install desired packages silently
-sudo apt install -y nala btop screen > /dev/null 2>&1
+sudo apt install -y nala btop screen >/dev/null 2>&1
 if [ $? -ne 0 ]; then
   echo -e "\033[1;31mFailed to install packages. Please check for errors.\033[0m"
   exit 1

@@ -15,7 +15,8 @@ try {
 
     if ($PSVersionTable.PSVersion.Platform -eq "Unix") {
         $PathToPics = "$HOME/Pictures"
-    } else {
+    }
+    else {
         $PathToPics = [Environment]::GetFolderPath('MyPictures')
     }
 
@@ -27,11 +28,12 @@ try {
 
     $WebClient = New-Object System.Net.WebClient
     $WebClient.DownloadFile(("http://api.qrserver.com/v1/create-qr-code/?data=" + $Text + "&ecc=" + $ECC + `
-        "&size=" + $ImageSize + "&qzone=" + $QuietZone + `
-        "&color=" + $ForegroundColor + "&bgcolor=" + $BackgroundColor + `
-        "&format=" + $FileFormat), $NewFile)
+                "&size=" + $ImageSize + "&qzone=" + $QuietZone + `
+                "&color=" + $ForegroundColor + "&bgcolor=" + $BackgroundColor + `
+                "&format=" + $FileFormat), $NewFile)
 
     "✔️ saved new QR code image file to: $NewFile"
-} catch {
+}
+catch {
     "⚠️ Error in line $($_.InvocationInfo.ScriptLineNumber): $($_.Exception.Message)"
 }

@@ -14,11 +14,13 @@ function ytdownloadfun {
         if (Test-Path $gitPath) {
             & $gitPath clone $gitRepo $path
             Write-Host "Download complete."
-        } else {
+        }
+        else {
             Write-Host "Git is not installed. Please install Git or add it to your PATH."
             return
         }
-    } else {
+    }
+    else {
         Write-Host "Checking for updates..."
         Set-Location -Path $path
         & $gitPath fetch
@@ -27,7 +29,8 @@ function ytdownloadfun {
             Write-Host "Updates found. Pulling changes..."
             & $gitPath pull
             Write-Host "Update complete."
-        } else {
+        }
+        else {
             Write-Host "No updates found."
         }
         Set-Location -Path $pwd
@@ -36,7 +39,8 @@ function ytdownloadfun {
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
         & $python312Path $fullPath
-    } else {
+    }
+    else {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
     }
 }

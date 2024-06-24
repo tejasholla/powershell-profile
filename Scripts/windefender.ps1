@@ -6,29 +6,30 @@ $userInput = Read-Host "Enter an option:
 [3] Check status
 "
 
-switch($userInput) {
-1 {
-$defender.DisableRealtimeMonitoring = $true
-$defender | Set-MpPreference
-Write-Host "Real-time monitoring of Windows Defender has been disabled."
-break
-}
-2 {
-$defender.DisableRealtimeMonitoring = $false
-$defender | Set-MpPreference
-Write-Host "Real-time monitoring of Windows Defender has been enabled."
-break
-}
-3 {
-if($defender.DisableRealtimeMonitoring) {
-Write-Host "Real-time monitoring of Windows Defender is currently disabled."
-} else {
-Write-Host "Real-time monitoring of Windows Defender is currently enabled."
-}
-break
-}
-default {
-Write-Host "Invalid option selected."
-break
-}
+switch ($userInput) {
+    1 {
+        $defender.DisableRealtimeMonitoring = $true
+        $defender | Set-MpPreference
+        Write-Host "Real-time monitoring of Windows Defender has been disabled."
+        break
+    }
+    2 {
+        $defender.DisableRealtimeMonitoring = $false
+        $defender | Set-MpPreference
+        Write-Host "Real-time monitoring of Windows Defender has been enabled."
+        break
+    }
+    3 {
+        if ($defender.DisableRealtimeMonitoring) {
+            Write-Host "Real-time monitoring of Windows Defender is currently disabled."
+        }
+        else {
+            Write-Host "Real-time monitoring of Windows Defender is currently enabled."
+        }
+        break
+    }
+    default {
+        Write-Host "Invalid option selected."
+        break
+    }
 }

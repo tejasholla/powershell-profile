@@ -40,7 +40,8 @@ function GetCPUTemperature {
 			[int]$IntTemp = Get-Content "/sys/class/thermal/thermal_zone0/temp"
 			$temp = [math]::round($IntTemp / 1000.0, 1)
 		}
-	} else {
+	}
+ else {
 		$objects = Get-WmiObject -Query "SELECT * FROM Win32_PerfFormattedData_Counters_ThermalZoneInformation" -Namespace "root/CIMV2"
 		foreach ($object in $objects) {
 			$highPrec = $object.HighPrecisionTemperature
@@ -77,13 +78,16 @@ $socket = "$($details.SocketDesignation) socket, "
 $celsius = GetCPUTemperature
 if ($celsius -eq 99999.9) {
 	$temp = "no temp"
-} elseif ($celsius -gt 50) {
+}
+elseif ($celsius -gt 50) {
 	$temp = "$($celsius)°C"
 	$status = "⚠️"
-} elseif ($celsius -lt 0) {
+}
+elseif ($celsius -lt 0) {
 	$temp = "$($celsius)°C"
 	$status = "⚠️"
-} else {
+}
+else {
 	$temp = "$($celsius)°C"
 } 
 foreach ($cpu in $cpus) {
@@ -135,10 +139,10 @@ foreach ($vol in $volumes) {
 
 # Firewall status for all profiles (Domain, Private, Public)
 $firewallStatus = Get-NetFirewallProfile | ForEach-Object {
-    [PSCustomObject]@{
-        Profile = $_.Name
-        Enabled = $_.Enabled
-    }
+	[PSCustomObject]@{
+		Profile = $_.Name
+		Enabled = $_.Enabled
+	}
 }
 Write-Host "Firewall: " -ForegroundColor Yellow
 $firewallStatus | Format-Table -Property Profile, Enabled -AutoSize
