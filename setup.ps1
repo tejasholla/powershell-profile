@@ -311,6 +311,17 @@ catch {
     Write-Error "Failed to install CompletionPredictor. Error: $_"
 }
 
+# teracopy install
+try { 
+    # Assuming the script is accessible via the URL
+    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/teracopy.ps1"
+    $scriptContent = Invoke-RestMethod -Uri $scriptPath
+    Invoke-Expression $scriptContent
+}
+catch {
+    Write-Error "Failed to install teracopy. Error: $_"
+}
+
 # wsl install
 try {
     $StopWatch = [system.diagnostics.stopwatch]::startNew()
