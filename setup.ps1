@@ -311,6 +311,7 @@ catch {
     Write-Error "Failed to install CompletionPredictor. Error: $_"
 }
 
+# wsl install
 try {
     $StopWatch = [system.diagnostics.stopwatch]::startNew()
 
