@@ -329,7 +329,6 @@ try {
     if ($false) {
 
         & wsl --install
-
     }
     else {
         "👉 Step 1/3: Enable WSL..."
