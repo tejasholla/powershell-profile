@@ -766,9 +766,7 @@ function binclean {
     Write-Host "Recycle Bin cleanup complete."
 }
 
-function cleanwin {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1" | iex
-}
+function cleanwin { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1" | iex }
 
 # weather function ---------------------------------------------------------------------------------------------------------------------
 function weatherfun { curl wttr.in/$args }
@@ -826,14 +824,9 @@ function timezone {
     }
 }
 
-function qr {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1" | iex
-}
+function qr { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1" | iex }
 
-function usb {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/usb-toggle.ps1" | iex
-
-}
+function usb { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/usb-toggle.ps1" | iex }
 
 function setup { irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex }
 
