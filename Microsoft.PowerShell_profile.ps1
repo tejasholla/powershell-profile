@@ -532,10 +532,7 @@ function online {
 }
 
 function ipchange {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1" | iex
 }
 
 function iplocate {
@@ -778,10 +775,7 @@ function binclean {
 }
 
 function cleanwin {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1" | iex
 }
 
 # weather function ---------------------------------------------------------------------------------------------------------------------
@@ -841,10 +835,7 @@ function timezone {
 }
 
 function qr {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/qr.ps1" | iex
 }
 
 function usb {
