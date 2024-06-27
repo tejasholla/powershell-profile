@@ -611,13 +611,9 @@ function grep($regex, $dir) {
 
 function df { get-volume }
 
-function sed($file, $find, $replace) {
-        (Get-Content $file).replace("$find", $replace) | Set-Content $file
-}
+function sed($file, $find, $replace) { (Get-Content $file).replace("$find", $replace) | Set-Content $file }
 
-function export($name, $value) {
-    set-item -force -path "env:$name" -value $value;
-}
+function export($name, $value) { set-item -force -path "env:$name" -value $value; }
 
 function pkill($name) {
     Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
