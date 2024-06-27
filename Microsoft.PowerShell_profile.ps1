@@ -312,7 +312,7 @@ function ex { Start-Process explorer.exe "shell:MyComputerFolder" }
 
 function telegram { start https://web.telegram.org/a/ }
 
-function photos { start https://photos.google.com/ }
+function photos { Start-Process https://photos.google.com/ }
 
 # Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex }
