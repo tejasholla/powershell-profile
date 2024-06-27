@@ -242,9 +242,6 @@ Import-Module "gsudoModule"
 
 # Set aliases for quick access --------------------------------------------------------------------------------------------------
 try{
-    #$scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/alias.ps1"
-    #$scriptContent = Invoke-RestMethod -Uri $scriptPath
-    #Invoke-Expression $scriptContent
     irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/alias.ps1" | iex
 }
 catch{
