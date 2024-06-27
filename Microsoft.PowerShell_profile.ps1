@@ -173,7 +173,7 @@ function Update-FastFetch {
 Update-FastFetch
 
 # Display Fastfetch
-cls
+Clear-Host
 fastfetch -l "Windows 11"
 
 function Update-Profile {
@@ -310,7 +310,7 @@ function keybind {
 
 function ex { Start-Process explorer.exe "shell:MyComputerFolder" }
 
-function telegram { start https://web.telegram.org/a/ }
+function telegram { Start-Process https://web.telegram.org/a/ }
 
 function photos { Start-Process https://photos.google.com/ }
 
