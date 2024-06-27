@@ -843,8 +843,8 @@ function usb {
 
 }
 
-function shellhere {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/PowerShellHere.ps1" | iex
+function tweaks {
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/tweaks.ps1" | iex
 
 }
 
