@@ -336,15 +336,15 @@ function browser {
 
 function edge { Start-Process "msedge" }
 
-function gs { start www.google.com/search?q=$args }
+function gs { Start-Process www.google.com/search?q=$args }
 
-function google { start www.google.com }
+function google { Start-Process www.google.com }
 
-function ys { start www.youtube.com/search?q=$args }
+function ys { Start-Process www.youtube.com/search?q=$args }
 
-function youtube { start www.youtube.com }
+function youtube { Start-Process www.youtube.com }
 
-function wiki { start https://www.wikiwand.com/en/$args }
+function wiki { Start-Process https://www.wikiwand.com/en/$args }
 
 function url {
     param(
@@ -389,9 +389,9 @@ function lsnu { nu -c "ls" }
 function lscommand { nu -c "$args" }
 
 # Git Shortcuts -----------------------------------------------------------------------------------------------------------------
-function github { start https://github.com/tejasholla }
+function github { Start-Process https://github.com/tejasholla }
 
-function gitrepo { start https://github.com/tejasholla?tab=repositories }
+function gitrepo { Start-Process https://github.com/tejasholla?tab=repositories }
 
 function gituser { git config --global user.name "$args" }
 
@@ -714,7 +714,7 @@ function gmaps {
 }
 
 # Image compressor functions ------------------------------------------------------------------------------------------------------
-function imagecompress { start https://www.iloveimg.com/compress-image }
+function imagecompress { Start-Process https://www.iloveimg.com/compress-image }
 
 function imgcomp {
     # Define the URL of the Python script
@@ -862,10 +862,10 @@ function tweaks {
 }
 
 # AI run functions -----------------------------------------------------------------------------------------------------------------
-function chatgpt { start https://chatgpt.com/ }
+function chatgpt { Start-Process https://chatgpt.com/ }
 
 function chatty {
-    start http://localhost:8080/   
+    Start-Process http://localhost:8080/   
     # Open WSL in a new Windows Terminal tab
     linux
 }
