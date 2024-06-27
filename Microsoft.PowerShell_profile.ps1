@@ -615,9 +615,7 @@ function sed($file, $find, $replace) { (Get-Content $file).replace("$find", $rep
 
 function export($name, $value) { set-item -force -path "env:$name" -value $value; }
 
-function pkill($name) {
-    Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
-}
+function pkill($name) { Get-Process $name -ErrorAction SilentlyContinue | Stop-Process }
 
 function pgrep($name) { Get-Process $name }
 
