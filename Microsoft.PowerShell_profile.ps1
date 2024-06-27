@@ -869,8 +869,8 @@ function reset-wsl {
 function linux { Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl') }
 
 # Tweaks functions -----------------------------------------------------------------------------------------------------------------
-function tweaks {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/tweaks.ps1" | iex
+function wintweaks {
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/wintweaks.ps1" | iex
 
 }
 
