@@ -316,7 +316,6 @@ function photos { start https://photos.google.com/ }
 
 # Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload {
-    # Assuming the script is accessible via the URL
     irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex
 }
 
@@ -437,10 +436,7 @@ function nuke { git reset --hard; git clean -xdf }
 function sysinfo { Get-ComputerInfo }
 
 function pcdata {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1" | iex
 }
 
 function powcheck { powercfg /energy }
