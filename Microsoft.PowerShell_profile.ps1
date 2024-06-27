@@ -315,9 +315,7 @@ function telegram { start https://web.telegram.org/a/ }
 function photos { start https://photos.google.com/ }
 
 # Download functions -------------------------------------------------------------------------------------------------------------
-function ytdownload {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex
-}
+function ytdownload { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex }
 
 function wallpaper {
     # Define the URL of the Python script
@@ -435,9 +433,7 @@ function nuke { git reset --hard; git clean -xdf }
 # Quick Access to System Information -----------------------------------------------------------------------------------------------------------------
 function sysinfo { Get-ComputerInfo }
 
-function pcdata {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1" | iex
-}
+function pcdata { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1" | iex }
 
 function powcheck { powercfg /energy }
 
@@ -531,9 +527,7 @@ function online {
     return (test-connection $computername -count 1 -quiet)
 }
 
-function ipchange {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1" | iex
-}
+function ipchange { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/ip-change.ps1" | iex }
 
 function iplocate {
     # Path to the script on GitHub
