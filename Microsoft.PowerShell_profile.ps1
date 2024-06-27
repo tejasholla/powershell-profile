@@ -710,9 +710,7 @@ function loc {
     python $scriptPath
 }
 
-function maps {
-    Start-Process "https://www.openstreetmap.org/"
-}
+function maps { Start-Process "https://www.openstreetmap.org/" }
 
 function gmaps {
     param([string] $From, [String] $To)
