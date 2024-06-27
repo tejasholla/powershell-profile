@@ -878,6 +878,15 @@ function debloat {
     Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
 }
 
+function tweaks {
+    $scriptUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/tweaks.cmd"
+    $scriptContent = Invoke-RestMethod -Uri $scriptUrl
+    $tempFile = [System.IO.Path]::GetTempFileName() + ".cmd"
+    Set-Content -Path $tempFile -Value $scriptContent
+    Start-Process -FilePath "cmd.exe" -ArgumentList "/c $tempFile" -Wait
+    Remove-Item -Path $tempFile -Force
+}
+
 # AI run functions -----------------------------------------------------------------------------------------------------------------
 function chatgpt { start https://chatgpt.com/ }
 
