@@ -317,9 +317,10 @@ function photos { start https://photos.google.com/ }
 # Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload {
     # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    #$scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1"
+    #$scriptContent = Invoke-RestMethod -Uri $scriptPath
+    #Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex
 }
 
 function wallpaper {
