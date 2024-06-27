@@ -839,17 +839,13 @@ function qr {
 }
 
 function usb {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/usb-toggle.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/usb-toggle.ps1" | iex
+
 }
 
 function shellhere {
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/PowerShellHere.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/PowerShellHere.ps1" | iex
+
 }
 
 function debloat {
