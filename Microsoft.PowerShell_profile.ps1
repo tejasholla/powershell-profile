@@ -741,7 +741,6 @@ function binclean {
             Write-Host "The Recycle Bin is already empty." -ForegroundColor Green
             return
         }
-        $totalItems = $items.Count
         $currentItem = 0
         $items | ForEach-Object {
             $currentItem++
