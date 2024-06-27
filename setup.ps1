@@ -313,10 +313,7 @@ catch {
 
 # teracopy install
 try { 
-    # Assuming the script is accessible via the URL
-    $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/teracopy.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptPath
-    Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/teracopy.ps1" | iex
 }
 catch {
     Write-Error "Failed to install teracopy. Error: $_"
