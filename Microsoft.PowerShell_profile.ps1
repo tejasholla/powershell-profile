@@ -843,15 +843,6 @@ function usb {
 
 }
 
-function tweaks {
-    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/tweaks.ps1" | iex
-
-}
-
-function debloat {
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
-}
-
 function setup { irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex }
 
 # Shortens a URL using various free URL shortening services.
@@ -876,6 +867,16 @@ function reset-wsl {
 }
 
 function linux { Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl') }
+
+# Tweaks functions -----------------------------------------------------------------------------------------------------------------
+function tweaks {
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/tweaks.ps1" | iex
+
+}
+
+function debloat {
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex"
+}
 
 # AI run functions -----------------------------------------------------------------------------------------------------------------
 function chatgpt { start https://chatgpt.com/ }
