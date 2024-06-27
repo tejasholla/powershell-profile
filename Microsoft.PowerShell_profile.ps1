@@ -241,7 +241,15 @@ function admin {
 Import-Module "gsudoModule"
 
 # Set aliases for quick access --------------------------------------------------------------------------------------------------
-irm "https://github.com/tejasholla/powershell-profile/raw/main/setup.ps1" | iex
+try{
+    #$scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/alias.ps1"
+    #$scriptContent = Invoke-RestMethod -Uri $scriptPath
+    #Invoke-Expression $scriptContent
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/alias.ps1" | iex
+}
+catch{
+    Write-Output "An error occurred"
+}
 
 # Function definitions ------------------------------------------------------------------------------------------------------------
 function profile {
