@@ -1,13 +1,6 @@
 ### PowerShell Profile Refactor
 ### Version 1.04 - Refactored
 
-# Check if running as administrator and exit if true
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-if ($isAdmin) {
-    Write-Host "Profile is running as administrator. Exiting to prevent automatic admin load." -ForegroundColor Yellow
-    exit
-}
-
 # Set PowerShell to use UTF-8 encoding for both input and output
 [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
