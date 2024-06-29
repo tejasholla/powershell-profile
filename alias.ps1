@@ -1,5 +1,4 @@
 # Custamize this list based on your requirements. This script will be called in Microsoft.PowerShell_profile
-
 Set-Alias -Name su -Value admin
 Set-Alias sudo gsudo
 Set-Alias li ls
