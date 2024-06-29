@@ -40,6 +40,7 @@ function ytdownloadfun {
     if (Test-Path $fullPath) {
         try {
             Write-Host "Attempting to run with Python 3.12..."
+            Install-PythonPackages -pythonPath $python312Path
             & $python312Path $fullPath
             if ($LASTEXITCODE -ne 0) {
                 throw "Python 3.12 execution failed."
@@ -47,6 +48,7 @@ function ytdownloadfun {
         }
         catch {
             Write-Host "Python 3.12 execution failed. Attempting to run with Python 3.10..."
+            Install-PythonPackages -pythonPath $python310Path
             & $python310Path $fullPath
             if ($LASTEXITCODE -ne 0) {
                 Write-Host "Python 3.10 execution failed. Please check the script and your Python installations."
