@@ -36,16 +36,16 @@ function ytdownloadfun {
         Set-Location -Path $pwd
     }
 
-        # Function to install required Python packages
-        function Install-PythonPackages {
-            param (
-                [string]$pythonPath
-            )
-            $packages = @('questionary', 'pygame')
-            foreach ($package in $packages) {
-                & $pythonPath -m pip install $package
-            }
+    # Function to install required Python packages
+    function Install-PythonPackages {
+        param (
+            [string]$pythonPath
+        )
+        $packages = @('questionary', 'pygame')
+        foreach ($package in $packages) {
+            & $pythonPath -m pip install $package
         }
+    }
 
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
