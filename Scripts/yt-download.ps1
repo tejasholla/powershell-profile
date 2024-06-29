@@ -2,7 +2,7 @@ function ytdownloadfun {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
     $fullPath = Join-Path $path $file
-    #$python310Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python310\python.exe'
+    $python310Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python310\python.exe'
     $python312Path = Join-Path $env:USERPROFILE 'AppData\Local\Programs\Python\Python312\python.exe'
     $gitRepo = 'https://github.com/tejasholla/ytDownloader.git'
     $gitPath = 'C:\Program Files\Git\bin\git.exe'
