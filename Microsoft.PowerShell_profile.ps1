@@ -256,7 +256,7 @@ function profile {
 
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
-function reload-profile { & $profile }
+function reload { & $profile }
 
 function EditHistory { npp (Get-PSReadlineOption).HistorySavePath }
 
