@@ -1,3 +1,14 @@
+# Function to install required Python packages
+function Install-PythonPackages {
+    param (
+        [string]$pythonPath
+    )
+    $packages = @('questionary', 'pygame')
+    foreach ($package in $packages) {
+        & $pythonPath -m pip install $package
+    }
+}
+
 function ytdownloadfun {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
@@ -34,17 +45,6 @@ function ytdownloadfun {
             Write-Host "No updates found."
         }
         Set-Location -Path $pwd
-    }
-
-    # Function to install required Python packages
-    function Install-PythonPackages {
-        param (
-            [string]$pythonPath
-        )
-        $packages = @('questionary', 'pygame')
-        foreach ($package in $packages) {
-            & $pythonPath -m pip install $package
-        }
     }
 
     # Execute the Python script if it exists
