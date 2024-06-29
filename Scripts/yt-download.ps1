@@ -1,14 +1,3 @@
-# Function to install required Python packages
-function Install-PythonPackages {
-    param (
-        [string]$pythonPath
-    )
-    $packages = @('questionary', 'pygame')
-    foreach ($package in $packages) {
-        & $pythonPath -m pip install $package
-    }
-}
-
 function ytdownloadfun {
     $path = 'D:\Git\ytDownloader'
     $file = 'ytDownloader.py'
@@ -49,22 +38,7 @@ function ytdownloadfun {
 
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
-        try {
-            Write-Host "Attempting to run with Python 3.12..."
-            Install-PythonPackages -pythonPath $python312Path
-            & $python312Path $fullPath
-            if ($LASTEXITCODE -ne 0) {
-                throw "Python 3.12 execution failed."
-            }
-        }
-        catch {
-            Write-Host "Python 3.12 execution failed. Attempting to run with Python 3.10..."
-            Install-PythonPackages -pythonPath $python310Path
-            & $python310Path $fullPath
-            if ($LASTEXITCODE -ne 0) {
-                Write-Host "Python 3.10 execution failed. Please check the script and your Python installations."
-            }
-        }
+        & $python310Path $fullPath
     }
     else {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
