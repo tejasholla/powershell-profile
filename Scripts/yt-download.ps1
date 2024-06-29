@@ -38,7 +38,20 @@ function ytdownloadfun {
 
     # Execute the Python script if it exists
     if (Test-Path $fullPath) {
-        & $python312Path $fullPath
+        try {
+            Write-Host "Attempting to run with Python 3.12..."
+            & $python312Path $fullPath
+            if ($LASTEXITCODE -ne 0) {
+                throw "Python 3.12 execution failed."
+            }
+        }
+        catch {
+            Write-Host "Python 3.12 execution failed. Attempting to run with Python 3.10..."
+            & $python310Path $fullPath
+            if ($LASTEXITCODE -ne 0) {
+                Write-Host "Python 3.10 execution failed. Please check the script and your Python installations."
+            }
+        }
     }
     else {
         Write-Host "The script file does not exist even after attempting to download. Please check the repository URL and directory permissions."
