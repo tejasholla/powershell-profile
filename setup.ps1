@@ -340,21 +340,23 @@ $url = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/set
 $tempSettingsPath = "$env:TEMP\new_settings.json"
 
 # Path to the Windows Terminal settings directory
-$wtSettingsPath = "$env:LocalAppData\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
+$wtSettingsPath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
 
-# Download the new settings.json file
-Write-Output "Downloading new settings.json from $url"
-Invoke-WebRequest -Uri $url -OutFile $tempSettingsPath
+try {
+    # Download the new settings.json file
+    Write-Output "Downloading new settings.json from $url"
+    Invoke-WebRequest -Uri $url -OutFile $tempSettingsPath -ErrorAction Stop
 
-# Check if the download was successful
-if (Test-Path -Path $tempSettingsPath) {
     # Copy the downloaded settings.json file to the Windows Terminal settings directory
-    Copy-Item -Path $tempSettingsPath -Destination "$wtSettingsPath\settings.json" -Force
-    Write-Output "Successfully replaced settings.json"
+    if (Test-Path -Path $tempSettingsPath) {
+        Copy-Item -Path $tempSettingsPath -Destination "$wtSettingsPath\settings.json" -Force
+        Write-Output "Successfully replaced settings.json"
+    } else {
+        throw "Failed to download settings.json"
+    }
 
     # Remove the temporary file
-    Remove-Item -Path $tempSettingsPath
-} else {
-    Write-Output "Failed to download new settings.json"
+    Remove-Item -Path $tempSettingsPath -ErrorAction SilentlyContinue
+} catch {
+    Write-Output "Error: $_" # Handle specific error cases here if needed
 }
-
