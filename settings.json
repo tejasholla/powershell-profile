@@ -84,36 +84,6 @@
         "source": "nu"
       },
       {
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "hidden": false,
-        "name": "Azure Cloud Shell",
-        "source": "Windows.Terminal.Azure"
-      },
-      {
-        "guid": "{bfb73155-b8ad-586d-9287-dc18870ac5be}",
-        "hidden": false,
-        "name": "Developer Command Prompt for VS 2022",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{9e408ff6-8bfb-542a-a52f-2c955eb7777c}",
-        "hidden": false,
-        "name": "Developer PowerShell for VS 2022",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{799858f0-1754-5ca4-8354-36eae37b7c85}",
-        "hidden": true,
-        "name": "Developer Command Prompt for VS 2019",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
-        "guid": "{3d4a25a1-66e9-5afb-805f-0ddd82ff9fc8}",
-        "hidden": true,
-        "name": "Developer PowerShell for VS 2019",
-        "source": "Windows.Terminal.VisualStudio"
-      },
-      {
         "guid": "{51855cb2-8cce-5362-8f54-464b92b32386}",
         "hidden": false,
         "name": "Ubuntu",
