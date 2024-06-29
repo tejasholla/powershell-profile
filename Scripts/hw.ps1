@@ -81,11 +81,9 @@ if ($celsius -eq 99999.9) {
 }
 elseif ($celsius -gt 50) {
 	$temp = "$($celsius)°C"
-	$status = "⚠️"
 }
 elseif ($celsius -lt 0) {
 	$temp = "$($celsius)°C"
-	$status = "⚠️"
 }
 else {
 	$temp = "$($celsius)°C"

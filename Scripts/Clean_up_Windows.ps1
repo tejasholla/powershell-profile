@@ -58,8 +58,8 @@ ForEach ($Location in $Locations) {
 }
 
 # Do the clean-up. Have to convert the SageSet number
-$Args = "/sagerun:$([string]([int]$SageSet.Substring($SageSet.Length-4)))"
-Start-Process -Wait "$env:SystemRoot\System32\cleanmgr.exe" -ArgumentList $Args
+$CleanArgs = "/sagerun:$([string]([int]$SageSet.Substring($SageSet.Length-4)))"
+Start-Process -Wait "$env:SystemRoot\System32\cleanmgr.exe" -ArgumentList $CleanArgs
 
 # Remove the Stateflags
 ForEach ($Location in $Locations) {
