@@ -160,14 +160,14 @@ Import-Module -Name CompletionPredictor
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
-# Check for Fastfetch Updates
+# Function to check for FastFetch updates
 function Update-FastFetch {
     if (-not $global:canConnectToGitHub) {
         return
     }
     try {
         $updateNeeded = $false
-        $currentVersion = Get-Command fastfetch | Select-Object -ExpandProperty Version
+        $currentVersion = (Get-Command fastfetch).Version
         $gitHubApiUrl = "https://api.github.com/repos/fastfetch-cli/fastfetch/releases/latest"
 
         if ($env:pwsh_github_api) {
@@ -179,10 +179,13 @@ function Update-FastFetch {
         else {
             $latestReleaseInfo = Invoke-RestMethod -Uri $gitHubApiUrl
         }
-        $latestVersion = $latestReleaseInfo.tag_name.Trim('v')
+        
+        $latestVersion = [Version]$latestReleaseInfo.tag_name.Trim('v')
+        
         if ($currentVersion -lt $latestVersion) {
             $updateNeeded = $true
         }
+
         if ($updateNeeded) {
             scoop update fastfetch
         }
@@ -191,13 +194,28 @@ function Update-FastFetch {
         Write-Error "Failed to update FastFetch. Error: $_"
     }
 }
+
+# Update FastFetch
 Update-FastFetch
 
-# Display Fastfetch with filtered output
+# Display FastFetch with filtered output
 Clear-Host
 $fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
-$filteredOutput
+
+# Function to beautify the output
+function Beautify-Output($output) {
+    $output = $output -replace "OS:", "Operating System:"
+    $output = $output -replace "Host:", "Hostname:"
+    $output = $output -replace "Packages:", "Installed Packages:"
+    $output = $output -replace "Shell:", "Shell Type:"
+    $output = $output -replace "Terminal:", "Terminal Emulator:"
+    
+    return $output
+}
+
+$beautifulOutput = Beautify-Output $filteredOutput
+$beautifulOutput
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
