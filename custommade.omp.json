@@ -34,11 +34,13 @@
         {
           "background": "#ffffff",
           "foreground": "#000000",
+          "leading_diamond": " \ue0b6",
           "properties": {
             "style": "folder"
           },
-          "style": "plain",
-          "template": " \ue5ff {{ .Path }} ",
+          "style": "diamond",
+          "template": "\ue5ff {{ .Path }}",
+          "trailing_diamond": "\ue0b4",
           "type": "path"
         },
         {
