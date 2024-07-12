@@ -5,8 +5,8 @@
       "type": "rprompt",
       "segments": [
         {
-          "background": "#1b3c79",
-          "foreground": "#ffffff",
+          "background": "#FFA500",
+          "foreground": "#000000",
           "leading_diamond": " \ue0b6",
           "properties": {
             "alpine": "\uf300",
