@@ -193,23 +193,10 @@ function Update-FastFetch {
 }
 Update-FastFetch
 
-# Define Windows logo manually
-$windowsLogo = @"
-███████╗██╗    ██╗██╗███╗   ██╗██████╗ ███████╗
-██╔════╝██║    ██║██║████╗  ██║██╔══██╗██╔════╝
-███████╗██║ █╗ ██║██║██╔██╗ ██║██████╔╝███████╗
-╚════██║██║███╗██║██║██║╚██╗██║██╔═══╝ ╚════██║
-███████║╚███╔███╔╝██║██║ ╚████║██║     ███████║
-╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝     ╚══════╝
-"@
-
 # Display Fastfetch with filtered output
 Clear-Host
 $fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
-
-# Display Windows logo and filtered output
-Write-Host $windowsLogo
 $filteredOutput
 
 function Update-Profile {
