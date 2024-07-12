@@ -207,19 +207,19 @@ $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:
 function Beautify-Output($output) {
     foreach ($line in $output) {
         if ($line -match "OS:") {
-            Write-Host "///////  ///////" $line -ForegroundColor Cyan
+            Write-Host "///////   ///////    " $line -ForegroundColor Blue
         }
         elseif ($line -match "Host:") {
-            Write-Host "///////  ///////" $line -ForegroundColor Cyan
+            Write-Host "///////   ///////    " $line -ForegroundColor Blue
         }
         elseif ($line -match "Packages:") {
-            Write-Host "                " $line -ForegroundColor Magenta
+            Write-Host "                     " $line -ForegroundColor Magenta
         }
         elseif ($line -match "Shell:") {
-            Write-Host "///////  ///////" $line -ForegroundColor Blue
+            Write-Host "///////   ///////    " $line -ForegroundColor Blue
         }
         elseif ($line -match "Terminal:") {
-            Write-Host "///////  ///////" $line -ForegroundColor Blue
+            Write-Host "///////   ///////    " $line -ForegroundColor Blue
         }
     }
 }
