@@ -120,14 +120,35 @@ function Remove-DuplicateHistoryEntries {
 # Clear duplicates in history file when profile loads
 Remove-DuplicateHistoryEntries
 
-$scriptblock = {
+#$scriptblock = {
+#    param($wordToComplete, $commandAst, $cursorPosition)
+#    dotnet complete --position $cursorPosition $commandAst.ToString() |
+#    ForEach-Object {
+#        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+#    }
+#}
+#Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
+
+# WinGet Command Line Tab Completion
+# https://github.com/microsoft/winget-cli/blob/1fbfacc13950de8a17875d40a8beb99fc6ada6c2/doc/Completion.md
+Register-ArgumentCompleter -Native -CommandName winget -ScriptBlock {
     param($wordToComplete, $commandAst, $cursorPosition)
-    dotnet complete --position $cursorPosition $commandAst.ToString() |
-    ForEach-Object {
-        [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-    }
+        [Console]::InputEncoding = [Console]::OutputEncoding = $OutputEncoding = [System.Text.Utf8Encoding]::new()
+        $Local:word = $wordToComplete.Replace('"', '""')
+        $Local:ast = $commandAst.ToString().Replace('"', '""')
+        winget complete --word="$Local:word" --commandline "$Local:ast" --position $cursorPosition | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+        }
 }
-Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock $scriptblock
+
+# PowerShell parameter completion shim for the dotnet CLI
+# https://learn.microsoft.com/en-ca/dotnet/core/tools/enable-tab-autocomplete?WT.mc_id=modinfra-35653-salean#powershell
+Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
+     param($commandName, $wordToComplete, $cursorPosition)
+         dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
+            [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
+         }
+ }
 
 # Fzf configuration
 Import-Module PSFzf
