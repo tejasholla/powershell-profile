@@ -38,7 +38,7 @@
             "style": "folder"
           },
           "style": "plain",
-          "template": "\ue5ff {{ .Path }}",
+          "template": " \ue5ff {{ .Path }} ",
           "type": "path"
         },
         {
