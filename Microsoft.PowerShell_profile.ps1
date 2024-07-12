@@ -193,15 +193,24 @@ function Update-FastFetch {
 }
 Update-FastFetch
 
-# Display Fastfetch with Windows logo and filtered output
-Clear-Host
-$fastfetchOutput = fastfetch --logo windows --disable title,uptime,battery,resolution,de,wm,wm_theme,theme,icons,terminal_font,cpu,gpu,memory,disk,publicip,localip,packages_apt,packages_pacman,packages_dnf,packages_brew,packages_ports,packages_bsd,packages_flatpak,packages_snap,packages_macports,packages_1password,packages_brewcask,packages_gentoo,packages_rpm,packages_xbps,packages_linuxbrew,packages_nix,packages_pkg,packages_npm,packages_gem,packages_ruby,packages_pip,packages_pip3,packages_yarn,packages_vscode,packages_emerge,packages_other
+# Define Windows logo manually
+$windowsLogo = @"
+███████╗██╗    ██╗██╗███╗   ██╗██████╗ ███████╗
+██╔════╝██║    ██║██║████╗  ██║██╔══██╗██╔════╝
+███████╗██║ █╗ ██║██║██╔██╗ ██║██████╔╝███████╗
+╚════██║██║███╗██║██║██║╚██╗██║██╔═══╝ ╚════██║
+███████║╚███╔███╔╝██║██║ ╚████║██║     ███████║
+╚══════╝ ╚══╝╚══╝ ╚═╝╚═╝  ╚═══╝╚═╝     ╚══════╝
+"@
 
-# Filter and display the required information
+# Display Fastfetch with filtered output
+Clear-Host
+$fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
 
+# Display Windows logo and filtered output
+Write-Host $windowsLogo
 $filteredOutput
-
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
