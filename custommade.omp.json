@@ -134,7 +134,7 @@
       "segments": [
         {
           "properties": {
-            "root_icon": "\uf292 "
+            "root_icon": "\u26a1 "
           },
           "style": "diamond",
           "template": "\uf0e7 ",
@@ -147,7 +147,7 @@
             "always_enabled": true
           },
           "style": "plain",
-          "template": "\u276f ",
+          "template": "\uf0a9 ",
           "type": "status"
         }
       ],
