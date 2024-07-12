@@ -204,27 +204,24 @@ $fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
 
 # Function to beautify and color the output
-function Beautify-Output($output) {
-    foreach ($line in $output) {
-        if ($line -match "OS:") {
-            Write-Host "///////   ///////    " -ForegroundColor Blue $line -ForegroundColor Cyan
-        }
-        elseif ($line -match "Host:") {
-            Write-Host "///////   ///////    " -ForegroundColor Blue $line -ForegroundColor Cyan
-        }
-        elseif ($line -match "Packages:") {
-            Write-Host "                     " $line -ForegroundColor Magenta
-        }
-        elseif ($line -match "Shell:") {
-            Write-Host "///////   ///////    " -ForegroundColor Blue $line -ForegroundColor Cyan
-        }
-        elseif ($line -match "Terminal:") {
-            Write-Host "///////   ///////    " -ForegroundColor Blue $line -ForegroundColor Cyan
+function Beautify-Output {
+    param (
+        [string[]]$Output
+    )
+
+    foreach ($line in $Output) {
+        switch -Regex ($line) {
+            "OS:"       { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
+            "Host:"     { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
+            "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor Magenta }
+            "Shell:"    { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
+            "Terminal:" { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
+            default     { Write-Host $line }
         }
     }
 }
 
-Beautify-Output $filteredOutput
+Beautify-Output -Output $filteredOutput
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
