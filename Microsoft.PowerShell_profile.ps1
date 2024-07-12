@@ -261,7 +261,7 @@ function admin {
 # sudo function
 Import-Module "gsudoModule"
 
-# Set aliases for quick access --------------------------------------------------------------------------------------------------
+#! Set aliases for quick access --------------------------------------------------------------------------------------------------
 try{
     irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/alias.ps1" | iex
 }
@@ -269,7 +269,7 @@ catch{
     Write-Output "An error occurred"
 }
 
-# Function definitions ------------------------------------------------------------------------------------------------------------
+#! Function definitions ------------------------------------------------------------------------------------------------------------
 function profile {
     $path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
     Start-Process $path
@@ -283,7 +283,7 @@ function EditHistory { npp (Get-PSReadlineOption).HistorySavePath }
 
 function exepolicy { Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser }
 
-# app related --------------------------------------------------------------------------------------------------------------------
+#! app related --------------------------------------------------------------------------------------------------------------------
 function npp { Start-Process -FilePath "C:\Program Files\Notepad++\Notepad++.exe" -ArgumentList $args }
 
 function Test-CommandExists {
@@ -335,7 +335,7 @@ function telegram { Start-Process https://web.telegram.org/a/ }
 
 function photos { Start-Process https://photos.google.com/ }
 
-# Download functions -------------------------------------------------------------------------------------------------------------
+#! Download functions -------------------------------------------------------------------------------------------------------------
 function ytdownload { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/yt-download.ps1" | iex }
 
 function wallpaper {
@@ -349,7 +349,7 @@ function wallpaper {
     python $scriptPath
 }
 
-# Browser related ----------------------------------------------------------------------------------------------------------------
+#! Browser related ----------------------------------------------------------------------------------------------------------------
 function browser {
     $path = Join-Path $env:USERPROFILE 'AppData\Local\Thorium\Application\thorium.exe'
     Start-Process $path
@@ -381,7 +381,7 @@ function url {
     }
 }
 
-# windows tools ----------------------------------------------------------------------------------------------------------------
+#! windows tools ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"   
@@ -398,7 +398,7 @@ function windef {
     }
 }
 
-# Enhanced Listing -----------------------------------------------------------------------------------------------------------------
+#! Enhanced Listing -----------------------------------------------------------------------------------------------------------------
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
 
 function ll { Get-ChildItem -Path . -Force -Hidden | Format-Table -AutoSize }
@@ -409,7 +409,7 @@ function lsnu { nu -c "ls" }
 
 function lscommand { nu -c "$args" }
 
-# Git Shortcuts -----------------------------------------------------------------------------------------------------------------
+#! Git Shortcuts -----------------------------------------------------------------------------------------------------------------
 function github { Start-Process https://github.com/tejasholla }
 
 function gitrepo { Start-Process https://github.com/tejasholla?tab=repositories }
@@ -451,7 +451,7 @@ function ss { git status --short }
 
 function nuke { git reset --hard; git clean -xdf }
 
-# Quick Access to System Information -----------------------------------------------------------------------------------------------------------------
+#! Quick Access to System Information -----------------------------------------------------------------------------------------------------------------
 function sysinfo { Get-ComputerInfo }
 
 function pcdata { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/hw.ps1" | iex }
@@ -479,7 +479,7 @@ function syshealthreport {
     python $scriptPath
 }
 
-# Networking Utilities -----------------------------------------------------------------------------------------------------------------
+#! Networking Utilities -----------------------------------------------------------------------------------------------------------------
 function wifinetwork { netsh wlan show profile }
 
 function thiswifi { netsh wlan show profile $args key=clear | findstr “Key Content” }
@@ -573,12 +573,12 @@ function iplocate {
 
 function EditHosts { sudo notepad $env:windir\System32\drivers\etc\hosts }
 
-# Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
+#! Clipboard Utilities -----------------------------------------------------------------------------------------------------------------
 function cpy { Set-Clipboard $args[0] }
 
 function pst { Get-Clipboard }
 
-# file related --------------------------------------------------------------------------------------------------------------------
+#! file related --------------------------------------------------------------------------------------------------------------------
 function Set-Home {
     [CmdletBinding()]
     [Alias("root")]
@@ -713,7 +713,7 @@ function organizer {
     python $scriptPath
 }
 
-# Location or map functions -------------------------------------------------------------------------------------------------------
+#! Location or map functions -------------------------------------------------------------------------------------------------------
 function loc {
     # Define the URL of the Python script
     $url = "https://raw.githubusercontent.com/tejasholla/Tools/main/YourLocation/YourLocation.py"
@@ -734,7 +734,7 @@ function gmaps {
     }
 }
 
-# Image compressor functions ------------------------------------------------------------------------------------------------------
+#! Image compressor functions ------------------------------------------------------------------------------------------------------
 function imagecompress { Start-Process https://www.iloveimg.com/compress-image }
 
 function imgcomp {
@@ -748,7 +748,7 @@ function imgcomp {
     python $scriptPath
 }
 
-# Recycle bin functions -----------------------------------------------------------------------------------------------------------
+#! Recycle bin functions -----------------------------------------------------------------------------------------------------------
 function binop {
     $RecycleBin = (New-Object -ComObject Shell.Application).Namespace(0xA)
     $RecycleBin.Self.InvokeVerb('open')
@@ -782,7 +782,7 @@ function binclean {
 
 function cleanwin { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/Clean_up_Windows.ps1" | iex }
 
-# weather function ---------------------------------------------------------------------------------------------------------------------
+#! weather function ---------------------------------------------------------------------------------------------------------------------
 function weatherfun { curl wttr.in/$args }
 
 function weather {
@@ -806,7 +806,7 @@ function weather {
     }
 }
 
-# other functions --------------------------------------------------------------------------------------------------------------------------
+#! other functions --------------------------------------------------------------------------------------------------------------------------
 function checkpass {
     # Path to the script on GitHub
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/check-password.ps1"  
@@ -867,7 +867,7 @@ function reset-wsl {
 
 function linux { Start-Process wt -ArgumentList @('-w', '0', 'nt', 'wsl') }
 
-# Tweaks functions -----------------------------------------------------------------------------------------------------------------
+#! Tweaks functions -----------------------------------------------------------------------------------------------------------------
 function wintweaks { irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/wintweaks.ps1" | iex }
 
 function debloat { Start-Process -FilePath "powershell.exe" -ArgumentList "-NoExit", "-Command", "irm https://christitus.com/win | iex" }
@@ -881,7 +881,7 @@ function tweaks {
     Remove-Item -Path $tempFile -Force
 }
 
-# AI run functions -----------------------------------------------------------------------------------------------------------------
+#! AI run functions -----------------------------------------------------------------------------------------------------------------
 function chatgpt { Start-Process https://chatgpt.com/ }
 
 function chatty {
@@ -890,7 +890,7 @@ function chatty {
     linux
 }
 
-# Utility functions ----------------------------------------------------------------------------------------------------------------------------------
+#! Utility functions ----------------------------------------------------------------------------------------------------------------------------------
 function Get-Theme {
     if (Test-Path -Path $PROFILE.CurrentUserAllHosts -PathType leaf) {
         $existingTheme = Select-String -Raw -Path $PROFILE.CurrentUserAllHosts -Pattern "oh-my-posh init pwsh --config"
