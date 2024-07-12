@@ -195,10 +195,11 @@ Update-FastFetch
 
 # Display Fastfetch with filtered output
 Clear-Host
-$fastfetchOutput = fastfetch --load-config "Windows 11" -N -t -T
+$fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
 
 $filteredOutput
+
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
