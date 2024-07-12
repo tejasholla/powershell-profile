@@ -216,19 +216,18 @@ function Beautify-Output {
     Write-Host "██╔═══╝ ██╔══██║██╔══██║██║╚██╗██║   ██║   ██║   ██║██║╚██╔╝██║" -ForegroundColor Blue
     Write-Host "██║     ██║  ██║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║ ╚═╝ ██║" -ForegroundColor Blue
     Write-Host "╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝" -ForegroundColor Blue
-
+    Write-Host "///////   ///////" -ForegroundColor Blue
     foreach ($line in $Output) {
         switch -Regex ($line) {
-            Write-Host "///////   ///////    " -ForegroundColor Blue
             "OS:"       { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Host:"     { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor Blue }
             "Shell:"    { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Terminal:" { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
-            Write-Host "///////   ///////    " -ForegroundColor Blue
             default     { Write-Host $line }
         }
     }
+    Write-Host "///////   ///////" -ForegroundColor Blue
 }
 
 Beautify-Output -Output $filteredOutput
