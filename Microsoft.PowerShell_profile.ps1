@@ -210,16 +210,16 @@ function Beautify-Output($output) {
             Write-Host "///////  ///////" $line -ForegroundColor Cyan
         }
         elseif ($line -match "Host:") {
-            Write-Host $line -ForegroundColor Cyan
+            Write-Host "///////  ///////" $line -ForegroundColor Cyan
         }
         elseif ($line -match "Packages:") {
-            Write-Host $line -ForegroundColor Magenta
+            Write-Host "                " $line -ForegroundColor Magenta
         }
         elseif ($line -match "Shell:") {
-            Write-Host $line -ForegroundColor Blue
+            Write-Host "///////  ///////" $line -ForegroundColor Blue
         }
         elseif ($line -match "Terminal:") {
-            Write-Host $line -ForegroundColor Blue
+            Write-Host "///////  ///////" $line -ForegroundColor Blue
         }
     }
 }
