@@ -7,6 +7,7 @@
         {
           "background": "#1b3c79",
           "foreground": "#ffffff",
+          "leading_diamond": " \ue0b6",
           "properties": {
             "alpine": "\uf300",
             "arch": "\uf303",
@@ -25,8 +26,9 @@
             "windows": "\ue62a",
             "wsl": "\ue712"
           },
-          "style": "plain",
+          "style": "diamond",
           "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
+          "trailing_diamond": "\ue0b4",
           "type": "os"
         },
         {
