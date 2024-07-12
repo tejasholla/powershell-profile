@@ -5,9 +5,28 @@
       "type": "rprompt",
       "segments": [
         {
-          "foreground": "#1b3c79",
+          "background": "#1b3c79",
+          "foreground": "#ffffff",
+          "properties": {
+            "alpine": "\uf300",
+            "arch": "\uf303",
+            "centos": "\uf304",
+            "debian": "\uf306",
+            "elementary": "\uf309",
+            "fedora": "\uf30a",
+            "gentoo": "\uf30d",
+            "linux": "\ue712",
+            "macos": "\ue711",
+            "manjaro": "\uf312",
+            "mint": "\uf30f",
+            "opensuse": "\uf314",
+            "raspbian": "\uf315",
+            "ubuntu": "\uf31c",
+            "windows": "\ue62a",
+            "wsl": "\ue712"
+          },
           "style": "plain",
-          "template": "{{.Icon}} ",
+          "template": " {{ if .WSL }}WSL at {{ end }}{{.Icon}} ",
           "type": "os"
         },
         {
