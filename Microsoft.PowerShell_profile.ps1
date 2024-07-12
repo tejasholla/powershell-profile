@@ -210,18 +210,18 @@ function Beautify-Output {
     )
 
     # Adding the PHANTOM ASCII art
-    Write-Host "██████╗ ██╗  ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███╗   ███╗" -ForegroundColor Orange
-    Write-Host "██╔══██╗██║  ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗████╗ ████║" -ForegroundColor Orange
-    Write-Host "██████╔╝███████║███████║██╔██╗ ██║   ██║   ██║   ██║██╔████╔██║" -ForegroundColor Orange
-    Write-Host "██╔═══╝ ██╔══██║██╔══██║██║╚██╗██║   ██║   ██║   ██║██║╚██╔╝██║" -ForegroundColor Orange
-    Write-Host "██║     ██║  ██║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║ ╚═╝ ██║" -ForegroundColor Orange
-    Write-Host "╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝" -ForegroundColor Orange
+    Write-Host "██████╗ ██╗  ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███╗   ███╗" -ForegroundColor DarkYellow
+    Write-Host "██╔══██╗██║  ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗████╗ ████║" -ForegroundColor DarkYellow
+    Write-Host "██████╔╝███████║███████║██╔██╗ ██║   ██║   ██║   ██║██╔████╔██║" -ForegroundColor DarkYellow
+    Write-Host "██╔═══╝ ██╔══██║██╔══██║██║╚██╗██║   ██║   ██║   ██║██║╚██╔╝██║" -ForegroundColor DarkYellow
+    Write-Host "██║     ██║  ██║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║ ╚═╝ ██║" -ForegroundColor DarkYellow
+    Write-Host "╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝" -ForegroundColor DarkYellow
     Write-Host "///////   ///////" -ForegroundColor Blue
     foreach ($line in $Output) {
         switch -Regex ($line) {
             "OS:"       { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Host:"     { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
-            "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor Orange }
+            "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor DarkYellow }
             "Shell:"    { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Terminal:" { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             default     { Write-Host $line }
