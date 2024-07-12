@@ -203,19 +203,28 @@ Clear-Host
 $fastfetchOutput = fastfetch
 $filteredOutput = $fastfetchOutput | Select-String -Pattern "OS:|Host:|Packages:|Shell:|Terminal:"
 
-# Function to beautify the output
+# Function to beautify and color the output
 function Beautify-Output($output) {
-    $output = $output -replace "OS:", "Operating System:"
-    $output = $output -replace "Host:", "Hostname:"
-    $output = $output -replace "Packages:", "Installed Packages:"
-    $output = $output -replace "Shell:", "Shell Type:"
-    $output = $output -replace "Terminal:", "Terminal Emulator:"
-    
-    return $output
+    foreach ($line in $output) {
+        if ($line -match "OS:") {
+            Write-Host $line -ForegroundColor Cyan
+        }
+        elseif ($line -match "Host:") {
+            Write-Host $line -ForegroundColor Green
+        }
+        elseif ($line -match "Packages:") {
+            Write-Host $line -ForegroundColor Magenta
+        }
+        elseif ($line -match "Shell:") {
+            Write-Host $line -ForegroundColor Yellow
+        }
+        elseif ($line -match "Terminal:") {
+            Write-Host $line -ForegroundColor Blue
+        }
+    }
 }
 
-$beautifulOutput = Beautify-Output $filteredOutput
-$beautifulOutput
+Beautify-Output $filteredOutput
 
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
