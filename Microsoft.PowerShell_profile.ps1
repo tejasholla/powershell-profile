@@ -221,7 +221,7 @@ function Beautify-Output {
         switch -Regex ($line) {
             "OS:"       { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Host:"     { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
-            "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor Blue }
+            "Packages:" { Write-Host "                     " -NoNewline; Write-Host $line -ForegroundColor Orange }
             "Shell:"    { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             "Terminal:" { Write-Host "///////   ///////    " -ForegroundColor Blue -NoNewline; Write-Host $line -ForegroundColor Cyan }
             default     { Write-Host $line }
