@@ -210,13 +210,13 @@ function Beautify-Output($output) {
             Write-Host $line -ForegroundColor Cyan
         }
         elseif ($line -match "Host:") {
-            Write-Host $line -ForegroundColor Green
+            Write-Host $line -ForegroundColor Cyan
         }
         elseif ($line -match "Packages:") {
             Write-Host $line -ForegroundColor Magenta
         }
         elseif ($line -match "Shell:") {
-            Write-Host $line -ForegroundColor Yellow
+            Write-Host $line -ForegroundColor Blue
         }
         elseif ($line -match "Terminal:") {
             Write-Host $line -ForegroundColor Blue
