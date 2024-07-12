@@ -134,10 +134,10 @@
       "segments": [
         {
           "properties": {
-            "root_icon": "\u26a1 "
+            "root_icon": "\u26a1"
           },
           "style": "diamond",
-          "template": "\u26a1 ",
+          "template": "\u26a1",
           "type": "root"
         },
         {
