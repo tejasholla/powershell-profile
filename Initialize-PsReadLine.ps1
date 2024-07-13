@@ -182,16 +182,3 @@ Set-PSReadLineKeyHandler -Key "Alt+n" -BriefDescription ExpandAliases -LongDescr
 
     [Microsoft.Powershell.PSConsoleReadLine]::Insert("$input")
 }
-
-# Define function to remove duplicate history entries
-function Remove-DuplicateHistoryEntries {
-    $historyFile = (Get-PSReadlineOption).HistorySavePath
-    if (Test-Path $historyFile) {
-        $history = Get-Content $historyFile
-        $deduplicatedHistory = $history | Sort-Object -Unique
-        $deduplicatedHistory | Set-Content $historyFile
-    }
-}
-
-# Call the function to remove duplicate history entries when the profile loads
-Remove-DuplicateHistoryEntries

@@ -65,6 +65,20 @@ try{
 catch{
     Write-Output "An error occurred here"
 }
+
+# Define function to remove duplicate history entries
+function Remove-DuplicateHistoryEntries {
+    $historyFile = (Get-PSReadlineOption).HistorySavePath
+    if (Test-Path $historyFile) {
+        $history = Get-Content $historyFile
+        $deduplicatedHistory = $history | Sort-Object -Unique
+        $deduplicatedHistory | Set-Content $historyFile
+    }
+}
+
+# Call the function to remove duplicate history entries when the profile loads
+Remove-DuplicateHistoryEntries
+
 #! Register-ArgumentCompleter ----------------------------------------------------------------------------------------------------
 #$scriptblock = {
 #    param($wordToComplete, $commandAst, $cursorPosition)
