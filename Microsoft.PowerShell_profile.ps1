@@ -59,12 +59,11 @@ function admin {
 Import-Module "gsudoModule"
 
 #! Initialize-PsReadLine config --------------------------------------------------------------------------------------------------
-try {
-    $scriptUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Initialize-PsReadLine.ps1"
-    $scriptContent = Invoke-RestMethod -Uri $scriptUrl
-    Invoke-Expression $scriptContent
-} catch {
-    Write-Output "An error occurred here: $_"
+try{
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Initialize-PsReadLine.ps1" | iex
+}
+catch{
+    Write-Output "An error occurred here"
 }
 
 # Define function to remove duplicate history entries

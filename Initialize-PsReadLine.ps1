@@ -114,8 +114,14 @@ Set-PSReadLineKeyHandler -Key Ctrl+x -BriefDescription CutOrExit -LongDescriptio
     [Microsoft.Powershell.PSConsoleReadLine]::AcceptLine()
 }
 
-# Unix-specific key bindings for Ctrl+C and Ctrl+V
-if (Test-Unix) {
+# Determine if running on Unix-like platform
+$IsUnix = $false
+if ($PSVersionTable.Platform -eq "Unix") {
+    $IsUnix = $true
+}
+
+# Set Unix-specific key bindings
+if ($IsUnix) {
     Set-PSReadLineKeyHandler -Key Ctrl+c -BriefDescription CopyOrCancel -LongDescription "Copies selected text or does cancellation" -ScriptBlock {
         $start = $null
         $length = $null
