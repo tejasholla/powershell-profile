@@ -63,7 +63,7 @@ try{
     irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Initialize-PsReadLine.ps1" | iex
 }
 catch{
-    Write-Output "An error occurred"
+    Write-Output "An error occurred here"
 }
 #! Register-ArgumentCompleter ----------------------------------------------------------------------------------------------------
 #$scriptblock = {
