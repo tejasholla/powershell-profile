@@ -45,81 +45,27 @@ function prompt {
 $adminSuffix = if ($isAdmin) { " [ADMIN]" } else { "" }
 $Host.UI.RawUI.WindowTitle = "PowerShell {0}$adminSuffix" -f $PSVersionTable.PSVersion.ToString()
 
-# Set colors based on whether the session is running as administrator
-if ($isAdmin) {
-    Set-PSReadLineOption -Colors @{
-        Default            = '#98C379'
-        Command            = '#f6de4b'
-        Comment            = 'DarkCyan'
-        ContinuationPrompt = '#56B6C2'
-        Error              = '#E06C75'
-        keyword            = '#C678DD'
-        String             = 'DarkCyan'
-        Number             = '#E5C07B'
-        Member             = '#56B6C2'
-        Operator           = 'Magenta'
-        Type               = 'Cyan'
-        Parameter          = 'Green' 
-        Variable           = 'Yellow'  
-        Emphasis           = '#98C379'
-        InlinePrediction   = '#70A99F'
+function admin {
+    if ($args.Count -gt 0) {
+        $argList = "& '$args'"
+        Start-Process wt -Verb runAs -ArgumentList "pwsh.exe -NoExit -Command $argList"
     }
-}
-else {
-    Set-PSReadLineOption -Colors @{
-        Default            = '#98C379' #Light Green
-        Command            = '#61AFEF' #Light Blue
-        Comment            = '#abb2bf' #Light Gray
-        ContinuationPrompt = '#56B6C2' #Cyan
-        Error              = '#E06C75' #Light Red
-        keyword            = '#C678DD' #Light Purple
-        String             = '#e6a26f' #Light Orange
-        Number             = '#E5C07B' #Light Yellow
-        Member             = '#56B6C2' #Cyan
-        Operator           = '#C678DD' #Light Purple
-        Type               = '#98C379' #Light Green
-        Parameter          = '#e6a26f' #Light Orange
-        Variable           = '#E06C75' #Light Red
-        Emphasis           = '#98C379' #Light Green
-        InlinePrediction   = '#E5C07B' #Light Yellow
+    else {
+        Start-Process wt -Verb runAs
     }
 }
 
-# PSReadLine configuration
-Set-PSReadLineOption -EditMode Emacs -PredictionSource HistoryAndPlugin -PredictionViewStyle ListView
-Set-PSReadLineOption -BellStyle Visual
-Set-PSReadLineOption -MaximumHistoryCount 4096
-Set-PSReadLineOption -HistorySaveStyle SaveIncrementally
-Set-PSReadLineOption -HistorySearchCaseSensitive:$false
-Set-PSReadLineOption -HistoryNoDuplicates:$true
+# sudo function
+Import-Module "gsudoModule"
 
-# Custom key bindings
-Set-PSReadLineKeyHandler -Chord 'Ctrl+d' -Function DeleteChar
-Set-PSReadLineKeyHandler -Chord 'Enter' -Function ValidateAndAcceptLine
-Set-PSReadlineKeyHandler -Chord 'Alt+y' -Function YankLastArg
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-Set-PSReadLineKeyHandler -Key 'Ctrl+n' -Function ReverseSearchHistory
-Set-PSReadLineKeyHandler -Key 'Ctrl+l' -Function ClearScreen
-Set-PSReadLineKeyHandler -Key 'Alt+e'  -BriefDescription "CWD" -LongDescription "Open the current working directory in the Windows Explorer" -ScriptBlock { Start-Process explorer -ArgumentList '.' }
-
-# Function to clear duplicate entries in the history file
-function Remove-DuplicateHistoryEntries {
-    try {
-        $historyPath = (Get-PSReadlineOption).HistorySavePath
-        if (Test-Path $historyPath) {
-            $uniqueHistory = Get-Content $historyPath | Select-Object -Unique
-            $uniqueHistory | Set-Content $historyPath
-        }
-    }
-    catch {
-        Write-Error "Failed to clear history: $_"
-    }
+#! Initialize-PsReadLine config --------------------------------------------------------------------------------------------------
+try{
+    irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Initialize-PsReadLine.ps1" | iex
 }
-# Clear duplicates in history file when profile loads
-Remove-DuplicateHistoryEntries
-
+catch{
+    Write-Output "An error occurred"
+}
+#! Register-ArgumentCompleter ----------------------------------------------------------------------------------------------------
 #$scriptblock = {
 #    param($wordToComplete, $commandAst, $cursorPosition)
 #    dotnet complete --position $cursorPosition $commandAst.ToString() |
@@ -160,6 +106,7 @@ Import-Module -Name CompletionPredictor
 # Environment variables
 $env:GIT_SSH = "C:\Windows\system32\OpenSSH\ssh.exe"
 
+#! FastFetch config --------------------------------------------------------------------------------------------------------------
 # Function to check for FastFetch updates
 function Update-FastFetch {
     if (-not $global:canConnectToGitHub) {
@@ -232,7 +179,7 @@ function Beautify-Output {
 
 Beautify-Output -Output $filteredOutput
 
-
+#! Profile and Powershell Update check --------------------------------------------------------------------------------------------------
 function Update-Profile {
     if (-not $global:canConnectToGitHub) {
         Write-Host "Skipping profile update check due to GitHub.com not responding within 1 second." -ForegroundColor Yellow
@@ -283,19 +230,6 @@ function Update-PowerShell {
     }
 }
 Update-PowerShell
-
-function admin {
-    if ($args.Count -gt 0) {
-        $argList = "& '$args'"
-        Start-Process wt -Verb runAs -ArgumentList "pwsh.exe -NoExit -Command $argList"
-    }
-    else {
-        Start-Process wt -Verb runAs
-    }
-}
-
-# sudo function
-Import-Module "gsudoModule"
 
 #! Set aliases for quick access --------------------------------------------------------------------------------------------------
 try{
