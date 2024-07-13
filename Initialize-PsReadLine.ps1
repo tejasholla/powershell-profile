@@ -1,9 +1,3 @@
-if (-not (Get-Module PsReadLine)) {
-    Import-Module PsReadLine
-}
-
-$isAdmin = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
-
 # Set colors based on whether the session is running as administrator
 if ($isAdmin) {
     Set-PSReadLineOption -Colors @{
