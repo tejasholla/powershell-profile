@@ -86,11 +86,30 @@ Remove-DuplicateHistoryEntries
 
 #! Help function -----------------------------------------------------------------------------------------------------------------
 function Show-Help {
-    try{
-        irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Show-help.ps1" | iex
-    }
-    catch{
-        Write-Output "An error occurred here"
+    param (
+        [string]$Command = "show all"
+    )
+
+    $scriptUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Show-help.ps1"
+    
+    try {
+        # Download the script content
+        $scriptContent = Invoke-RestMethod -Uri $scriptUrl
+        
+        # Save the script content to a temporary file
+        $tempFile = [System.IO.Path]::GetTempFileName()
+        Set-Content -Path $tempFile -Value $scriptContent
+        
+        # Source the script content to import the function into the current session
+        . $tempFile
+        
+        # Clean up the temporary file
+        Remove-Item -Path $tempFile -Force
+        
+        # Call the imported function with the provided parameter
+        Show-Help $Command
+    } catch {
+        Write-Output "An error occurred: $_"
     }
 }
 
