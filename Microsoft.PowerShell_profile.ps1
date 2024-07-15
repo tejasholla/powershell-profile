@@ -539,11 +539,6 @@ Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
 
 function ipall { ipconfig /all }
 
-function ipnew {
-    ipconfig /release
-    ipconfig /renew
-}
-
 function ipflush { ipconfig /flushdns }
 
 function online {

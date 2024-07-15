@@ -102,18 +102,17 @@ syshealthreport
 wifinetwork - displays all the wifi password which was logged in
 thiswifi - displays current wifi password
 wifi - displays specififed wifi password
-networkdetails
+networkdetails - Shows all network interfaces
 NetworkSpeed - Displays network speed
 flushdns - Clears the DNS cache.
 Get-PubIP - Retrieves the public IP address of the machine.
-ipall
-ipnew
-ipflush
-online
-ipchange
-iplocate
-hosts
-ip
+ipall - command for displaying all Ipconfig
+ipflush - Clears the DNS cache.
+online - Check if the client is online
+ipchange - Script to change IP address
+iplocate - Locate IP address
+hosts - Opens host file
+ip - command for Ipconfig
 
 10. Clipboard Utilities
 =======================
