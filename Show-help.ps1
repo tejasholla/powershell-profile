@@ -88,14 +88,14 @@ g - Changes to the GitHub directory.
 8. Quick Access to System Information
 =======================
 sysinfo - Displays detailed system information.
-pcdata
-powcheck
-batcheck
-scanfile
-checkhealth
-scanhealth
-restorehealth
-syshealthreport
+pcdata - displays details of the PC
+powcheck - Checks battery/power health 
+batcheck - Checks for battery report
+scanfile - Shrotcut for scannow
+checkhealth - It checks health of system
+scanhealth - It scans health of system
+restorehealth - Restore health
+syshealthreport - It generates system health report
 
 9. Networking Utilities
 =======================
