@@ -60,5 +60,7 @@ pst - Retrieves text from the clipboard.
     }
 }
 
+Show-Help $args
+
 Write-Host "Use 'Show-Help show all' to display all the commands"
 Write-Host "Use 'Show-Help <command>' to display help for a particular command"
