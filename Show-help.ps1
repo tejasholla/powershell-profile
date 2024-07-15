@@ -59,30 +59,30 @@ halt - shutdown the system
 =======================
 la - Lists all files in the current directory with detailed formatting.
 ll - Lists all files, including hidden, in the current directory with detailed formatting.
-li
-lscheck
+li -
+lscheck -
 lsnu - 
-lscommand
+lscommand -
 
 7. Git Shortcuts
 =======================
-github
-gitrepo
-gituser
-gitemail
-gitlist
+github - Opens GitHub web
+gitrepo - Opens repo page directly
+gituser - enter GitHub username
+gitemail - enter GitHub email
+gitlist - lists GitHub config
 gst - Shortcut for 'git status'.
 ga - Shortcut for 'git add .'.
-gadd
+gadd - git add command
 gc <message> - Shortcut for 'git commit -m'.
-clone
+clone - works as git clone the repo
 gp - Shortcut for 'git push'.
-gi
+gi - git initiate
 gcom <message> - Adds all changes and commits with the specified message.
 lazyg <message> - Adds all changes, commits with the specified message, and pushes to the remote repository.
-graph
-ss
-nuke
+graph - Displays graph of commits
+ss - Shortcut for 'git status' but short
+nuke - It delete and reset the project
 g - Changes to the GitHub directory.
 
 8. Quick Access to System Information
