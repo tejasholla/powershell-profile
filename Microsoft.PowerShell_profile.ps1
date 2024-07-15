@@ -392,7 +392,7 @@ function url {
     }
 }
 
-#! windows tools ----------------------------------------------------------------------------------------------------------------
+#! windows Defender ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"   
@@ -605,6 +605,10 @@ function cdd { set-location D:\ }
 
 function cde { set-location E:\ }
 
+function docs { Set-Location -Path $HOME\Documents }
+
+function dtop { Set-Location -Path $HOME\Desktop }
+
 function Expand-File {
     [CmdletBinding()]
     [Alias("unzip")]
@@ -723,6 +727,19 @@ function organizer {
     # Execute the downloaded Python script
     python $scriptPath
 }
+
+function head {
+    param($Path, $n = 10)
+    Get-Content $Path -Head $n
+  }
+  
+  function tail {
+    param($Path, $n = 10, [switch]$f = $false)
+    Get-Content $Path -Tail $n -Wait:$f
+  }
+  
+  # Quick File Creation
+  function nf { param($name) New-Item -ItemType "file" -Path . -Name $name }
 
 #! Location or map functions -------------------------------------------------------------------------------------------------------
 function loc {
@@ -868,7 +885,8 @@ function shorturl {
     # Remove the temporary file
     Remove-Item -Path $tempFile -Force
 }
-    
+
+#! WSL functions -------------------------------------------------------------------------------------------------------------------
 function reset-wsl {
     cd $env:LOCALAPPDATA\Packages\CanonicalGroupLimited.Ubuntu_79rhkp1fndgsc\LocalState\
     wsl --shutdown
