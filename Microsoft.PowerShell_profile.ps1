@@ -85,7 +85,7 @@ function Remove-DuplicateHistoryEntries {
 Remove-DuplicateHistoryEntries
 
 #! Help function -----------------------------------------------------------------------------------------------------------------
-function Show-help {
+function Show-Help {
     try{
         irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Show-help.ps1" | iex
     }

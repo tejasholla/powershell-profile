@@ -44,6 +44,7 @@ sysinfo - Displays detailed system information.
 flushdns - Clears the DNS cache.
 cpy <text> - Copies the specified text to the clipboard.
 pst - Retrieves text from the clipboard.
+Use 'Show-Help' to display this help message.
 "@
 
     if ($Command -eq "show all") {
@@ -59,8 +60,6 @@ pst - Retrieves text from the clipboard.
         Write-Host "No help available for '$Command'"
     }
 }
-
-Show-Help $args
 
 Write-Host "Use 'Show-Help show all' to display all the commands"
 Write-Host "Use 'Show-Help <command>' to display help for a particular command"
