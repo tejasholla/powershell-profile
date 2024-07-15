@@ -7,14 +7,36 @@ function Show-Help {
 PowerShell Profile Help
 =======================
 
+1. Profile related
+=======================
 Update-Profile - Checks for profile updates from a remote repository and updates if necessary.
 Update-PowerShell - Checks for the latest PowerShell release and updates if a new version is available.
 Edit-Profile - Opens the current user's profile for editing using the configured editor.
+profile - Opens profile folder
+reload - Reloads the current user's PowerShell profile.
+history - Opens history file of the commands saved
+exepolicy - Run execution policy for current user
+
+2. App related
+=======================
+npp
+vi
+vim
+nvim
+notes
+ex
+telegram
+photos
+anydesk
+task
+cpl
+
+3. Download functions
+=======================
 touch <file> - Creates a new empty file.
 ff <name> - Finds files recursively with the specified name.
 Get-PubIP - Retrieves the public IP address of the machine.
 debloat - Runs the WinUtil script from Chris Titus Tech.
-reload-profile - Reloads the current user's PowerShell profile.
 unzip <file> - Extracts a zip file to the current directory.
 grep <regex> [dir] - Searches for a regex pattern in files within the specified directory or from the pipeline input.
 df - Displays information about volumes.

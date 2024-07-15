@@ -280,7 +280,7 @@ catch{
     Write-Output "An error occurred"
 }
 
-#! Function definitions ------------------------------------------------------------------------------------------------------------
+#! Profile related ------------------------------------------------------------------------------------------------------------
 function profile {
     $path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
     Start-Process $path
