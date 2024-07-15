@@ -24,5 +24,3 @@ Set-Alias history EditHistory -option AllScope
 Set-Alias halt "shutdown.exe /s /t 5"
 Set-Alias reboot "shutdown.exe /r /t 5"
 Set-Alias logoff "Shutdown.exe /l"
-Set-Alias lock "rundll32.exe user32.dll,LockWorkStation"
-Set-Alias update "start ms-settings:windowsupdate-action"

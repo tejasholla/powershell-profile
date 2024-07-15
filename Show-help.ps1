@@ -20,44 +20,48 @@ exepolicy - Run execution policy for current user
 
 2. App related
 =======================
-npp
-vi
-vim
-nvim
-notes
-ex
-telegram
-photos
-anydesk
-task
-cpl
+npp - Opens Notepad ++ app [Ex: npp <filename>]
+vi - opens default Editor here nvim [Ex: vi <filename>]
+vim - opens default Editor here nvim [Ex: vim <filename>]
+nvim - opens default Editor here nvim [Ex: nvim <filename>]
+notes - creates a notes file where we can save [Ex: notes or npp notes]
+ex - Opens explorer app [This PC]
+telegram - Opens telegram web
+photos - Opens Google Photos web
+anydesk - Opens anydesk app
+task - Opens task manager app
+cpl - Opens Control Panel app
 
 3. Download functions
 =======================
-ytdownload
-wallpaper
+ytdownload - Runs a ytDownloader script which downloads YouTube videos and audios
+wallpaper - Runs a script which helps to download wallpapers
 
 4. Browser related
 =======================
-browser
-edge
-gs
-google
-ys
-youtube
-wiki
-url
+browser - Opens default browser for searching
+edge - Opens Edge browser for searching
+gs - Search Google from Terminal [Ex: gs <search keyword>]
+google - Open Google from Default browser
+ys - Search YouTube from Terminal [Ex: ys <search keyword>]
+youtube - Open YouTube from Default browser
+wiki - Search for wiki [Ex: wiki <search keyword>] 
+url - This helps to open urls [Ex: url <url link>]
 
-5. windows Defender
+5. windows tools
 =======================
-windef
+windef - Windows defender scripts helps to scan
+logoff - Logoff the system
+reboot - reboot the system
+halt - shutdown the system
 
 6. Enhanced Listing
 =======================
 la - Lists all files in the current directory with detailed formatting.
 ll - Lists all files, including hidden, in the current directory with detailed formatting.
+li
 lscheck
-lsnu
+lsnu - 
 lscommand
 
 7. Git Shortcuts
@@ -119,10 +123,12 @@ pst - Retrieves text from the clipboard.
 
 11. file related
 =======================
-root
-cdc
-cdd
-cde
+root - Go to the root directory
+cdc - Opens C drive
+cdd - Opens D drive
+cde - Opens E drive
+cdf - Opens F drive
+cdg - Opens G drive
 docs - Changes the current directory to the user's Documents folder.
 dtop - Changes the current directory to the user's Desktop folder.
 head <path> [n] - Displays the first n lines of a file (default 10).
@@ -139,59 +145,59 @@ touch <file> - Creates a new empty file.
 ff <name> - Finds files recursively with the specified name.
 mkdir <dir> - Creates and changes to a new directory.
 which <name> - Shows the path of the command.
-batchrename
-organizer
+batchrename - Helps to rename bunch of files at a time
+organizer - It organizes all the files present in 
 
 12. Location or map functions
 =======================
-loc
-maps
-gmaps
+loc - Gives current location
+maps - Opens from www.openstreetmap.org
+gmaps - Gives direction in Google maps [Ex: gmaps <from> <to>]
 
 13. Image compressor functions
 =======================
-imagecompress
-imgcomp
+imagecompress - compress with the help of www.iloveimg.com
+imgcomp - this calls a script that can compress the images
 
 14. Recycle bin functions
 =======================
-binop
-binclean
-cleanwin
+binop - Opens Recycle Bin
+binclean - clean Recycle Bin
+cleanwin - Cleans windows unwanted files
 
 15. weather function
 =======================
-weatherfun
-weather
+weatherfun - Display weather of current location
+weather - Display weather of current location
 
 16. other functions
 =======================
-checkpass
-timezone
-qr
-usb
-setup
-shorturl
+checkpass - checks the security status of the given password by haveibeenpwned.com
+timezone - Displays Timezone of the current location
+qr - Generate QR for URL specified [Ex: url <url link>]
+usb - Enable or Diable USB
+setup - Runs the script for personalization of Windows Terminal 
+shorturl - Shorten large Urls
 
 17. WSL functions
 =======================
-reset-wsl
-linux
+reset-wsl - shutdown WSL 
+linux - Opens WSL default distro
 
 18. Tweaks functions
 =======================
-wintweaks
+wintweaks - Some windows tweaks
 debloat - Runs the WinUtil script from Chris Titus Tech.
-tweaks
+tweaks - Some windows tweaks
 
 19. AI run functions
 =======================
-chatgpt
-chatty
+chatgpt - Open the chatgpt web
+chatty - Opens webUI with ollama AI through WSL
 
 20. Utility functions
 =======================
-Get-Theme
+Get-Theme - Update theme of oh my posh
 
 =======================
 Show-Help command

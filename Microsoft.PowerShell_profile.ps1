@@ -605,6 +605,10 @@ function cdd { set-location D:\ }
 
 function cde { set-location E:\ }
 
+function cdf { set-location F:\ }
+
+function cdg { set-location G:\ }
+
 function docs { Set-Location -Path $HOME\Documents }
 
 function dtop { Set-Location -Path $HOME\Desktop }
