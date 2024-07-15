@@ -59,10 +59,10 @@ halt - shutdown the system
 =======================
 la - Lists all files in the current directory with detailed formatting.
 ll - Lists all files, including hidden, in the current directory with detailed formatting.
-li -
-lscheck -
-lsnu - 
-lscommand -
+li - Lists all files
+lscheck -Lists all files
+lsnu - Lists all files with nu
+lscommand - get commands with nu
 
 7. Git Shortcuts
 =======================
