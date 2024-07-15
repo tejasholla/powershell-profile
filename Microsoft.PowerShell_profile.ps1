@@ -96,15 +96,8 @@ function Show-Help {
         # Download the script content
         $scriptContent = Invoke-RestMethod -Uri $scriptUrl
         
-        # Save the script content to a temporary file
-        $tempFile = [System.IO.Path]::GetTempFileName()
-        Set-Content -Path $tempFile -Value $scriptContent
-        
-        # Source the script content to import the function into the current session
-        . $tempFile
-        
-        # Clean up the temporary file
-        Remove-Item -Path $tempFile -Force
+        # Evaluate the script content in the current scope
+        Invoke-Expression $scriptContent
         
         # Call the imported function with the provided parameter
         Show-Help $Command
