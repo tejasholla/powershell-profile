@@ -62,6 +62,4 @@ Use 'Show-Help' to display this help message.
 }
 
 Write-Host "Use 'Show-Help show all' to display all the commands"
-Write-Host "Use 'Show-Help command' to display perticular the commands"
-
-Show-Help
+Write-Host "Use 'Show-Help <command>' to display help for a particular command"
