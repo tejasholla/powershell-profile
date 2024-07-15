@@ -1,6 +1,6 @@
 function Show-Help {
     param (
-        [string]$Command = "show all"
+        [string]$Command = "all"
     )
 
     $helpText = @"
@@ -47,7 +47,7 @@ pst - Retrieves text from the clipboard.
 Use 'Show-Help' to display this help message.
 "@
 
-    if ($Command -eq "show all") {
+    if ($Command -eq "all") {
         Write-Host $helpText
     } else {
         $lines = $helpText -split "`n"
@@ -61,5 +61,5 @@ Use 'Show-Help' to display this help message.
     }
 }
 
-Write-Host "Use 'Show-Help show all' to display all the commands"
+Write-Host "Use 'Show-Help all' to display all the commands"
 Write-Host "Use 'Show-Help <command>' to display help for a particular command"

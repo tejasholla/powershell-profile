@@ -87,7 +87,7 @@ Remove-DuplicateHistoryEntries
 #! Help function -----------------------------------------------------------------------------------------------------------------
 function Show-Help {
     param (
-        [string]$Command = "show all"
+        [string]$Command = "all"
     )
 
     $scriptUrl = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Show-help.ps1"
