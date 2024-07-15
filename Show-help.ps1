@@ -99,12 +99,11 @@ syshealthreport
 
 9. Networking Utilities
 =======================
-wifinetwork
-thiswifi
-wifi
+wifinetwork - displays all the wifi password which was logged in
+thiswifi - displays current wifi password
+wifi - displays specififed wifi password
 networkdetails
-NetworkSpeed
-Get-HWVersion
+NetworkSpeed - Displays network speed
 flushdns - Clears the DNS cache.
 Get-PubIP - Retrieves the public IP address of the machine.
 ipall

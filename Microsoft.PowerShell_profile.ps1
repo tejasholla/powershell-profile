@@ -533,14 +533,6 @@ function NetworkSpeed {
     }
 }
 
-function Get-HWVersion($computer, $name) {
-    $pingresult = Get-WmiObject win32_pingstatus -f "address='$computer'"
-    if ($pingresult.statuscode -ne 0) { return }
-    Get-WmiObject -Query "SELECT * FROM Win32_PnPSignedDriver WHERE DeviceName LIKE '%$name%'" -ComputerName $computer | 
-    Sort DeviceName | 
-    Select @{Name = "Server"; Expression = { $_.__Server } }, DeviceName, @{Name = "DriverDate"; Expression = { [System.Management.ManagementDateTimeconverter]::ToDateTime($_.DriverDate).ToString("MM/dd/yyyy") } }, DriverVersion
-}
-
 function flushdns { Clear-DnsClientCache }
 
 Function Get-PubIP { (Invoke-WebRequest http://ifconfig.me/ip ).Content }
