@@ -84,6 +84,16 @@ function Remove-DuplicateHistoryEntries {
 # Call the function to remove duplicate history entries when the profile loads
 Remove-DuplicateHistoryEntries
 
+#! Help function -----------------------------------------------------------------------------------------------------------------
+function Show-help {
+    try{
+        irm "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Show-help.ps1" | iex
+    }
+    catch{
+        Write-Output "An error occurred here"
+    }
+}
+
 #! Register-ArgumentCompleter ----------------------------------------------------------------------------------------------------
 #$scriptblock = {
 #    param($wordToComplete, $commandAst, $cursorPosition)
