@@ -392,7 +392,7 @@ function url {
     }
 }
 
-#! windows Defender ----------------------------------------------------------------------------------------------------------------
+#! windows Tools ----------------------------------------------------------------------------------------------------------------
 function windef {
     # Assuming the script is accessible via the URL
     $scriptPath = "https://raw.githubusercontent.com/tejasholla/powershell-profile/main/Scripts/windefender.ps1"   
@@ -408,6 +408,16 @@ function windef {
         Write-Host "⚠️ Error fetching or executing the script: $($_.Exception.Message)" -ForegroundColor Red
     }
 }
+
+function halt { cmd /C "shutdown.exe /s /t 5" }
+
+function reboot { cmd /C "shutdown.exe /r /t 5" }
+
+function logoff { cmd /C "shutdown.exe /l" }
+
+function lock { cmd /C "rundll32.exe user32.dll,LockWorkStation" }
+
+function update { cmd /C "start ms-settings:windowsupdate-action" }
 
 #! Enhanced Listing -----------------------------------------------------------------------------------------------------------------
 function la { Get-ChildItem -Path . -Force | Format-Table -AutoSize }
