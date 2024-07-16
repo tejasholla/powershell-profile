@@ -51,9 +51,11 @@ url - This helps to open urls [Ex: url <url link>]
 5. windows tools
 =======================
 windef - Windows defender scripts helps to scan
-logoff - Logoff the system
-reboot - reboot the system
-halt - shutdown the system
+logoff - Logs off the current user
+reboot - Restarts the computer after a 5-second delay
+halt - Shuts down the computer after a 5-second delay
+lock - Locks the workstation
+update - Opens the Windows Update settings
 
 6. Enhanced Listing
 =======================
