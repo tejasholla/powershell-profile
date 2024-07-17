@@ -188,4 +188,3 @@ Set-PSReadLineKeyHandler -Key "Alt+n" -BriefDescription ExpandAliases -LongDescr
 
     [Microsoft.Powershell.PSConsoleReadLine]::Insert("$input")
 }
-
