@@ -188,3 +188,18 @@ Set-PSReadLineKeyHandler -Key "Alt+n" -BriefDescription ExpandAliases -LongDescr
 
     [Microsoft.Powershell.PSConsoleReadLine]::Insert("$input")
 }
+
+# Define a custom handler
+function Show-Current-Command-Help {
+    $buffer = [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState().CurrentBuffer
+    $input = ($buffer -join "").Trim()
+
+    if ($input) {
+        Show-Help $input
+        [Microsoft.PowerShell.PSConsoleReadLine]::ClearScreen()
+        [Microsoft.PowerShell.PSConsoleReadLine]::AcceptLine()
+    }
+}
+
+# Set the key handler for Alt + k
+Set-PSReadLineKeyHandler -Chord 'Alt+s' -ScriptBlock { Show-Current-Command-Help }
