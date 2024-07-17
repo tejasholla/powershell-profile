@@ -191,7 +191,7 @@ Set-PSReadLineKeyHandler -Key "Alt+n" -BriefDescription ExpandAliases -LongDescr
 
 # Define a custom handler
 function Show-Current-Command-Help {
-    $buffer = [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState().CurrentBuffer
+    $buffer = (Get-PSReadLineBuffer).Buffer
     $input = ($buffer -join "").Trim()
 
     if ($input) {
