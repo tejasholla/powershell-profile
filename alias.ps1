@@ -22,4 +22,3 @@ Set-Alias -Name vim -Value Launch-Nvim
 Set-Alias -Name nvim -Value Launch-Nvim
 Set-Alias hosts EditHosts -option AllScope
 Set-Alias history EditHistory -option AllScope
-Set-Alias installfont 'oh-my-posh font install'

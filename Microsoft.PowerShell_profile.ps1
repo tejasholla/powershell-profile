@@ -295,6 +295,10 @@ function profile {
     Start-Process $path
 }
 
+function installfont{
+    oh-my-posh font install
+}
+
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload { & $profile }
