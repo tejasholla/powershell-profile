@@ -314,7 +314,7 @@ function Set-WindowsTerminalFont {
     )
 
     # Path to the Windows Terminal settings file
-    $settingsFilePath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\profiles.json"
+    $settingsFilePath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
 
     if (Test-Path $settingsFilePath) {
         # Read current settings
@@ -347,14 +347,17 @@ Write-Output "Available Fonts:"
 $fonts | ForEach-Object { Write-Output $_ }
 
 # Prompt user to select a font
-$selectedFont = Read-Host "Enter the font name you want to set as default"
+$selectedFont = Read-Host "Enter the font name you want to set as default (leave blank if you don't want to change the font)"
 
-if ($fonts -contains $selectedFont) {
-    Set-WindowsTerminalFont -FontName $selectedFont
+if ($selectedFont) {
+    if ($fonts -contains $selectedFont) {
+        Set-WindowsTerminalFont -FontName $selectedFont
+    } else {
+        Write-Output "Font '$selectedFont' is not in the list of available fonts."
+    }
 } else {
-    Write-Output "Font '$selectedFont' is not in the list of available fonts."
+    Write-Output "No font selected. No changes made."
 }
-
 
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
