@@ -299,6 +299,30 @@ function installfont{
     oh-my-posh font install
 }
 
+function Get-InstalledFonts {
+    param (
+        [switch]$ToFile,
+        [string]$FilePath = "C:\InstalledFonts.txt"
+    )
+
+    # Retrieve installed fonts
+    $fonts = Get-WmiObject -Query "SELECT * FROM Win32_FontInfoAction"
+
+    # Display fonts in console
+    if (-not $ToFile) {
+        $fonts | ForEach-Object {
+            Write-Output $_.Name
+        }
+    }
+    # Save fonts to file
+    else {
+        $fonts | ForEach-Object {
+            $_.Name
+        } | Out-File -FilePath $FilePath
+        Write-Output "Fonts have been saved to $FilePath"
+    }
+}
+
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload { & $profile }
