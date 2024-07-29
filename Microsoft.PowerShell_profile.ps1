@@ -305,20 +305,17 @@ function Get-InstalledFonts {
         [string]$FilePath = "C:\InstalledFonts.txt"
     )
 
-    # Retrieve installed fonts
-    $fonts = Get-WmiObject -Query "SELECT * FROM Win32_FontInfoAction"
+    Add-Type -AssemblyName System.Drawing
 
-    # Display fonts in console
+    $fonts = New-Object System.Drawing.Text.InstalledFontCollection
+    $fontNames = $fonts.Families | ForEach-Object { $_.Name }
+
     if (-not $ToFile) {
-        $fonts | ForEach-Object {
-            Write-Output $_.Name
+        $fontNames | ForEach-Object {
+            Write-Output $_
         }
-    }
-    # Save fonts to file
-    else {
-        $fonts | ForEach-Object {
-            $_.Name
-        } | Out-File -FilePath $FilePath
+    } else {
+        $fontNames | Out-File -FilePath $FilePath
         Write-Output "Fonts have been saved to $FilePath"
     }
 }
