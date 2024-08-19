@@ -299,66 +299,6 @@ function installfont{
     oh-my-posh font install
 }
 
-function Get-InstalledFonts {
-    Add-Type -AssemblyName System.Drawing
-
-    $fonts = New-Object System.Drawing.Text.InstalledFontCollection
-    $fontNames = $fonts.Families | ForEach-Object { $_.Name }
-
-    $fontNames
-}
-
-function Set-WindowsTerminalFont {
-    param (
-        [string]$FontName
-    )
-
-    # Path to the Windows Terminal settings file
-    $settingsFilePath = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"
-
-    if (Test-Path $settingsFilePath) {
-        # Read current settings
-        $settings = Get-Content -Path $settingsFilePath | ConvertFrom-Json
-
-        # Set the font for all profiles
-        foreach ($profile in $settings.profiles.list) {
-            if ($profile.fontFace -ne $FontName) {
-                $profile.fontFace = $FontName
-            }
-        }
-
-        # Write changes back to the settings file
-        $settings | ConvertTo-Json -Depth 10 | Set-Content -Path $settingsFilePath
-
-        Write-Output "Font '$FontName' has been set as the default font in Windows Terminal."
-    } else {
-        Write-Output "Windows Terminal settings file not found."
-    }
-}
-
-# Main script execution
-$fonts = Get-InstalledFonts
-if ($fonts.Count -eq 0) {
-    Write-Output "No fonts found."
-    return
-}
-
-Write-Output "Available Fonts:"
-$fonts | ForEach-Object { Write-Output $_ }
-
-# Prompt user to select a font
-$selectedFont = Read-Host "Enter the font name you want to set as default (leave blank if you don't want to change the font)"
-
-if ($selectedFont) {
-    if ($fonts -contains $selectedFont) {
-        Set-WindowsTerminalFont -FontName $selectedFont
-    } else {
-        Write-Output "Font '$selectedFont' is not in the list of available fonts."
-    }
-} else {
-    Write-Output "No font selected. No changes made."
-}
-
 function Edit-Profile { npp "$Env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" }
 
 function reload { & $profile }
