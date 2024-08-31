@@ -205,14 +205,6 @@ function Beautify-Output {
     param (
         [string[]]$Output
     )
-
-    # Adding the PHANTOM ASCII art
-    Write-Host "██████╗ ██╗  ██╗ █████╗ ███╗   ██╗████████╗ ██████╗ ███╗   ███╗" -ForegroundColor DarkYellow
-    Write-Host "██╔══██╗██║  ██║██╔══██╗████╗  ██║╚══██╔══╝██╔═══██╗████╗ ████║" -ForegroundColor DarkYellow
-    Write-Host "██████╔╝███████║███████║██╔██╗ ██║   ██║   ██║   ██║██╔████╔██║" -ForegroundColor DarkYellow
-    Write-Host "██╔═══╝ ██╔══██║██╔══██║██║╚██╗██║   ██║   ██║   ██║██║╚██╔╝██║" -ForegroundColor DarkYellow
-    Write-Host "██║     ██║  ██║██║  ██║██║ ╚████║   ██║   ╚██████╔╝██║ ╚═╝ ██║" -ForegroundColor DarkYellow
-    Write-Host "╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝" -ForegroundColor DarkYellow
     Write-Host "///////   ///////" -ForegroundColor Blue
     foreach ($line in $Output) {
         switch -Regex ($line) {
