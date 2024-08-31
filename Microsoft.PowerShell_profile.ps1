@@ -192,8 +192,8 @@ function Update-FastFetch {
     }
 }
 
-# Update FastFetch
-Update-FastFetch
+# Update FastFetch function call
+# Update-FastFetch
 
 # Display FastFetch with filtered output
 Clear-Host
