@@ -236,17 +236,44 @@ scoop install universal-ctags
 # Install 7zip
 scoop install 7zip
 
-# required
-Move-Item $env:LOCALAPPDATA\nvim $env:LOCALAPPDATA\nvim.bak
+# Check if nvim.bak already exists, if not, move the directory
+if (-not (Test-Path "$env:LOCALAPPDATA\nvim.bak")) {
+    Move-Item -Path "$env:LOCALAPPDATA\nvim" -Destination "$env:LOCALAPPDATA\nvim.bak" -ErrorAction SilentlyContinue
+} else {
+    Write-Host "nvim.bak already exists, skipping backup."
+}
 
-# optional but recommended
-Move-Item $env:LOCALAPPDATA\nvim-data $env:LOCALAPPDATA\nvim-data.bak
+# Check if nvim-data.bak already exists, if not, move the directory
+if (Test-Path "$env:LOCALAPPDATA\nvim-data") {
+    if (-not (Test-Path "$env:LOCALAPPDATA\nvim-data.bak")) {
+        Move-Item -Path "$env:LOCALAPPDATA\nvim-data" -Destination "$env:LOCALAPPDATA\nvim-data.bak" -ErrorAction SilentlyContinue
+    } else {
+        Write-Host "nvim-data.bak already exists, skipping backup."
+    }
+} else {
+    Write-Host "nvim-data does not exist, skipping."
+}
 
-git clone https://github.com/LazyVim/starter $env:LOCALAPPDATA\nvim
+# Clone the LazyVim starter into the nvim directory, but only if the directory is empty
+if ((Test-Path "$env:LOCALAPPDATA\nvim") -and (Get-ChildItem "$env:LOCALAPPDATA\nvim" -Recurse | Measure-Object).Count -eq 0) {
+    git clone https://github.com/LazyVim/starter "$env:LOCALAPPDATA\nvim"
+} else {
+    Write-Host "nvim directory is not empty, skipping clone."
+}
 
-Remove-Item $env:LOCALAPPDATA\nvim\.git -Recurse -Force
+# Remove the .git directory if it exists
+if (Test-Path "$env:LOCALAPPDATA\nvim\.git") {
+    Remove-Item -Path "$env:LOCALAPPDATA\nvim\.git" -Recurse -Force -ErrorAction SilentlyContinue
+} else {
+    Write-Host ".git directory not found, skipping removal."
+}
 
-git clone https://github.com/nvim-lua/kickstart.nvim.git $env:USERPROFILE\AppData\Local\nvim\
+# Clone the kickstart.nvim repository into the nvim directory, only if the directory is empty
+if ((Test-Path "$env:USERPROFILE\AppData\Local\nvim") -and (Get-ChildItem "$env:USERPROFILE\AppData\Local\nvim" -Recurse | Measure-Object).Count -eq 0) {
+    git clone https://github.com/nvim-lua/kickstart.nvim.git "$env:USERPROFILE\AppData\Local\nvim"
+} else {
+    Write-Host "nvim directory is not empty, skipping clone."
+}
 
 # Pester Install
 try {
