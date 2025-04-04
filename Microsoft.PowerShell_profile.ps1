@@ -506,6 +506,10 @@ function syshealthreport {
 }
 
 #! Networking Utilities -----------------------------------------------------------------------------------------------------------------
+function pissh { ssh pi@192.168.1.9 }
+
+function phantomssh { ssh root@82.25.105.35 }
+
 function wifinetwork { netsh wlan show profile }
 
 function thiswifi { netsh wlan show profile $args key=clear | findstr “Key Content” }
