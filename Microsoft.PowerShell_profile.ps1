@@ -506,7 +506,7 @@ function syshealthreport {
 }
 
 #! Networking Utilities -----------------------------------------------------------------------------------------------------------------
-function pissh { ssh pi@192.168.1.9 }
+function pissh { ssh pi@192.168.31.123 }
 
 function phantomssh { ssh root@82.25.105.35 }
 
