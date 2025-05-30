@@ -2,7 +2,8 @@
   "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
   "blocks": [
     {
-      "type": "rprompt",
+      "type": "prompt",
+      "alignment": "right",
       "segments": [
         {
           "background": "#FFA500",
@@ -177,5 +178,10 @@
   ],
   "console_title_template": "{{if .Root}}Admin: {{end}} {{.Folder}}",
   "final_space": true,
+  "newline": false,
+  "cursor": {
+    "style": "block",
+    "blinking": true
+}
   "version": 2
 }
