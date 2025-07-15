@@ -505,10 +505,22 @@ function syshealthreport {
     python $scriptPath
 }
 
-#! Networking Utilities -----------------------------------------------------------------------------------------------------------------
-function pissh { ssh pi@192.168.31.123 }
+#! SSH Aliases -----------------------------------------------------------------------------------------------------------------
 
-function phantomssh { ssh root@82.25.105.35 }
+function server100 { ssh 192.168.31.100 }
+function server101 { ssh 192.168.31.101 }
+function server102 { ssh 192.168.31.102 }
+function server103 { ssh 192.168.31.103 }
+function server104 { ssh 192.168.31.104 }
+function server105 { ssh 192.168.31.105 }
+function server106 { ssh 192.168.31.106 }
+function server107 { ssh 192.168.31.107 }
+function server108 { ssh 192.168.31.108 }
+function server109 { ssh 192.168.31.109 }
+function server110 { ssh 192.168.31.110 }
+function server111 { ssh 192.168.31.111 }
+
+#! Networking Utilities -----------------------------------------------------------------------------------------------------------------
 
 function wifinetwork { netsh wlan show profile }
 
