@@ -533,6 +533,45 @@ function syshealthreport {
 }
 
 #! SSH Aliases -----------------------------------------------------------------------------------------------------------------
+function serverlist {
+    # Display all available server functions
+    Write-Host "Available servers:" -ForegroundColor Cyan
+    Write-Host "-----------------" -ForegroundColor Cyan
+    Write-Host "1. Promox Main Server - 192.168.31.100"
+    Write-Host "2. Pihole Server - 192.168.31.101"
+    Write-Host "3. Cloudflare Server - 192.168.31.102"
+    Write-Host "4. Apps Server - 192.168.31.103"
+    Write-Host "5. SearXNG Server - 192.168.31.104"
+    Write-Host "6. AI Server - 192.168.31.105"
+    Write-Host "7. Vaultwarden Server - 192.168.31.106"
+    Write-Host "8. Rustdesk Server - 192.168.31.107"
+    Write-Host "9. Komodo Server - 192.168.31.108"
+    Write-Host "10. Network Security Server - 192.168.31.109"
+    Write-Host "11. Home Automation Server - 192.168.31.110"
+    Write-Host "12. Syncthing Server - 192.168.31.111"
+    Write-Host "-----------------" -ForegroundColor Cyan
+    
+    # Prompt for selection
+    $selection = Read-Host "Enter the server number to connect (1-12) or 'q' to quit"
+    
+    # Process selection
+    switch ($selection) {
+        '1' { server100 }
+        '2' { server101 }
+        '3' { server102 }
+        '4' { server103 }
+        '5' { server104 }
+        '6' { server105 }
+        '7' { server106 }
+        '8' { server107 }
+        '9' { server108 }
+        '10' { server109 }
+        '11' { server110 }
+        '12' { server111 }
+        'q' { return }
+        default { Write-Host "Invalid selection. Please try again." -ForegroundColor Red }
+    }
+}
 
 function server100 { ssh 192.168.31.100 }
 function server101 { ssh 192.168.31.101 }
