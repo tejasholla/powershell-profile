@@ -281,6 +281,33 @@ catch{
     Write-Output "An error occurred"
 }
 
+# PowerShell script to add SSH config block for 192.168.31.* ---------------------------------------------------------------------
+
+# Get current user's SSH config path
+$sshDir = "$HOME\.ssh"
+$configPath = "$sshDir\config"
+
+# Create .ssh folder if it doesn't exist
+if (-Not (Test-Path $sshDir)) {
+    New-Item -ItemType Directory -Path $sshDir -Force | Out-Null
+}
+
+# Define SSH config block
+$sshConfigBlock = @"
+Host 192.168.31.*
+    User root
+    Port 22
+    IdentityFile C:/Users/$env:USERNAME/.ssh/id_rsa
+"@
+
+# Check if block already exists to avoid duplicates
+if (-Not (Test-Path $configPath) -or -Not (Select-String -Path $configPath -Pattern "Host 192.168.31\.\*")) {
+    Add-Content -Path $configPath -Value $sshConfigBlock
+    Write-Host "SSH config block added to $configPath"
+} else {
+    Write-Host "SSH config for 192.168.31.* already exists. Skipping."
+}
+
 #! Profile related ------------------------------------------------------------------------------------------------------------
 function profile {
     $path = Join-Path $env:USERPROFILE 'Documents\PowerShell'
